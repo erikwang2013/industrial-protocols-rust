@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # MODBUSPLUS — Modbus Plus 协议。1 Mbps 令牌对等通信、需 SA85/BM85 适配器。
 
 //! Modbus Plus (MB+) via Schneider SA85/BM85 adapter.
 //! Token-passing peer-to-peer at 1 Mbps over RS-485.

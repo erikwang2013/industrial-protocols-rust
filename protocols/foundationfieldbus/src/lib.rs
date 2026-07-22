@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # FOUNDATIONFIELDBUS — Foundation Fieldbus H1/HSE 协议。前导码+定界符 DLL、需 NI USB-8486。
 
 //! Foundation Fieldbus H1/HSE via NI USB-8486 gateway.
 //! H1: 31.25 kbps over twisted pair. HSE: 100 Mbps Ethernet.

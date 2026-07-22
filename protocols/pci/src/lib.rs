@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # PCI — PCI/PCIe 系统总线协议。配置空间+MMIO 访问、需内核驱动或 libpci 桥接。
 
 //! PCI/PCIe system bus protocol bridge.
 //! Requires kernel driver or library bridge (e.g., pciutils/libpci).

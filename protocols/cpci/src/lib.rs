@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # CPCI — CompactPCI 协议。3U/6U Eurocard、地理寻址+PCI 配置空间。
 
 //! CompactPCI rack-mount PCI protocol.
 //! 3U/6U Eurocard, PCI bus over backplane. Requires CompactPCI interface.

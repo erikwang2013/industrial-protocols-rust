@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # WORLDFIP — WorldFIP/Fipio 协议。曼彻斯特编码、Read/Write Object。
 
 //! WorldFIP/Fipio fieldbus protocol.
 //! 31.25 kbps / 1 Mbps / 2.5 Mbps over twisted pair or fiber.

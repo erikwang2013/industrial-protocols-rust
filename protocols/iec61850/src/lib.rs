@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # IEC61850 — IEC 61850 MMS 协议。变电站自动化、TPKT+COTP 传输层、Initiate-Request。
 
 //! IEC 61850 MMS substation automation protocol over TCP port 102.
 use industrial_protocols_kernel::connection::Connection;

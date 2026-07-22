@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # VME — VME/VPX 工控背板协议。A16/A24/A32 地址空间、AM 地址修饰码。
 
 //! VME/VPX industrial backplane bus protocol.
 //! VME64 32/64-bit, 3U/6U form factor. Requires VME bridge module.

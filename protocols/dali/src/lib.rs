@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # DALI — DALI 数字照明协议。IEC 62386、ARC 电弧功率控制、广播命令。
 
 //! DALI (Digital Addressable Lighting Interface) protocol.
 use industrial_protocols_kernel::connection::Connection;

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # LIN — LIN 车身总线协议。19200 bps UART、同步+ID 帧头、增强型校验和。
 
 //! LIN (Local Interconnect Network) body bus protocol - 19200 bps UART.
 use industrial_protocols_kernel::connection::Connection;

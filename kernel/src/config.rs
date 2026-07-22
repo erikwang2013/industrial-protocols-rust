@@ -1,4 +1,23 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 配置管理
+//!
+//! 通过 TOML 文件加载设备配置，支持运行时覆盖。
+//!
+//! ## 配置格式
+//!
+//! ```toml
+//! [devices.plc-001]
+//! protocol = "modbus"
+//! variant = "tcp"
+//! host = "192.168.1.10"
+//! port = 502
+//! unit_id = 1
+//! timeout_ms = 3000
+//! retry = { max = 3, strategy = "exponential", base_ms = 100, max_ms = 5000 }
+//! connection_strategy = "persistent"
+//! ```
+//!
+//! 协议特定字段（如 BACnet 的 `device_instance`）通过 `#[serde(flatten)]` 捕获到 `extras` 中。
 
 use serde::Deserialize;
 use std::collections::HashMap;

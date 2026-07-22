@@ -1,4 +1,14 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 事件总线
+//!
+//! 发布/订阅模式的事件系统。内核内部和协议实现可通过事件总线通信，
+//! 无需直接耦合。
+//!
+//! ## 事件主题
+//!
+//! - **Connection** — 设备连接/断开、读写完成
+//! - **Error** — 协议错误、熔断触发
+//! - **Health** — 设备健康状态变更
 
 use std::sync::{Arc, Mutex};
 

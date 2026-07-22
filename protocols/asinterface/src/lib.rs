@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # ASINTERFACE — AS-Interface V3 协议。Data Exchange 数据交换、Read ID Code、需 B+W 网关。
 
 //! AS-Interface (Actuator Sensor Interface) via Bihl+Wiedemann gateway.
 //! Master-slave polling at 167 kbps, up to 62 slaves.

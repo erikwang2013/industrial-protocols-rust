@@ -1,4 +1,9 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # CAN 总线传输
+//!
+//! Linux SocketCAN (CAN_RAW) 实现。通过 `libc` 直接操作 CAN 套接字，
+//! 支持 CAN 2.0A（11-bit ID）和 CAN 2.0B（29-bit ID）帧格式。
+//! 非 Linux 平台使用存根实现。
 
 //! CAN bus transport via Linux SocketCAN.
 //!

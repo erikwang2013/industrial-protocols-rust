@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # HARTIP — HART-IP 协议。HART over TCP/UDP、端口 5094、Init/ReadPV 服务。
 
 //! HART-IP protocol - HART over TCP/UDP port 5094.
 use industrial_protocols_kernel::connection::Connection;

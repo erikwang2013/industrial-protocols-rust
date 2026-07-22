@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # IOLINK — IO-Link 协议。点对点串行通信、PDin/PDout 过程数据、ISDU 参数读写。
 
 //! IO-Link protocol via ifm/Balluff IO-Link Master gateway.
 //! Point-to-point serial communication at 4.8/38.4/230.4 kbps.

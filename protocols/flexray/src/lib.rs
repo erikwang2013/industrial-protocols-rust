@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # FLEXRAY — FlexRay 协议。10 Mbps 双通道、时间触发、静态帧+唤醒模式。
 
 //! FlexRay automotive high-speed bus protocol.
 //! 10 Mbps dual-channel, time-triggered. Requires FlexRay controller.

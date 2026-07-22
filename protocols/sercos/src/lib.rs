@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # SERCOS — SERCOS III 协议。MDT/AT 报文、Service Channel 服务通道 IDN 读写。
 
 //! SERCOS III real-time Ethernet protocol.
 use industrial_protocols_kernel::connection::Connection;

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # CCLINKIE — CC-Link IE Field 协议。工业以太网版本、Cyclic Data 循环数据交换。
 
 //! CC-Link IE Field industrial Ethernet protocol.
 use industrial_protocols_kernel::connection::Connection;

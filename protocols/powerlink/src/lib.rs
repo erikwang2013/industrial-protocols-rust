@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # POWERLINK — POWERLINK 协议。SoC/PReq/PRes 帧、EtherType 0x88AB、需 openPOWERLINK。
 
 //! POWERLINK (Ethernet POWERLINK) real-time Ethernet protocol.
 use industrial_protocols_kernel::connection::Connection;

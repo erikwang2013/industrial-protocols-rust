@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # CONTROLNET — ControlNet 协议。5 Mbps 令牌传递、UCMM 非连接消息、需 1784-PCIC/S。
 
 //! ControlNet protocol via Allen-Bradley 1784-PCIC/S card.
 //! 5 Mbps, scheduled token-passing for real-time I/O.

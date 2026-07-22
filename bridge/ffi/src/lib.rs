@@ -1,4 +1,9 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # FFI 桥接层
+//!
+//! 通过 `libloading` 动态加载厂商 C SDK（.so/.dll/.dylib），
+//! 将 unsafe FFI 调用封装在 [`SafeVendorTransport`] 中，对外暴露安全的 [`Transport`] trait。
+//! 支持可配置的函数符号名和初始化参数。
 
 //! FFI bridge — safe wrapper for vendor C SDK dynamic loading.
 //!

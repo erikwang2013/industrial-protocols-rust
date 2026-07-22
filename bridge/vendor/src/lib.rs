@@ -1,4 +1,11 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 厂商预设配置
+//!
+//! 提供常见工业设备的连接预设参数：
+//!
+//! - Siemens S7-1200
+//! - Allen-Bradley CompactLogix
+//! - Schneider Electric Modicon M340
 
 use std::collections::HashMap;
 

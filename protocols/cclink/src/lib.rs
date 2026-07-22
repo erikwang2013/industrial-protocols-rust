@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # CCLINK — CC-Link RS-485 协议。主从轮询、RX/RY 位数据读写、CRC-16/XMODEM。
 
 //! CC-Link RS-485 protocol.
 use industrial_protocols_kernel::connection::Connection;

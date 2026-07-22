@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # DNP3 — DNP3 电力自动化协议。Class 0 轮询、CRC-16/DNP 校验、链路层+传输层+应用层。
 
 //! DNP3 (Distributed Network Protocol) implementation.
 //!

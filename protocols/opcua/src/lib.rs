@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # OPCUA — OPC UA Binary 协议栈。支持 Hello/Ack 握手、安全策略、读取请求。
 
 //! OPC UA Binary protocol implementation.
 //!

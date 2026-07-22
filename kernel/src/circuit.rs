@@ -1,4 +1,13 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 熔断保护器
+//!
+//! 实现标准的熔断器模式：Closed → Open → HalfOpen 三态转换。
+//!
+//! - **Closed（闭合）** — 正常状态，请求正常通过。累计失败达到 threshold 时转为 Open。
+//! - **Open（断开）** — 拒绝所有请求。cooldown 时间后转为 HalfOpen。
+//! - **HalfOpen（半开）** — 允许一次试探请求。成功则转 Closed，失败则转 Open。
+//!
+//! 每个设备独立追踪失败计数和状态。
 
 use crate::error::{ProtocolError, Result};
 use std::collections::HashMap;

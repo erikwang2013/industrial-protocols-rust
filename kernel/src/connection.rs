@@ -1,4 +1,13 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 连接管理器
+//!
+//! 定义 [`Connection`] trait 和 [`ConnectionManager`]，管理设备连接的生命周期。
+//!
+//! ## 三种连接策略
+//!
+//! - **Simple** — 每次操作创建新连接，用完立即释放（适合低频轮询）
+//! - **Persistent** — 保持单一长连接，断开自动重连（适合持续通信）
+//! - **Pooled** — 连接池，设定最小/最大连接数和超时（适合高并发场景）
 
 use std::collections::HashMap;
 use std::io;

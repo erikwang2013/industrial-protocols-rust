@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # LONWORKS — LonWorks 楼宇自动化协议。LonTalk 协议栈、Neuron 芯片、网络变量读取。
 
 //! LonWorks building automation protocol via Neuron chip / interface card.
 //! Uses ISO/IEC 14908 (LonTalk) protocol stack.

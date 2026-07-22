@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # MQTT — MQTT 3.1.1 协议。CONNECT/PUBLISH/SUBSCRIBE/PINGREQ、QoS 0/1、保留消息。
 
 //! MQTT 3.1.1 protocol implementation.
 //!

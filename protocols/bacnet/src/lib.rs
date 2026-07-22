@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # BACNET — BACnet/IP 协议。BVLC 虚拟链路控制、Who-Is/I-Am 设备发现、ReadProperty 服务。
 
 //! BACnet/IP protocol implementation.
 //!

@@ -1,4 +1,35 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 异步层（可选）
+//!
+//! 基于 tokio 的异步包装层，将同步内核 API 包装为 async 方法。
+//!
+//! ## 核心组件
+//!
+//! - [`AsyncKernel`] — 使用 `tokio::sync::Mutex` 包装 [`Kernel`]，提供异步 boot/shutdown/read/write
+//! - [`AsyncEventStream`] — 将内核的同步 [`EventBus`] 事件转为 tokio 异步流
+//!
+//! ## 使用示例
+//!
+//! ```rust,no_run
+//! use industrial_protocols_async_layer::*;
+//! use industrial_protocols_kernel::*;
+//!
+//! let kernel = Kernel::builder()
+//!     .with_protocol(Box::new(my_protocol))
+//!     .build();
+//!
+//! let ak = AsyncKernel::new(kernel);
+//! ak.boot().await?;
+//!
+//! // 异步事件流
+//! let mut stream = AsyncEventStream::subscribe(
+//!     ak.kernel().blocking_lock(),
+//!     EventTopic::Connection,
+//! );
+//! while let Some(event) = stream.recv().await {
+//!     println!("{:?}", event);
+//! }
+//! ```
 
 use industrial_protocols_kernel::connection::Connection;
 use industrial_protocols_kernel::error::Result;

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # ETHERCAT — EtherCAT 协议。BRD/APRD 数据报、EtherType 0x88A4、需 SOEM/TwinCAT。
 
 //! EtherCAT (Ethernet for Control Automation Technology) protocol.
 //! Uses standard Ethernet frames with EtherType 0x88A4.

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # SAEJ1850 — SAE J1850 OBD-II 协议。VPW/PWM 两种变体、CRC-8 校验、Mode 01/03/09。
 
 //! SAE J1850 OBD-II protocol (VPW 10.4kbps / PWM 41.6kbps).
 use industrial_protocols_kernel::connection::Connection;

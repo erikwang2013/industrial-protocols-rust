@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # ISA100 — ISA100.11a 无线协议。2.4 GHz Mesh、IPv6 架构、需 YFGW410/Honeywell 网关。
 
 //! ISA100.11a wireless industrial protocol.
 //! 2.4 GHz DSSS, IPv6-based mesh. Yokogawa YFGW410 / Honeywell OneWireless gateway.

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # LIGHTBUS — Beckhoff Lightbus 协议。2.5 Mbps 光纤环网、寄存器读写。
 
 //! Beckhoff Lightbus fiber optic protocol.
 //! 2.5 Mbps over fiber, ring topology. Requires Beckhoff Lightbus interface.

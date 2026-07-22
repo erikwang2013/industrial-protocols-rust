@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # HART — HART 协议。4-20mA FSK 调制解调、通用命令 0/1/3、XOR 校验。
 
 //! HART protocol - FSK modulated over 4-20mA.
 use industrial_protocols_kernel::connection::Connection;

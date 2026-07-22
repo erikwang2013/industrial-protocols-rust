@@ -1,4 +1,20 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 网关引擎
+//!
+//! 规则驱动的协议间数据转发引擎。通过后台线程周期性轮询，
+//! 将源设备的数据经变换后转发到目标设备。
+//!
+//! ## 转发规则
+//!
+//! 每条规则定义：
+//! - **source** — 源设备 + 地址（从哪读数据）
+//! - **target** — 目标设备 + 地址（写到哪去）
+//! - **transform** — 数据变换（透传 / 缩放 / 偏移 / 缩放+偏移）
+//!
+//! ## 适配器
+//!
+//! 协议通过实现 [`GatewayAdapter`] trait 来支持网关转发。
+//! 引擎负责调度和错误计数，适配器负责协议特定的读写逻辑。
 
 use crate::error::Result;
 use std::sync::atomic::{AtomicBool, Ordering};

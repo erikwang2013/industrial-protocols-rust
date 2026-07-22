@@ -1,4 +1,9 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 串口传输
+//!
+//! 通过 `serialport` crate 实现真实串口通信。
+//! 启用 `serial` feature 后可用（需要系统安装 libudev）。
+//! 未启用时使用存根实现，返回明确的错误提示。
 
 use industrial_protocols_kernel::bridge::Transport;
 use std::io;

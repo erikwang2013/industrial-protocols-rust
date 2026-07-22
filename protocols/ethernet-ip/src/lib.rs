@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # ETHERNET-IP — EtherNet/IP 协议。ENIP 会话管理、CIP Read Tag 服务、RegisterSession。
 
 //! EtherNet/IP protocol implementation.
 //!

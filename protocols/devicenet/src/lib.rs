@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # DEVICENET — DeviceNet 协议。CIP over CAN、Explicit 显式消息 + Poll 轮询、Group 3 CAN ID。
 
 //! DeviceNet protocol via Anybus DeviceNet Scanner gateway.
 //! DeviceNet uses CAN at 125/250/500 kbps with CIP application layer.

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # PROFINET — Profinet NRT 协议。DCP 设备发现与识别、Record Data 读写。
 
 //! Profinet NRT protocol implementation.
 //!

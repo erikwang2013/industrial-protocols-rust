@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # PROFIBUS — PROFIBUS DP/PA/FMS 协议。SD2 帧格式、FCS 累加和校验、需 CP 5611 网关。
 
 //! PROFIBUS DP/PA/FMS via Siemens CP 5611 / Anybus gateway.
 //! Typically accessed through a TCP gateway that converts to PROFIBUS frames.

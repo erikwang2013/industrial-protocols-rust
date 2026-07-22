@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # CANOPEN — CANopen CiA 301 协议。NMT 网络管理、SDO 服务数据对象、11-bit COB-ID。
 
 //! CANopen protocol over CAN bus (CiA 301).
 use industrial_protocols_kernel::connection::Connection;

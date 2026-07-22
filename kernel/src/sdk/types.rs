@@ -1,4 +1,10 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # SDK 类型定义
+//!
+//! 定义协议 SDK 中使用的公共类型：
+//! - 标记 trait（[`AddressLike`]、[`ValueLike`]）
+//! - 枚举类型（[`ProtocolCategory`]、[`HealthState`]）
+//! - 数据结构（[`HealthStatus`]、[`DiagnosticsReport`]、[`DiscoveredDevice`]）
 
 use std::fmt::Debug;
 

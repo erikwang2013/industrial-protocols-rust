@@ -1,4 +1,27 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 重试配置
+//!
+//! 支持四种重试策略：
+//!
+//! - **Fixed** — 固定延迟（如每次重试间隔 100ms）
+//! - **Exponential** — 指数退避（每次延迟翻倍，有上限）
+//! - **Linear** — 线性增长（每次延迟增加固定步长）
+//! - **None** — 不重试
+//!
+//! ## 使用示例
+//!
+//! ```rust,no_run
+//! use industrial_protocols_kernel::retry::*;
+//!
+//! let config = RetryConfig {
+//!     max_attempts: 3,
+//!     strategy: RetryStrategy::Exponential { base_ms: 100, max_ms: 5000 },
+//! };
+//! let result = config.run(|| {
+//!     // 尝试操作，返回 Result
+//!     Ok::<i32, &str>(42)
+//! });
+//! ```
 
 use std::time::Duration;
 

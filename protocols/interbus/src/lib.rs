@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # INTERBUS — INTERBUS 协议。Phoenix IBS 环网拓扑、移位寄存器方式读写。
 
 //! INTERBUS protocol via Phoenix Contact IBS controller.
 //! Ring topology, 500 kbps/2 Mbps, master-slave with shift register.

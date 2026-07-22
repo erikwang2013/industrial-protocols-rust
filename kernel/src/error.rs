@@ -1,4 +1,16 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # 错误类型
+//!
+//! 使用 [`thiserror`] 定义结构化错误枚举 [`ProtocolError`]，
+//! 支持通过 [`context`](ProtocolError::context) 方法构建错误上下文链。
+//!
+//! ## 错误链示例
+//!
+//! ```text
+//! 读取 PLC-001 的保持寄存器 40001 失败
+//!   → 超时: device=plc-001, timeout=3000ms
+//!     → 连接失败: 192.168.1.10:502: Connection refused
+//! ```
 
 use std::time::Duration;
 

@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # MODBUS — Modbus 协议（TCP/RTU/ASCII）。支持 FC 01/02/03/04/05/06/10/15 功能码，CRC-16 校验。
 
 pub mod frame;
 

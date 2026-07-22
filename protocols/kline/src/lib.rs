@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # KLINE — K-Line OBD-II 协议。ISO 9141/14230、5-baud 快速初始化、KWP2000 DTC 读取。
 
 //! K-Line OBD-II protocol (ISO 9141/14230).
 use industrial_protocols_kernel::connection::Connection;

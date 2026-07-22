@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # MOST — MOST 光纤多媒体协议。25/50/150 Mbps、控制消息+NetBlock 读取。
 
 //! MOST (Media Oriented Systems Transport) fiber optic protocol.
 //! 25/50/150 Mbps over POF. Requires MOST network interface controller.

@@ -1,4 +1,8 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # TCP/UDP Socket 传输
+//!
+//! 提供 [`TcpTransport`] 和 [`UdpTransport`] 两种网络传输实现，
+//! 实现 [`Transport`] trait。支持连接超时和读写超时配置。
 
 use industrial_protocols_kernel::bridge::Transport;
 use std::io::{self, Read, Write};

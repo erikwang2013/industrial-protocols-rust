@@ -1,4 +1,5 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+//! # WIRELESSHART — WirelessHART 协议。IEC 62591、2.4 GHz Mesh、需 Emerson 1420 网关。
 
 //! WirelessHART (IEC 62591) wireless industrial protocol.
 //! 2.4 GHz DSSS mesh. Emerson 1410/1420 Smart Wireless Gateway.
