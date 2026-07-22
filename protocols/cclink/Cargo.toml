@@ -1,0 +1,9 @@
+[package]
+name = "industrial-protocols-cclink"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+industrial-protocols-kernel = { path = "../../kernel" }
+

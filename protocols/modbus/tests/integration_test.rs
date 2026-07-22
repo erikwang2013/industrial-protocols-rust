@@ -1,0 +1,10 @@
+use industrial_protocols_modbus::ModbusProtocol;
+use industrial_protocols_kernel::Kernel;
+
+#[test]
+fn test_kernel() {
+    let kernel = Kernel::builder()
+        .with_protocol(Box::new(ModbusProtocol::tcp()))
+        .build();
+    assert!(kernel.protocol_registry().get("modbus").is_some());
+}

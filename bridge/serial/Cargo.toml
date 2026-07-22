@@ -1,0 +1,13 @@
+[package]
+name = "industrial-protocols-bridge-serial"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+default = []
+serial = ["dep:serialport"]
+
+[dependencies]
+industrial-protocols-kernel = { path = "../../kernel" }
+serialport = { workspace = true, optional = true }

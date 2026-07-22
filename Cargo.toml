@@ -1,0 +1,62 @@
+[workspace]
+resolver = "2"
+members = [
+    "kernel",
+    "bridge/socket",
+    "bridge/serial",
+    "bridge/can",
+    "bridge/ffi",
+    "bridge/vendor",
+    "protocols/modbus",
+    "protocols/opcua",
+    "protocols/bacnet",
+    "protocols/ethernet-ip",
+    "protocols/profinet",
+    "protocols/mqtt",
+    "protocols/dnp3",
+    "protocols/hart",
+    "protocols/cclink",
+    "protocols/iec61850",
+    "protocols/canopen",
+    "protocols/cclinkie",
+    "protocols/hartip",
+    "protocols/lin",
+    "protocols/kline",
+    "protocols/dali",
+    "protocols/saej1850",
+    "protocols/ethercat",
+    "protocols/powerlink",
+    "protocols/sercos",
+    "protocols/profibus",
+    "protocols/devicenet",
+    "protocols/foundationfieldbus",
+    "protocols/asinterface",
+    "protocols/iolink",
+    "protocols/flexray",
+    "protocols/most",
+    "protocols/lonworks",
+    "protocols/controlnet",
+    "protocols/interbus",
+    "protocols/worldfip",
+    "protocols/lightbus",
+    "protocols/modbusplus",
+    "protocols/isa100",
+    "protocols/wirelesshart",
+    "protocols/pci",
+    "protocols/vme",
+    "protocols/cpci",
+    "async-layer",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/erikwang2013/industrial-protocols-rust"
+
+[workspace.dependencies]
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+log = "0.4"
+serialport = "4"

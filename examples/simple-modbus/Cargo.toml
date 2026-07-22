@@ -1,0 +1,8 @@
+[package]
+name = "simple-modbus-example"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+industrial-protocols-kernel = { path = "../../kernel" }
+industrial-protocols-modbus = { path = "../../protocols/modbus" }

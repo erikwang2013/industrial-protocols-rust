@@ -1,0 +1,10 @@
+use industrial_protocols_profibus::ProfibusProtocol;
+use industrial_protocols_kernel::Kernel;
+
+#[test]
+fn test_kernel() {
+    let kernel = Kernel::builder()
+        .with_protocol(Box::new(ProfibusProtocol::new()))
+        .build();
+    assert!(kernel.protocol_registry().get("profibus").is_some());
+}

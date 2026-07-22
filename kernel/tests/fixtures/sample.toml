@@ -1,0 +1,26 @@
+[devices.plc-001]
+protocol = "modbus"
+variant = "tcp"
+host = "192.168.1.10"
+port = 502
+unit_id = 1
+timeout_ms = 3000
+retry = { max = 3, strategy = "exponential", base_ms = 100, max_ms = 5000 }
+connection_strategy = "persistent"
+health_check = true
+
+[devices.chiller-002]
+protocol = "bacnet"
+variant = "ip"
+host = "192.168.1.20"
+port = 47808
+device_instance = 1001
+timeout_ms = 5000
+
+[defaults]
+timeout_ms = 5000
+retry_max = 3
+retry_strategy = "exponential"
+health_check_interval_s = 30
+circuit_breaker_threshold = 5
+circuit_breaker_cooldown_s = 30
