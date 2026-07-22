@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! PROFIBUS DP/PA/FMS via Siemens CP 5611 / Anybus gateway.
 //! Typically accessed through a TCP gateway that converts to PROFIBUS frames.
 use industrial_protocols_kernel::connection::Connection;

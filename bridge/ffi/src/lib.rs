@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! FFI bridge — safe wrapper for vendor C SDK dynamic loading.
 //!
 //! Uses `libloading` to dynamically load vendor-provided shared libraries

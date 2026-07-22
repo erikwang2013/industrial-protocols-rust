@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! AS-Interface (Actuator Sensor Interface) via Bihl+Wiedemann gateway.
 //! Master-slave polling at 167 kbps, up to 62 slaves.
 use industrial_protocols_kernel::connection::Connection;

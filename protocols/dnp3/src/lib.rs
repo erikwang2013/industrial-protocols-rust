@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! DNP3 (Distributed Network Protocol) implementation.
 //!
 //! DNP3 is widely used in electric power and water utilities for SCADA.

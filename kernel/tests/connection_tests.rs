@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use industrial_protocols_kernel::connection::*;
 use std::io;
 use std::sync::{Arc, Mutex};

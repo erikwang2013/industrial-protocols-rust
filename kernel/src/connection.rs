@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use std::collections::HashMap;
 use std::io;
 use std::sync::Mutex;

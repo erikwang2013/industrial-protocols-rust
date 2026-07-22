@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use std::fmt::Debug;
 
 pub trait AddressLike: Clone + Debug + Send + Sync {}

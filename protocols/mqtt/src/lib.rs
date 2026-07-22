@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! MQTT 3.1.1 protocol implementation.
 //!
 //! Implements MQTT client with CONNECT, PUBLISH, SUBSCRIBE, PINGREQ.

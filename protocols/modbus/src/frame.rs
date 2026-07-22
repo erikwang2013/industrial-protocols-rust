@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! Modbus frame building and parsing for TCP, RTU, and ASCII variants.
 
 // TCP frame format: [TID 2B] [PID 2B] [Len 2B] [UID 1B] [FC 1B] [Data nB]

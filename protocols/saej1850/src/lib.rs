@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! SAE J1850 OBD-II protocol (VPW 10.4kbps / PWM 41.6kbps).
 use industrial_protocols_kernel::connection::Connection;
 use industrial_protocols_kernel::error::{ProtocolError, Result};

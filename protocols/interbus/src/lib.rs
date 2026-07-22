@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! INTERBUS protocol via Phoenix Contact IBS controller.
 //! Ring topology, 500 kbps/2 Mbps, master-slave with shift register.
 use industrial_protocols_kernel::connection::Connection;

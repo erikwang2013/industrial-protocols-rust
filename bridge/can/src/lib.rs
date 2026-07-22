@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! CAN bus transport via Linux SocketCAN.
 //!
 //! Uses raw CAN_RAW sockets to send/receive CAN frames.

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! SERCOS III real-time Ethernet protocol.
 use industrial_protocols_kernel::connection::Connection;
 use industrial_protocols_kernel::error::{ProtocolError, Result};

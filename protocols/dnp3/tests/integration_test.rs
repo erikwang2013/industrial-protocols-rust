@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use industrial_protocols_dnp3::Dnp3Protocol;
 use industrial_protocols_kernel::Kernel;
 

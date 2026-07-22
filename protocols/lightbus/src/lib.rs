@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! Beckhoff Lightbus fiber optic protocol.
 //! 2.5 Mbps over fiber, ring topology. Requires Beckhoff Lightbus interface.
 use industrial_protocols_kernel::connection::Connection;

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 pub mod frame;
 
 use industrial_protocols_kernel::connection::Connection;

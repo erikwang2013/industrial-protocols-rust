@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! OPC UA Binary protocol implementation.
 //!
 //! Implements OPC UA Binary protocol stack with Hello/Acknowledge,

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use std::time::Duration;
 
 pub type Result<T> = std::result::Result<T, ProtocolError>;

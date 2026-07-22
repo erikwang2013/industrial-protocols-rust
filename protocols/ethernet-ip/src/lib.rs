@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! EtherNet/IP protocol implementation.
 //!
 //! Implements ENIP (EtherNet/IP) session management and

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! ISA100.11a wireless industrial protocol.
 //! 2.4 GHz DSSS, IPv6-based mesh. Yokogawa YFGW410 / Honeywell OneWireless gateway.
 use industrial_protocols_kernel::connection::Connection;

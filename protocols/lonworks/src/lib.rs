@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! LonWorks building automation protocol via Neuron chip / interface card.
 //! Uses ISO/IEC 14908 (LonTalk) protocol stack.
 use industrial_protocols_kernel::connection::Connection;

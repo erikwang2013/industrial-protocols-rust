@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! IO-Link protocol via ifm/Balluff IO-Link Master gateway.
 //! Point-to-point serial communication at 4.8/38.4/230.4 kbps.
 use industrial_protocols_kernel::connection::Connection;

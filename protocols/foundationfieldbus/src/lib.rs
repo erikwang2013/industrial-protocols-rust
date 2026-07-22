@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! Foundation Fieldbus H1/HSE via NI USB-8486 gateway.
 //! H1: 31.25 kbps over twisted pair. HSE: 100 Mbps Ethernet.
 use industrial_protocols_kernel::connection::Connection;

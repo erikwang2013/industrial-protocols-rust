@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! MOST (Media Oriented Systems Transport) fiber optic protocol.
 //! 25/50/150 Mbps over POF. Requires MOST network interface controller.
 use industrial_protocols_kernel::connection::Connection;

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 [package]
 name = "simple-modbus-example"
 version = "0.1.0"

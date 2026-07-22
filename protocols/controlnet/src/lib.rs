@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! ControlNet protocol via Allen-Bradley 1784-PCIC/S card.
 //! 5 Mbps, scheduled token-passing for real-time I/O.
 use industrial_protocols_kernel::connection::Connection;

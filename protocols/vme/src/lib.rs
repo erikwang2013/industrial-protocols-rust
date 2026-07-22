@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! VME/VPX industrial backplane bus protocol.
 //! VME64 32/64-bit, 3U/6U form factor. Requires VME bridge module.
 use industrial_protocols_kernel::connection::Connection;

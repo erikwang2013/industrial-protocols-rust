@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! CANopen protocol over CAN bus (CiA 301).
 use industrial_protocols_kernel::connection::Connection;
 use industrial_protocols_kernel::error::{ProtocolError, Result};

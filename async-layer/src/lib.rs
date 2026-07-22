@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use industrial_protocols_kernel::connection::Connection;
 use industrial_protocols_kernel::error::Result;
 use industrial_protocols_kernel::sdk::{ProtocolRead, ProtocolWrite};

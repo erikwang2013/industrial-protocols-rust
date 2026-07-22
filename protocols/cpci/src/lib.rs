@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! CompactPCI rack-mount PCI protocol.
 //! 3U/6U Eurocard, PCI bus over backplane. Requires CompactPCI interface.
 use industrial_protocols_kernel::connection::Connection;

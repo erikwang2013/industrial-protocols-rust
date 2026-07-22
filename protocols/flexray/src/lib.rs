@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! FlexRay automotive high-speed bus protocol.
 //! 10 Mbps dual-channel, time-triggered. Requires FlexRay controller.
 use industrial_protocols_kernel::connection::Connection;

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use crate::error::{ProtocolError, Result};
 use std::collections::HashMap;
 use std::sync::Mutex;

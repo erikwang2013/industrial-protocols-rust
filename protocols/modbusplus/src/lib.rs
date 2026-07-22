@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! Modbus Plus (MB+) via Schneider SA85/BM85 adapter.
 //! Token-passing peer-to-peer at 1 Mbps over RS-485.
 use industrial_protocols_kernel::connection::Connection;

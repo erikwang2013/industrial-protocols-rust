@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! DeviceNet protocol via Anybus DeviceNet Scanner gateway.
 //! DeviceNet uses CAN at 125/250/500 kbps with CIP application layer.
 use industrial_protocols_kernel::connection::Connection;

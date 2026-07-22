@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! EtherCAT (Ethernet for Control Automation Technology) protocol.
 //! Uses standard Ethernet frames with EtherType 0x88A4.
 

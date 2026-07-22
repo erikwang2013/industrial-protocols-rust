@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! Profinet NRT protocol implementation.
 //!
 //! Implements DCP (Discovery and Configuration Protocol) for device discovery,

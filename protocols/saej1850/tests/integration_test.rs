@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use industrial_protocols_saej1850::SaeJ1850Protocol;
 use industrial_protocols_saej1850::J1850Variant;
 use industrial_protocols_kernel::Kernel;

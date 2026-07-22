@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! HART-IP protocol - HART over TCP/UDP port 5094.
 use industrial_protocols_kernel::connection::Connection;
 use industrial_protocols_kernel::error::{ProtocolError, Result};

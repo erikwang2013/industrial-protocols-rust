@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use crate::sdk::{Protocol, ProtocolCategory};
 use std::collections::HashMap;
 

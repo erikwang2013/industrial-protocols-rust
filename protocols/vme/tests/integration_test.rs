@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 use industrial_protocols_vme::VmeProtocol;
 use industrial_protocols_vme::VmeSpace;
 use industrial_protocols_kernel::Kernel;

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! WirelessHART (IEC 62591) wireless industrial protocol.
 //! 2.4 GHz DSSS mesh. Emerson 1410/1420 Smart Wireless Gateway.
 use industrial_protocols_kernel::connection::Connection;

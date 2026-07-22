@@ -1,3 +1,5 @@
+// Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
+
 //! WorldFIP/Fipio fieldbus protocol.
 //! 31.25 kbps / 1 Mbps / 2.5 Mbps over twisted pair or fiber.
 use industrial_protocols_kernel::connection::Connection;
