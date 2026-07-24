@@ -1,0 +1,1109 @@
+=== Starting publish of 37 crates at 2026年 07月 23日 星期四 12:37:34 CST ===
+[2026年 07月 23日 星期四 12:37:34 CST] [1/37] Publishing industrial-protocols-opcua ...
+    Updating crates.io index
+   Packaging industrial-protocols-opcua v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/opcua)
+    Updating crates.io index
+    Packaged 7 files, 15.1KiB (5.3KiB compressed)
+   Verifying industrial-protocols-opcua v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/opcua)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-opcua v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-opcua-1.1.0)
+warning: constant `MSG_TYPE_OPEN` is never used
+  --> src/lib.rs:41:7
+   |
+41 | const MSG_TYPE_OPEN: [u8; 3] = [b'O', b'P', b'N'];
+   |       ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: constant `MSG_TYPE_CLOSE` is never used
+  --> src/lib.rs:43:7
+   |
+43 | const MSG_TYPE_CLOSE: [u8; 3] = [b'C', b'L', b'O'];
+   |       ^^^^^^^^^^^^^^
+
+warning: `industrial-protocols-opcua` (lib) generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.94s
+   Uploading industrial-protocols-opcua v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/opcua)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 04:46:12 GMT and see https://crates.io/docs/rate-limits for more details.
+=== Starting publish of 37 crates at 2026年 07月 23日 星期四 14:30:11 CST ===
+[2026年 07月 23日 星期四 14:30:11 CST] [1/37] industrial-protocols-opcua ...
+[2026年 07月 23日 星期四 14:30:30 CST] [1/37] OK: industrial-protocols-opcua
+[2026年 07月 23日 星期四 14:30:30 CST] [2/37] industrial-protocols-bacnet ...
+[2026年 07月 23日 星期四 14:30:48 CST] [2/37] OK: industrial-protocols-bacnet
+[2026年 07月 23日 星期四 14:30:48 CST] [3/37] industrial-protocols-ethernet-ip ...
+[2026年 07月 23日 星期四 14:31:05 CST] [3/37] OK: industrial-protocols-ethernet-ip
+[2026年 07月 23日 星期四 14:31:05 CST] [4/37] industrial-protocols-profinet ...
+[2026年 07月 23日 星期四 14:31:22 CST] [4/37] OK: industrial-protocols-profinet
+[2026年 07月 23日 星期四 14:31:22 CST] [5/37] industrial-protocols-mqtt ...
+[2026年 07月 23日 星期四 14:31:39 CST] [5/37] OK: industrial-protocols-mqtt
+[2026年 07月 23日 星期四 14:31:39 CST] [6/37] industrial-protocols-dnp3 ...
+[2026年 07月 23日 星期四 14:31:55 CST] [6/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-dnp3
+    Updating crates.io index
+   Packaging industrial-protocols-dnp3 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/dnp3)
+    Updating crates.io index
+    Packaged 7 files, 15.4KiB (5.5KiB compressed)
+   Verifying industrial-protocols-dnp3 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/dnp3)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-dnp3 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-dnp3-1.1.0)
+warning: unused variable: `chunk`
+  --> src/lib.rs:86:9
+   |
+86 |     for chunk in body.chunks(16) {
+   |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_chunk`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: function `append_crc` is never used
+  --> src/lib.rs:46:4
+   |
+46 | fn append_crc(data: &mut Vec<u8>) {
+   |    ^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: function `crc_for` is never used
+  --> src/lib.rs:51:4
+   |
+51 | fn crc_for(data: &[u8]) -> u16 {
+   |    ^^^^^^^
+
+warning: `industrial-protocols-dnp3` (lib) generated 3 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.32s
+   Uploading industrial-protocols-dnp3 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/dnp3)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 06:36:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 14:42:55 CST] [6/37] industrial-protocols-dnp3 ...
+[2026年 07月 23日 星期四 14:43:15 CST] [6/37] OK: industrial-protocols-dnp3
+[2026年 07月 23日 星期四 14:43:15 CST] [7/37] industrial-protocols-hart ...
+[2026年 07月 23日 星期四 14:43:29 CST] [7/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-hart
+    Updating crates.io index
+   Packaging industrial-protocols-hart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/hart)
+    Updating crates.io index
+    Packaged 7 files, 10.7KiB (4.0KiB compressed)
+   Verifying industrial-protocols-hart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/hart)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-hart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-hart-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.60s
+   Uploading industrial-protocols-hart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/hart)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 06:46:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 14:54:29 CST] [7/37] industrial-protocols-hart ...
+[2026年 07月 23日 星期四 14:54:46 CST] [7/37] OK: industrial-protocols-hart
+[2026年 07月 23日 星期四 14:54:46 CST] [8/37] industrial-protocols-cclink ...
+[2026年 07月 23日 星期四 14:55:03 CST] [8/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-cclink
+    Updating crates.io index
+   Packaging industrial-protocols-cclink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cclink)
+    Updating crates.io index
+    Packaged 7 files, 10.6KiB (4.0KiB compressed)
+   Verifying industrial-protocols-cclink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cclink)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-cclink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-cclink-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.89s
+   Uploading industrial-protocols-cclink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cclink)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 06:56:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 15:06:03 CST] [8/37] industrial-protocols-cclink ...
+[2026年 07月 23日 星期四 15:06:19 CST] [8/37] OK: industrial-protocols-cclink
+[2026年 07月 23日 星期四 15:06:19 CST] [9/37] industrial-protocols-iec61850 ...
+[2026年 07月 23日 星期四 15:06:34 CST] [9/37] OK: industrial-protocols-iec61850
+[2026年 07月 23日 星期四 15:06:34 CST] [10/37] industrial-protocols-canopen ...
+[2026年 07月 23日 星期四 15:06:49 CST] [10/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-canopen
+    Updating crates.io index
+   Packaging industrial-protocols-canopen v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/canopen)
+    Updating crates.io index
+    Packaged 7 files, 11.0KiB (4.2KiB compressed)
+   Verifying industrial-protocols-canopen v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/canopen)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-canopen v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-canopen-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.99s
+   Uploading industrial-protocols-canopen v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/canopen)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 07:16:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 15:17:49 CST] [10/37] industrial-protocols-canopen ...
+[2026年 07月 23日 星期四 15:18:06 CST] [10/37] OK: industrial-protocols-canopen
+[2026年 07月 23日 星期四 15:18:06 CST] [11/37] industrial-protocols-cclinkie ...
+[2026年 07月 23日 星期四 15:18:23 CST] [11/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-cclinkie
+    Updating crates.io index
+   Packaging industrial-protocols-cclinkie v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cclinkie)
+    Updating crates.io index
+    Packaged 7 files, 10.2KiB (3.8KiB compressed)
+   Verifying industrial-protocols-cclinkie v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cclinkie)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-cclinkie v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-cclinkie-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 16.45s
+   Uploading industrial-protocols-cclinkie v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cclinkie)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 07:26:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 15:29:23 CST] [11/37] industrial-protocols-cclinkie ...
+[2026年 07月 23日 星期四 15:29:41 CST] [11/37] OK: industrial-protocols-cclinkie
+[2026年 07月 23日 星期四 15:29:41 CST] [12/37] industrial-protocols-hartip ...
+[2026年 07月 23日 星期四 15:29:55 CST] [12/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-hartip
+    Updating crates.io index
+   Packaging industrial-protocols-hartip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/hartip)
+    Updating crates.io index
+    Packaged 7 files, 10.3KiB (3.9KiB compressed)
+   Verifying industrial-protocols-hartip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/hartip)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-hartip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-hartip-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.59s
+   Uploading industrial-protocols-hartip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/hartip)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 07:36:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 15:40:55 CST] [12/37] industrial-protocols-hartip ...
+[2026年 07月 23日 星期四 15:41:10 CST] [12/37] OK: industrial-protocols-hartip
+[2026年 07月 23日 星期四 15:41:10 CST] [13/37] industrial-protocols-lin ...
+[2026年 07月 23日 星期四 15:41:23 CST] [13/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-lin
+    Updating crates.io index
+   Packaging industrial-protocols-lin v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/lin)
+    Updating crates.io index
+    Packaged 7 files, 10.7KiB (4.1KiB compressed)
+   Verifying industrial-protocols-lin v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/lin)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-lin v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-lin-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.75s
+   Uploading industrial-protocols-lin v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/lin)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 07:46:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 15:52:23 CST] [13/37] industrial-protocols-lin ...
+[2026年 07月 23日 星期四 15:52:40 CST] [13/37] OK: industrial-protocols-lin
+[2026年 07月 23日 星期四 15:52:40 CST] [14/37] industrial-protocols-kline ...
+[2026年 07月 23日 星期四 15:52:53 CST] [14/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-kline
+    Updating crates.io index
+   Packaging industrial-protocols-kline v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/kline)
+    Updating crates.io index
+    Packaged 7 files, 10.6KiB (4.0KiB compressed)
+   Verifying industrial-protocols-kline v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/kline)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-kline v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-kline-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.61s
+   Uploading industrial-protocols-kline v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/kline)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 07:56:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 16:03:53 CST] [14/37] industrial-protocols-kline ...
+[2026年 07月 23日 星期四 16:04:08 CST] [14/37] OK: industrial-protocols-kline
+[2026年 07月 23日 星期四 16:04:08 CST] [15/37] industrial-protocols-dali ...
+[2026年 07月 23日 星期四 16:04:22 CST] [15/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-dali
+    Updating crates.io index
+   Packaging industrial-protocols-dali v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/dali)
+    Updating crates.io index
+    Packaged 7 files, 11.0KiB (4.0KiB compressed)
+   Verifying industrial-protocols-dali v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/dali)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-dali v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-dali-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.75s
+   Uploading industrial-protocols-dali v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/dali)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 08:06:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 16:15:22 CST] [15/37] industrial-protocols-dali ...
+[2026年 07月 23日 星期四 16:15:37 CST] [15/37] OK: industrial-protocols-dali
+[2026年 07月 23日 星期四 16:15:37 CST] [16/37] industrial-protocols-saej1850 ...
+[2026年 07月 23日 星期四 16:15:51 CST] [16/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-saej1850
+    Updating crates.io index
+   Packaging industrial-protocols-saej1850 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/saej1850)
+    Updating crates.io index
+    Packaged 7 files, 10.7KiB (4.1KiB compressed)
+   Verifying industrial-protocols-saej1850 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/saej1850)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-saej1850 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-saej1850-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.02s
+   Uploading industrial-protocols-saej1850 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/saej1850)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 08:16:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 16:26:51 CST] [16/37] industrial-protocols-saej1850 ...
+[2026年 07月 23日 星期四 16:27:07 CST] [16/37] OK: industrial-protocols-saej1850
+[2026年 07月 23日 星期四 16:27:07 CST] [17/37] industrial-protocols-ethercat ...
+[2026年 07月 23日 星期四 16:27:23 CST] [17/37] OK: industrial-protocols-ethercat
+[2026年 07月 23日 星期四 16:27:23 CST] [18/37] industrial-protocols-powerlink ...
+[2026年 07月 23日 星期四 16:27:39 CST] [18/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-powerlink
+    Updating crates.io index
+   Packaging industrial-protocols-powerlink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/powerlink)
+    Updating crates.io index
+    Packaged 7 files, 10.3KiB (3.8KiB compressed)
+   Verifying industrial-protocols-powerlink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/powerlink)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-powerlink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-powerlink-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.76s
+   Uploading industrial-protocols-powerlink v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/powerlink)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 08:36:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 16:38:39 CST] [18/37] industrial-protocols-powerlink ...
+[2026年 07月 23日 星期四 16:38:54 CST] [18/37] OK: industrial-protocols-powerlink
+[2026年 07月 23日 星期四 16:38:54 CST] [19/37] industrial-protocols-sercos ...
+[2026年 07月 23日 星期四 16:39:09 CST] [19/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-sercos
+    Updating crates.io index
+   Packaging industrial-protocols-sercos v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/sercos)
+    Updating crates.io index
+    Packaged 7 files, 10.4KiB (3.9KiB compressed)
+   Verifying industrial-protocols-sercos v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/sercos)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-sercos v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-sercos-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.15s
+   Uploading industrial-protocols-sercos v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/sercos)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 08:46:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 16:50:09 CST] [19/37] industrial-protocols-sercos ...
+[2026年 07月 23日 星期四 16:50:27 CST] [19/37] OK: industrial-protocols-sercos
+[2026年 07月 23日 星期四 16:50:27 CST] [20/37] industrial-protocols-profibus ...
+[2026年 07月 23日 星期四 16:50:41 CST] [20/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-profibus
+    Updating crates.io index
+   Packaging industrial-protocols-profibus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/profibus)
+    Updating crates.io index
+    Packaged 7 files, 11.8KiB (4.4KiB compressed)
+   Verifying industrial-protocols-profibus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/profibus)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-profibus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-profibus-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.82s
+   Uploading industrial-protocols-profibus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/profibus)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 08:56:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 17:01:41 CST] [20/37] industrial-protocols-profibus ...
+[2026年 07月 23日 星期四 17:01:57 CST] [20/37] OK: industrial-protocols-profibus
+[2026年 07月 23日 星期四 17:01:57 CST] [21/37] industrial-protocols-devicenet ...
+[2026年 07月 23日 星期四 17:02:10 CST] [21/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-devicenet
+    Updating crates.io index
+   Packaging industrial-protocols-devicenet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/devicenet)
+    Updating crates.io index
+    Packaged 7 files, 10.9KiB (4.1KiB compressed)
+   Verifying industrial-protocols-devicenet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/devicenet)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-devicenet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-devicenet-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.59s
+   Uploading industrial-protocols-devicenet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/devicenet)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 09:06:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 17:13:11 CST] [21/37] industrial-protocols-devicenet ...
+[2026年 07月 23日 星期四 17:13:26 CST] [21/37] OK: industrial-protocols-devicenet
+[2026年 07月 23日 星期四 17:13:26 CST] [22/37] industrial-protocols-foundationfieldbus ...
+[2026年 07月 23日 星期四 17:13:40 CST] [22/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-foundationfieldbus
+    Updating crates.io index
+   Packaging industrial-protocols-foundationfieldbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/foundationfieldbus)
+    Updating crates.io index
+    Packaged 7 files, 10.9KiB (4.1KiB compressed)
+   Verifying industrial-protocols-foundationfieldbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/foundationfieldbus)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-foundationfieldbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-foundationfieldbus-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.06s
+   Uploading industrial-protocols-foundationfieldbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/foundationfieldbus)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 09:16:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 17:24:40 CST] [22/37] industrial-protocols-foundationfieldbus ...
+[2026年 07月 23日 星期四 17:24:57 CST] [22/37] OK: industrial-protocols-foundationfieldbus
+[2026年 07月 23日 星期四 17:24:57 CST] [23/37] industrial-protocols-asinterface ...
+[2026年 07月 23日 星期四 17:25:15 CST] [23/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-asinterface
+    Updating crates.io index
+   Packaging industrial-protocols-asinterface v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/asinterface)
+    Updating crates.io index
+    Packaged 7 files, 10.9KiB (4.1KiB compressed)
+   Verifying industrial-protocols-asinterface v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/asinterface)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-asinterface v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-asinterface-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 16.59s
+   Uploading industrial-protocols-asinterface v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/asinterface)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 09:26:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 17:36:15 CST] [23/37] industrial-protocols-asinterface ...
+[2026年 07月 23日 星期四 17:36:32 CST] [23/37] OK: industrial-protocols-asinterface
+[2026年 07月 23日 星期四 17:36:32 CST] [24/37] industrial-protocols-iolink ...
+[2026年 07月 23日 星期四 17:37:02 CST] [24/37] OK: industrial-protocols-iolink
+[2026年 07月 23日 星期四 17:37:02 CST] [25/37] industrial-protocols-flexray ...
+[2026年 07月 23日 星期四 17:37:15 CST] [25/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-flexray
+    Updating crates.io index
+   Packaging industrial-protocols-flexray v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/flexray)
+    Updating crates.io index
+    Packaged 7 files, 10.5KiB (4.0KiB compressed)
+   Verifying industrial-protocols-flexray v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/flexray)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-flexray v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-flexray-1.1.0)
+warning: unused variable: `cycle`
+  --> src/lib.rs:17:38
+   |
+17 | pub fn build_static_frame(slot: u16, cycle: u8, payload: &[u8]) -> Vec<u8> {
+   |                                      ^^^^^ help: if this is intentional, prefix it with an underscore: `_cycle`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: `industrial-protocols-flexray` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.56s
+   Uploading industrial-protocols-flexray v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/flexray)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 09:46:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 17:48:15 CST] [25/37] industrial-protocols-flexray ...
+[2026年 07月 23日 星期四 17:48:30 CST] [25/37] OK: industrial-protocols-flexray
+[2026年 07月 23日 星期四 17:48:30 CST] [26/37] industrial-protocols-most ...
+[2026年 07月 23日 星期四 17:48:43 CST] [26/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-most
+    Updating crates.io index
+   Packaging industrial-protocols-most v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/most)
+    Updating crates.io index
+    Packaged 7 files, 10.6KiB (4.0KiB compressed)
+   Verifying industrial-protocols-most v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/most)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-most v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-most-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.48s
+   Uploading industrial-protocols-most v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/most)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 09:56:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 17:59:43 CST] [26/37] industrial-protocols-most ...
+[2026年 07月 23日 星期四 18:00:00 CST] [26/37] OK: industrial-protocols-most
+[2026年 07月 23日 星期四 18:00:00 CST] [27/37] industrial-protocols-lonworks ...
+[2026年 07月 23日 星期四 18:00:14 CST] [27/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-lonworks
+    Updating crates.io index
+   Packaging industrial-protocols-lonworks v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/lonworks)
+    Updating crates.io index
+    Packaged 7 files, 10.6KiB (4.0KiB compressed)
+   Verifying industrial-protocols-lonworks v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/lonworks)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-lonworks v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-lonworks-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.66s
+   Uploading industrial-protocols-lonworks v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/lonworks)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 10:06:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 18:11:14 CST] [27/37] industrial-protocols-lonworks ...
+[2026年 07月 23日 星期四 18:11:33 CST] [27/37] OK: industrial-protocols-lonworks
+[2026年 07月 23日 星期四 18:11:33 CST] [28/37] industrial-protocols-controlnet ...
+[2026年 07月 23日 星期四 18:11:47 CST] [28/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-controlnet
+    Updating crates.io index
+   Packaging industrial-protocols-controlnet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/controlnet)
+    Updating crates.io index
+    Packaged 7 files, 10.7KiB (4.1KiB compressed)
+   Verifying industrial-protocols-controlnet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/controlnet)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-controlnet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-controlnet-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.80s
+   Uploading industrial-protocols-controlnet v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/controlnet)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 10:16:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 18:22:47 CST] [28/37] industrial-protocols-controlnet ...
+[2026年 07月 23日 星期四 18:23:04 CST] [28/37] OK: industrial-protocols-controlnet
+[2026年 07月 23日 星期四 18:23:04 CST] [29/37] industrial-protocols-interbus ...
+[2026年 07月 23日 星期四 18:23:19 CST] [29/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-interbus
+    Updating crates.io index
+   Packaging industrial-protocols-interbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/interbus)
+    Updating crates.io index
+    Packaged 7 files, 10.4KiB (4.0KiB compressed)
+   Verifying industrial-protocols-interbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/interbus)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-interbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-interbus-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.59s
+   Uploading industrial-protocols-interbus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/interbus)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 10:26:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 18:34:19 CST] [29/37] industrial-protocols-interbus ...
+[2026年 07月 23日 星期四 18:34:35 CST] [29/37] OK: industrial-protocols-interbus
+[2026年 07月 23日 星期四 18:34:35 CST] [30/37] industrial-protocols-worldfip ...
+[2026年 07月 23日 星期四 18:34:49 CST] [30/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-worldfip
+    Updating crates.io index
+   Packaging industrial-protocols-worldfip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/worldfip)
+    Updating crates.io index
+    Packaged 7 files, 10.4KiB (3.9KiB compressed)
+   Verifying industrial-protocols-worldfip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/worldfip)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-worldfip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-worldfip-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.83s
+   Uploading industrial-protocols-worldfip v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/worldfip)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 10:36:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 18:45:49 CST] [30/37] industrial-protocols-worldfip ...
+[2026年 07月 23日 星期四 18:46:03 CST] [30/37] OK: industrial-protocols-worldfip
+[2026年 07月 23日 星期四 18:46:03 CST] [31/37] industrial-protocols-lightbus ...
+[2026年 07月 23日 星期四 18:46:19 CST] [31/37] OK: industrial-protocols-lightbus
+[2026年 07月 23日 星期四 18:46:19 CST] [32/37] industrial-protocols-modbusplus ...
+[2026年 07月 23日 星期四 18:46:32 CST] [32/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-modbusplus
+    Updating crates.io index
+   Packaging industrial-protocols-modbusplus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/modbusplus)
+    Updating crates.io index
+    Packaged 7 files, 10.6KiB (4.0KiB compressed)
+   Verifying industrial-protocols-modbusplus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/modbusplus)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-modbusplus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-modbusplus-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.75s
+   Uploading industrial-protocols-modbusplus v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/modbusplus)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 10:56:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 18:57:32 CST] [32/37] industrial-protocols-modbusplus ...
+[2026年 07月 23日 星期四 18:57:51 CST] [32/37] OK: industrial-protocols-modbusplus
+[2026年 07月 23日 星期四 18:57:51 CST] [33/37] industrial-protocols-isa100 ...
+[2026年 07月 23日 星期四 18:58:06 CST] [33/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-isa100
+    Updating crates.io index
+   Packaging industrial-protocols-isa100 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/isa100)
+    Updating crates.io index
+    Packaged 7 files, 10.8KiB (4.1KiB compressed)
+   Verifying industrial-protocols-isa100 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/isa100)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-isa100 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-isa100-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.87s
+   Uploading industrial-protocols-isa100 v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/isa100)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 11:06:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 19:09:06 CST] [33/37] industrial-protocols-isa100 ...
+[2026年 07月 23日 星期四 19:09:22 CST] [33/37] OK: industrial-protocols-isa100
+[2026年 07月 23日 星期四 19:09:22 CST] [34/37] industrial-protocols-wirelesshart ...
+[2026年 07月 23日 星期四 19:09:37 CST] [34/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-wirelesshart
+    Updating crates.io index
+   Packaging industrial-protocols-wirelesshart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/wirelesshart)
+    Updating crates.io index
+    Packaged 7 files, 10.8KiB (4.0KiB compressed)
+   Verifying industrial-protocols-wirelesshart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/wirelesshart)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-wirelesshart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-wirelesshart-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.38s
+   Uploading industrial-protocols-wirelesshart v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/wirelesshart)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 11:16:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 19:20:37 CST] [34/37] industrial-protocols-wirelesshart ...
+[2026年 07月 23日 星期四 19:20:54 CST] [34/37] OK: industrial-protocols-wirelesshart
+[2026年 07月 23日 星期四 19:20:54 CST] [35/37] industrial-protocols-pci ...
+[2026年 07月 23日 星期四 19:21:10 CST] [35/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-pci
+    Updating crates.io index
+   Packaging industrial-protocols-pci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/pci)
+    Updating crates.io index
+    Packaged 7 files, 10.7KiB (4.1KiB compressed)
+   Verifying industrial-protocols-pci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/pci)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling thiserror v2.0.19
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-pci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-pci-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.02s
+   Uploading industrial-protocols-pci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/pci)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 11:26:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 19:32:10 CST] [35/37] industrial-protocols-pci ...
+[2026年 07月 23日 星期四 19:32:27 CST] [35/37] OK: industrial-protocols-pci
+[2026年 07月 23日 星期四 19:32:27 CST] [36/37] industrial-protocols-vme ...
+[2026年 07月 23日 星期四 19:32:43 CST] [36/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-vme
+    Updating crates.io index
+   Packaging industrial-protocols-vme v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/vme)
+    Updating crates.io index
+    Packaged 7 files, 11.2KiB (4.2KiB compressed)
+   Verifying industrial-protocols-vme v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/vme)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-vme v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-vme-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.26s
+   Uploading industrial-protocols-vme v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/vme)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 11:36:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 19:43:43 CST] [36/37] industrial-protocols-vme ...
+[2026年 07月 23日 星期四 19:44:02 CST] [36/37] OK: industrial-protocols-vme
+[2026年 07月 23日 星期四 19:44:02 CST] [37/37] industrial-protocols-cpci ...
+[2026年 07月 23日 星期四 19:44:19 CST] [37/37] RATE LIMITED, waiting 11 min, retrying industrial-protocols-cpci
+    Updating crates.io index
+   Packaging industrial-protocols-cpci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cpci)
+    Updating crates.io index
+    Packaged 7 files, 10.4KiB (4.0KiB compressed)
+   Verifying industrial-protocols-cpci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cpci)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling winnow v0.7.15
+   Compiling toml_write v0.1.2
+   Compiling thiserror v2.0.19
+   Compiling log v0.4.33
+   Compiling indexmap v2.14.0
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.19
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.22.27
+   Compiling toml v0.8.23
+   Compiling industrial-protocols-kernel v1.1.0
+   Compiling industrial-protocols-cpci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/target/package/industrial-protocols-cpci-1.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.44s
+   Uploading industrial-protocols-cpci v1.1.0 (/home/wwwroot/bag/industrial-protocols-rust/protocols/cpci)
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 429 Too Many Requests): You have published too many new crates in a short period of time. Please try again after Thu, 23 Jul 2026 11:46:12 GMT and see https://crates.io/docs/rate-limits for more details.
+[2026年 07月 23日 星期四 19:55:19 CST] [37/37] industrial-protocols-cpci ...
+[2026年 07月 23日 星期四 19:55:37 CST] [37/37] OK: industrial-protocols-cpci
+=== Done at 2026年 07月 23日 星期四 19:55:37 CST ===

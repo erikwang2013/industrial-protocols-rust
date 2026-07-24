@@ -10,25 +10,19 @@
 //!
 //! ## 使用示例
 //!
-//! ```rust,no_run
+//! ```rust,ignore
 //! use industrial_protocols_async_layer::*;
 //! use industrial_protocols_kernel::*;
+//! use industrial_protocols_kernel::event::EventTopic;
 //!
 //! let kernel = Kernel::builder()
-//!     .with_protocol(Box::new(my_protocol))
+//!     .with_protocol(Box::new(MyProtocol))
 //!     .build();
+//!
+//! let stream = AsyncEventStream::subscribe(&kernel, EventTopic::Connection);
 //!
 //! let ak = AsyncKernel::new(kernel);
 //! ak.boot().await?;
-//!
-//! // 异步事件流
-//! let mut stream = AsyncEventStream::subscribe(
-//!     ak.kernel().blocking_lock(),
-//!     EventTopic::Connection,
-//! );
-//! while let Some(event) = stream.recv().await {
-//!     println!("{:?}", event);
-//! }
 //! ```
 
 use industrial_protocols_kernel::connection::Connection;

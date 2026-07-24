@@ -51,10 +51,16 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.0"
+version = "1.1.0"
 edition = "2024"
 license = "MIT"
+authors = ["erik <erik@erik.xyz>"]
+description = "Industrial protocol implementations in Rust"
 repository = "https://github.com/erikwang2013/industrial-protocols-rust"
+homepage = "https://github.com/erikwang2013/industrial-protocols-rust"
+documentation = "https://docs.rs/industrial-protocols-kernel"
+keywords = ["industrial", "protocol", "automation", "embedded", "iiot"]
+categories = ["embedded", "network-programming", "hardware-support"]
 
 [workspace.dependencies]
 thiserror = "2"

@@ -5,6 +5,14 @@ name = "industrial-protocols-bridge-socket"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+authors.workspace = true
+description = "TCP/UDP socket communication bridge for industrial protocols"
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+repository.workspace = true
+documentation = "https://docs.rs/industrial-protocols-bridge-socket"
+readme = "README.md"
 
 [dependencies]
-industrial-protocols-kernel = { path = "../../kernel" }
+industrial-protocols-kernel = { version = "1.1.0", path = "../../kernel" }

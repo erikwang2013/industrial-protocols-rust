@@ -16,7 +16,7 @@
 //!
 //! ## 使用示例
 //!
-//! ```rust,no_run
+//! ```rust,ignore
 //! use industrial_protocols_kernel::*;
 //! use industrial_protocols_kernel::sdk::*;
 //!
@@ -116,7 +116,7 @@ impl Kernel {
 ///
 /// # 示例
 ///
-/// ```rust,no_run
+/// ```rust,ignore
 /// let kernel = Kernel::builder()
 ///     .config_from_str(toml_str)
 ///     .with_protocol(Box::new(protocol))

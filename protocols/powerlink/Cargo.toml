@@ -5,6 +5,14 @@ name = "industrial-protocols-powerlink"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+authors.workspace = true
+description = "Ethernet POWERLINK real-time protocol implementation"
+keywords.workspace = true
+categories.workspace = true
+homepage.workspace = true
+repository.workspace = true
+documentation = "https://docs.rs/industrial-protocols-powerlink"
+readme = "README.md"
 
 [dependencies]
-industrial-protocols-kernel = { path = "../../kernel" }
+industrial-protocols-kernel = { version = "1.1.0", path = "../../kernel" }
