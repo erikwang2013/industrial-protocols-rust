@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct AsiProtocol { pub slave_addr: u8 }
+impl Default for AsiProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AsiProtocol { pub fn new() -> Self { AsiProtocol { slave_addr: 0 } }
     pub fn slave(mut self, addr: u8) -> Self { self.slave_addr = addr; self }
 }

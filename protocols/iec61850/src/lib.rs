@@ -7,11 +7,17 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct Iec61850Protocol;
+impl Default for Iec61850Protocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Iec61850Protocol { pub fn new() -> Self { Iec61850Protocol } }
 
 pub fn build_tpkt(payload: &[u8]) -> Vec<u8> {
     let len = (4 + payload.len()) as u16;
-    vec![0x03, 0x00, (len>>8)as u8, len as u8]
+    [0x03, 0x00, (len>>8)as u8, len as u8]
         .iter().chain(payload.iter()).copied().collect()
 }
 

@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct ProfibusProtocol { pub slave_addr: u8, pub gateway_host: String }
+impl Default for ProfibusProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ProfibusProtocol { pub fn new() -> Self { ProfibusProtocol { slave_addr: 1, gateway_host: "192.168.1.100".into() } }
     pub fn with_slave(mut self, addr: u8) -> Self { self.slave_addr = addr; self }
     pub fn with_gateway(mut self, host: &str) -> Self { self.gateway_host = host.into(); self }
@@ -51,7 +57,7 @@ impl ProtocolRead for ProfibusProtocol {
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
         let slot = (*addr >> 8) as u8; let index = (*addr & 0xFF) as u8;
         let f = build_dp_read(self.slave_addr, slot, index, 4);
-        Ok(conn.send(&f).map_err(ProtocolError::from)?)
+        conn.send(&f).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

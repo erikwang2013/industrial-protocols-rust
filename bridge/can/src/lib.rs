@@ -25,6 +25,7 @@ pub struct CanFrame {
 #[cfg(target_os = "linux")]
 pub struct CanTransport {
     socket: std::os::fd::RawFd,
+    #[allow(dead_code)]
     interface: String,
 }
 
@@ -33,14 +34,14 @@ impl CanTransport {
     /// Open a CAN socket on the given interface.
     /// Requires CAP_NET_RAW or root.
     pub fn open(interface: &str) -> io::Result<Self> {
-        use std::os::unix::io::FromRawFd;
+        
 
         // Create CAN_RAW socket
         let fd = unsafe {
             libc::socket(
                 libc::PF_CAN,
                 libc::SOCK_RAW | libc::SOCK_CLOEXEC,
-                libc::CAN_RAW as i32,
+                libc::CAN_RAW,
             )
         };
         if fd < 0 {
@@ -108,7 +109,7 @@ impl CanTransport {
         let deadline = Instant::now() + Duration::from_millis(timeout_ms);
         loop {
             let remaining = deadline.saturating_duration_since(Instant::now());
-            let mut tv = libc::timeval {
+            let _tv = libc::timeval {
                 tv_sec: remaining.as_secs() as libc::time_t,
                 tv_usec: remaining.subsec_micros() as libc::suseconds_t,
             };

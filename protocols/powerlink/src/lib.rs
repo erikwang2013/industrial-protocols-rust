@@ -30,7 +30,7 @@ impl ProtocolRead for PowerlinkProtocol {
     type Address = u16; type Value = Vec<u8>;
     fn read(&self, conn: &mut dyn Connection, _addr: &Self::Address) -> Result<Self::Value> {
         let f = build_poll_request(self.node_id);
-        Ok(conn.send(&f).map_err(ProtocolError::from)?)
+        conn.send(&f).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

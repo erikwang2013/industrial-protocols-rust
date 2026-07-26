@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct MostProtocol { pub node_addr: u16 }
+impl Default for MostProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MostProtocol { pub fn new() -> Self { MostProtocol { node_addr: 0x0100 } }
     pub fn addr(mut self, a: u16) -> Self { self.node_addr = a; self } }
 
@@ -40,7 +46,7 @@ impl Protocol for MostProtocol {
 impl ProtocolRead for MostProtocol {
     type Address = u32; type Value = Vec<u8>;
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
-        Ok(conn.send(&build_netblock_read(self.node_addr, *addr)).map_err(ProtocolError::from)?)
+        conn.send(&build_netblock_read(self.node_addr, *addr)).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

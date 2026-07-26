@@ -143,7 +143,7 @@ impl KernelBuilder {
 
     /// 从 TOML 字符串加载设备配置。
     pub fn config_from_str(mut self, toml_str: &str) -> Self {
-        self.config = Some(ConfigRepository::from_str(toml_str).expect("invalid TOML config"));
+        self.config = Some(ConfigRepository::parse(toml_str).expect("invalid TOML config"));
         self
     }
 

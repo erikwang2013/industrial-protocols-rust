@@ -36,11 +36,11 @@ impl OpcuaProtocol {
 }
 
 // OPC UA Binary message types
-const MSG_TYPE_HELLO: [u8; 3] = [b'H', b'E', b'L'];
-const MSG_TYPE_ACK: [u8; 3] = [b'A', b'C', b'K'];
-const MSG_TYPE_OPEN: [u8; 3] = [b'O', b'P', b'N'];
-const MSG_TYPE_MSG: [u8; 3] = [b'M', b'S', b'G'];
-const MSG_TYPE_CLOSE: [u8; 3] = [b'C', b'L', b'O'];
+const MSG_TYPE_HELLO: [u8; 3] = *b"HEL";
+const MSG_TYPE_ACK: [u8; 3] = *b"ACK";
+const _MSG_TYPE_OPEN: [u8; 3] = *b"OPN";
+const MSG_TYPE_MSG: [u8; 3] = *b"MSG";
+const _MSG_TYPE_CLOSE: [u8; 3] = *b"CLO";
 
 /// Build OPC UA Hello message.
 pub fn build_hello(endpoint_url: &str) -> Vec<u8> {
@@ -61,7 +61,7 @@ pub fn build_hello(endpoint_url: &str) -> Vec<u8> {
 
 /// Parse OPC UA Acknowledge message.
 pub fn parse_acknowledge(data: &[u8]) -> std::result::Result<u32, String> {
-    if data.len() < 20 || &data[0..3] != MSG_TYPE_ACK {
+    if data.len() < 20 || data[0..3] != MSG_TYPE_ACK {
         return Err("not an ACK message".into());
     }
     let _version = u32::from_le_bytes([data[8], data[9], data[10], data[11]]);

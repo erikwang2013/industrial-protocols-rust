@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct LightbusProtocol { pub slave_id: u16 }
+impl Default for LightbusProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LightbusProtocol { pub fn new() -> Self { LightbusProtocol { slave_id: 1 } }
     pub fn slave(mut self, id: u16) -> Self { self.slave_id = id; self } }
 

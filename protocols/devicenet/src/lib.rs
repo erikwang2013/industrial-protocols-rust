@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct DevicenetProtocol { pub mac_id: u8 }
+impl Default for DevicenetProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl DevicenetProtocol { pub fn new() -> Self { DevicenetProtocol { mac_id: 0 } }
     pub fn with_mac(mut self, id: u8) -> Self { self.mac_id = id; self }
 }

@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct ControlnetProtocol { pub node: u8 }
+impl Default for ControlnetProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ControlnetProtocol { pub fn new() -> Self { ControlnetProtocol { node: 1 } }
     pub fn node(mut self, n: u8) -> Self { self.node = n; self } }
 

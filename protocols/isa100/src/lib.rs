@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct Isa100Protocol { pub device_id: u64, pub gateway_host: String }
+impl Default for Isa100Protocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Isa100Protocol { pub fn new() -> Self { Isa100Protocol { device_id: 0x0102030405060708, gateway_host: "192.168.1.1".into() } }
     pub fn id(mut self, id: u64) -> Self { self.device_id = id; self }
     pub fn gateway(mut self, h: &str) -> Self { self.gateway_host = h.into(); self } }

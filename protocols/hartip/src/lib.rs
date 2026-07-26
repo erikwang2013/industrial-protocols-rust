@@ -7,6 +7,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct HartIpProtocol;
+impl Default for HartIpProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl HartIpProtocol { pub fn new() -> Self { HartIpProtocol } }
 
 // HART-IP header: [Version 1B] [MsgType 1B] [MsgID 2B] [Status 2B] [SeqNo 2B] [Length 2B]

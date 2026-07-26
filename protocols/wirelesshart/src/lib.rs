@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct WirelessHartProtocol { pub device_tag: String }
+impl Default for WirelessHartProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl WirelessHartProtocol { pub fn new() -> Self { WirelessHartProtocol { device_tag: "TT-101".into() } }
     pub fn tag(mut self, t: &str) -> Self { self.device_tag = t.into(); self } }
 

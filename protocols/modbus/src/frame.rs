@@ -368,7 +368,7 @@ pub fn build_write_single_coil_rtu(addr: u8, coil_addr: u16, value: bool) -> Vec
 // ── FC 15: Write Multiple Coils ──
 
 pub fn build_write_multiple_coils_tcp(tid: u16, unit_id: u8, start: u16, values: &[bool]) -> Vec<u8> {
-    let byte_count = ((values.len() + 7) / 8) as u8;
+    let byte_count = values.len().div_ceil(8) as u8;
     let remaining = 5 + byte_count as u16;
     let mut f = Vec::with_capacity(7 + remaining as usize);
     f.extend_from_slice(&tid.to_be_bytes());
@@ -390,7 +390,7 @@ pub fn build_write_multiple_coils_tcp(tid: u16, unit_id: u8, start: u16, values:
 }
 
 pub fn build_write_multiple_coils_rtu(addr: u8, start: u16, values: &[bool]) -> Vec<u8> {
-    let byte_count = ((values.len() + 7) / 8) as u8;
+    let byte_count = values.len().div_ceil(8) as u8;
     let mut f = vec![addr, 0x0F];
     f.extend_from_slice(&start.to_be_bytes());
     f.extend_from_slice(&(values.len() as u16).to_be_bytes());

@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct InterbusProtocol { pub slave_id: u8 }
+impl Default for InterbusProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl InterbusProtocol { pub fn new() -> Self { InterbusProtocol { slave_id: 1 } }
     pub fn slave(mut self, id: u8) -> Self { self.slave_id = id; self } }
 
@@ -33,7 +39,7 @@ impl Protocol for InterbusProtocol {
 impl ProtocolRead for InterbusProtocol {
     type Address = u16; type Value = Vec<u8>;
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
-        Ok(conn.send(&build_read_request(self.slave_id, *addr)).map_err(ProtocolError::from)?)
+        conn.send(&build_read_request(self.slave_id, *addr)).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

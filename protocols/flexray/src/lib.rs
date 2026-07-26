@@ -8,13 +8,19 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct FlexrayProtocol { pub slot: u16, pub cycle: u8 }
+impl Default for FlexrayProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl FlexrayProtocol { pub fn new() -> Self { FlexrayProtocol { slot: 1, cycle: 0 } }
     pub fn slot(mut self, s: u16) -> Self { self.slot = s; self } }
 
 // FlexRay frame: [Header 5B] [Payload 0-254B] [CRC 3B]
 // Header: Status(1B) + FrameID(2B) + Length(1B) + HeaderCRC(1B)
 
-pub fn build_static_frame(slot: u16, cycle: u8, payload: &[u8]) -> Vec<u8> {
+pub fn build_static_frame(slot: u16, _cycle: u8, payload: &[u8]) -> Vec<u8> {
     let mut f = Vec::with_capacity(5 + payload.len());
     f.push(0x00); // status
     f.extend_from_slice(&slot.to_be_bytes()); // frame ID
@@ -35,7 +41,7 @@ impl Protocol for FlexrayProtocol {
 impl ProtocolRead for FlexrayProtocol {
     type Address = u16; type Value = Vec<u8>;
     fn read(&self, conn: &mut dyn Connection, _addr: &Self::Address) -> Result<Self::Value> {
-        Ok(conn.send(&build_static_frame(self.slot, self.cycle, &[])).map_err(ProtocolError::from)?)
+        conn.send(&build_static_frame(self.slot, self.cycle, &[])).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

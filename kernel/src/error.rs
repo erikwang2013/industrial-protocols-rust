@@ -68,12 +68,12 @@ impl From<std::io::Error> for ProtocolError {
 
 impl From<String> for ProtocolError {
     fn from(s: String) -> Self {
-        ProtocolError::ProtocolSpecific(Box::new(std::io::Error::new(std::io::ErrorKind::Other, s)))
+        ProtocolError::ProtocolSpecific(Box::new(std::io::Error::other(s)))
     }
 }
 
 impl From<&str> for ProtocolError {
     fn from(s: &str) -> Self {
-        ProtocolError::ProtocolSpecific(Box::new(std::io::Error::new(std::io::ErrorKind::Other, s.to_string())))
+        ProtocolError::ProtocolSpecific(Box::new(std::io::Error::other(s.to_string())))
     }
 }

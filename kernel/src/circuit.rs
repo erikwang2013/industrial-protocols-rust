@@ -73,10 +73,8 @@ impl CircuitBreaker {
     }
 
     fn transition_if_ready(&self, entry: &mut DeviceCircuit) {
-        if entry.state == CircuitState::Open {
-            if let Some(t) = entry.opened_at {
-                if t.elapsed() >= self.config.cooldown { entry.state = CircuitState::HalfOpen; }
-            }
-        }
+        if entry.state == CircuitState::Open
+            && let Some(t) = entry.opened_at
+                && t.elapsed() >= self.config.cooldown { entry.state = CircuitState::HalfOpen; }
     }
 }

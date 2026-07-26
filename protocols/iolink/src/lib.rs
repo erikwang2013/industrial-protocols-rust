@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct IolinkProtocol { pub port: u8, pub master_host: String }
+impl Default for IolinkProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl IolinkProtocol { pub fn new() -> Self { IolinkProtocol { port: 1, master_host: "192.168.1.1".into() } }
     pub fn port(mut self, p: u8) -> Self { self.port = p; self }
 }
@@ -37,7 +43,7 @@ impl ProtocolRead for IolinkProtocol {
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
         let index = *addr; let subidx = 0u8;
         let f = build_read_param(self.port, index, subidx);
-        Ok(conn.send(&f).map_err(ProtocolError::from)?)
+        conn.send(&f).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

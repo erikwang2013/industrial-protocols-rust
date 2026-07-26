@@ -9,6 +9,12 @@ use industrial_protocols_kernel::sdk::*;
 
 pub struct VmeProtocol { pub slot: u8, pub address_space: VmeSpace }
 #[derive(Debug,Clone,Copy)] pub enum VmeSpace { A16, A24, A32 }
+impl Default for VmeProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl VmeProtocol { pub fn new() -> Self { VmeProtocol { slot: 1, address_space: VmeSpace::A16 } }
     pub fn slot(mut self, s: u8) -> Self { self.slot = s; self } }
 

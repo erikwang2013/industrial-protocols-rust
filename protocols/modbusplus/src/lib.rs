@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct ModbusplusProtocol { pub station: u8 }
+impl Default for ModbusplusProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ModbusplusProtocol { pub fn new() -> Self { ModbusplusProtocol { station: 1 } }
     pub fn station(mut self, s: u8) -> Self { self.station = s; self } }
 

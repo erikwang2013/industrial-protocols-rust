@@ -9,6 +9,12 @@ use industrial_protocols_kernel::sdk::*;
 
 pub struct FfProtocol { pub device_id: u32, pub variant: FfVariant }
 #[derive(Debug,Clone,Copy)] pub enum FfVariant { H1, Hse }
+impl Default for FfProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl FfProtocol { pub fn new() -> Self { FfProtocol { device_id: 0x001234, variant: FfVariant::H1 } }
     pub fn with_id(mut self, id: u32) -> Self { self.device_id = id; self }
 }

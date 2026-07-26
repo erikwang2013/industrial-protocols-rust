@@ -13,12 +13,18 @@ use industrial_protocols_kernel::sdk::*;
 
 pub struct ProfinetProtocol;
 
+impl Default for ProfinetProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ProfinetProtocol {
     pub fn new() -> Self { ProfinetProtocol }
 }
 
 // Ethernet frame type for Profinet: 0x8892
-const PROFINET_ETHERTYPE: u16 = 0x8892;
+const _PROFINET_ETHERTYPE: u16 = 0x8892;
 
 /// Build a DCP Identify Request.
 /// DCP frame: [ServiceID 1B] [ServiceType 1B] [Reserved 2B] [Xid 4B] [ResponseDelay 2B] [Options...]
@@ -109,7 +115,7 @@ impl ProtocolRead for ProfinetProtocol {
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
         // addr format: "api:slot:subslot:index"
         let parts: Vec<&str> = addr.split(':').collect();
-        let api: u32 = parts.get(0).and_then(|s| u32::from_str_radix(s, 16).ok()).unwrap_or(0);
+        let api: u32 = parts.first().and_then(|s| u32::from_str_radix(s, 16).ok()).unwrap_or(0);
         let slot: u16 = parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(0);
         let subslot: u16 = parts.get(2).and_then(|s| s.parse().ok()).unwrap_or(0);
         let index: u16 = parts.get(3).and_then(|s| s.parse().ok()).unwrap_or(0);

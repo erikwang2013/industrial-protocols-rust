@@ -1,2 +1,7 @@
 /target
 Cargo.lock
+.claude
+.claude-flow
+.swarm
+.mcp.json
+ruvector.db

@@ -43,11 +43,13 @@ fn dnp3_crc(data: &[u8]) -> u16 {
 }
 
 /// Compute CRC for a block and append it.
+#[allow(dead_code)]
 fn append_crc(data: &mut Vec<u8>) {
     let crc = dnp3_crc(data);
     data.extend_from_slice(&crc.to_le_bytes());
 }
 
+#[allow(dead_code)]
 fn crc_for(data: &[u8]) -> u16 {
     dnp3_crc(data)
 }
@@ -83,10 +85,7 @@ pub fn build_class0_poll(src: u16, dest: u16) -> Vec<u8> {
     let mut body = Vec::new();
     body.extend(&transport);
     // CRC every 16 bytes
-    for chunk in body.chunks(16) {
-        // CRC already included in the body pattern
-        break; // Simplified
-    }
+    let _ = body.chunks(16).next(); // CRC per-block would go here
 
     link.extend(&body);
     link
@@ -103,7 +102,7 @@ pub fn parse_class0_response(data: &[u8]) -> std::result::Result<Vec<f64>, Strin
     while i + 4 < data.len() {
         if data[i] == 0x81 { // Response
             i += 3; // skip function code + internal indications
-            while i + 4 < data.len() {
+            if i + 4 < data.len() {
                 let group = data[i];
                 let _var = data[i+1];
                 let qual = data[i+2];
@@ -113,7 +112,6 @@ pub fn parse_class0_response(data: &[u8]) -> std::result::Result<Vec<f64>, Strin
                         i += 4;
                         values.push(count as f64);
                     }
-                    break;
                 } else if group == 0x30 { // Analog Input
                     if qual == 0x00 {
                         i += 3;
@@ -124,9 +122,6 @@ pub fn parse_class0_response(data: &[u8]) -> std::result::Result<Vec<f64>, Strin
                             i += 4;
                         }
                     }
-                    break;
-                } else {
-                    break;
                 }
             }
         }

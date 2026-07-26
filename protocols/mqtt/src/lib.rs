@@ -41,12 +41,12 @@ impl MqttProtocol {
 const CONNECT: u8 = 0x10;
 const CONNACK: u8 = 0x20;
 const PUBLISH: u8 = 0x30;
-const PUBACK: u8 = 0x40;
+const _PUBACK: u8 = 0x40;
 const SUBSCRIBE: u8 = 0x82;
-const SUBACK: u8 = 0x90;
+const _SUBACK: u8 = 0x90;
 const PINGREQ: u8 = 0xC0;
 const PINGRESP: u8 = 0xD0;
-const DISCONNECT: u8 = 0xE0;
+const _DISCONNECT: u8 = 0xE0;
 
 fn encode_remaining_length(len: usize) -> Vec<u8> {
     let mut result = Vec::new();

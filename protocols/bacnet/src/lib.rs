@@ -85,8 +85,8 @@ pub fn build_i_am(device_instance: u32) -> Vec<u8> {
 pub fn build_read_property(
     invoke_id: u8,
     device_instance: u32,
-    object_type: u16,
-    object_instance: u32,
+    _object_type: u16,
+    _object_instance: u32,
     property_id: u16,
 ) -> Vec<u8> {
     let apdu = vec![
@@ -152,7 +152,7 @@ impl ProtocolRead for BacnetProtocol {
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
         // Parse address as "object_type:instance:property_id" e.g. "0:0:85" (DEVICE:0:present-value)
         let parts: Vec<&str> = addr.split(':').collect();
-        let obj_type: u16 = parts.get(0).and_then(|s| s.parse().ok()).unwrap_or(0);
+        let obj_type: u16 = parts.first().and_then(|s| s.parse().ok()).unwrap_or(0);
         let obj_inst: u32 = parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(self.device_instance);
         let prop_id: u16 = parts.get(2).and_then(|s| s.parse().ok()).unwrap_or(85); // present-value
 
@@ -189,7 +189,7 @@ impl ProtocolDiscover for BacnetProtocol {
     fn discover(&self, transport: &mut dyn Transport) -> Result<Vec<DiscoveredDevice>> {
         let frame = build_who_is_any();
         match transport.send(&frame) {
-            Ok(resp) => {
+            Ok(_resp) => {
                 let device_id = format!("bacnet:{}", self.device_instance);
                 Ok(vec![DiscoveredDevice {
                     device_id,

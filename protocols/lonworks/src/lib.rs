@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct LonworksProtocol { pub subnet: u8, pub node: u8 }
+impl Default for LonworksProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LonworksProtocol { pub fn new() -> Self { LonworksProtocol { subnet: 1, node: 1 } }
     pub fn subnet(mut self, s: u8) -> Self { self.subnet = s; self } }
 

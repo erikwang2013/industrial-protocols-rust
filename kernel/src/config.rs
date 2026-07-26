@@ -104,7 +104,7 @@ impl ConfigRepository {
         Ok(ConfigRepository { raw, overrides: HashMap::new() })
     }
 
-    pub fn from_str(toml_str: &str) -> std::io::Result<Self> {
+    pub fn parse(toml_str: &str) -> std::io::Result<Self> {
         let raw: ConfigFile = toml::from_str(toml_str).map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))?;
         Ok(ConfigRepository { raw, overrides: HashMap::new() })
     }

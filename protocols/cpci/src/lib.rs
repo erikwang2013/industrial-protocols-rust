@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct CpciProtocol { pub slot: u8, pub bus: u8 }
+impl Default for CpciProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl CpciProtocol { pub fn new() -> Self { CpciProtocol { slot: 1, bus: 0 } }
     pub fn slot(mut self, s: u8) -> Self { self.slot = s; self } }
 

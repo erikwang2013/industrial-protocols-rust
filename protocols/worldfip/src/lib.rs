@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct WorldfipProtocol { pub station: u8 }
+impl Default for WorldfipProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl WorldfipProtocol { pub fn new() -> Self { WorldfipProtocol { station: 1 } }
     pub fn station(mut self, s: u8) -> Self { self.station = s; self } }
 
@@ -36,7 +42,7 @@ impl Protocol for WorldfipProtocol {
 impl ProtocolRead for WorldfipProtocol {
     type Address = u16; type Value = Vec<u8>;
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
-        Ok(conn.send(&build_read_object(self.station, *addr)).map_err(ProtocolError::from)?)
+        conn.send(&build_read_object(self.station, *addr)).map_err(ProtocolError::from)
     }
     fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
     fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}

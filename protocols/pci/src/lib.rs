@@ -8,6 +8,12 @@ use industrial_protocols_kernel::error::{ProtocolError, Result};
 use industrial_protocols_kernel::sdk::*;
 
 pub struct PciProtocol { pub bus: u8, pub device: u8, pub function: u8 }
+impl Default for PciProtocol {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl PciProtocol { pub fn new() -> Self { PciProtocol { bus: 0, device: 0, function: 0 } }
     pub fn bdf(mut self, b: u8, d: u8, f: u8) -> Self { self.bus = b; self.device = d; self.function = f; self } }
 
