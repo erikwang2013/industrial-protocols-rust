@@ -17,10 +17,18 @@ pub struct OpcuaProtocol {
 }
 
 #[derive(Debug, Clone)]
-pub enum SecurityPolicy { None, Basic128Rsa15, Basic256, Basic256Sha256 }
+pub enum SecurityPolicy {
+    None,
+    Basic128Rsa15,
+    Basic256,
+    Basic256Sha256,
+}
 
 #[derive(Debug, Clone)]
-pub enum Authentication { Anonymous, Username { user: String, password: String } }
+pub enum Authentication {
+    Anonymous,
+    Username { user: String, password: String },
+}
 
 impl OpcuaProtocol {
     pub fn new(endpoint: impl Into<String>) -> Self {
@@ -31,8 +39,14 @@ impl OpcuaProtocol {
         }
     }
 
-    pub fn with_security(mut self, policy: SecurityPolicy) -> Self { self.security_policy = policy; self }
-    pub fn with_auth(mut self, auth: Authentication) -> Self { self.auth = auth; self }
+    pub fn with_security(mut self, policy: SecurityPolicy) -> Self {
+        self.security_policy = policy;
+        self
+    }
+    pub fn with_auth(mut self, auth: Authentication) -> Self {
+        self.auth = auth;
+        self
+    }
 }
 
 // OPC UA Binary message types
@@ -94,10 +108,18 @@ pub fn build_read_request(node_ids: &[&str], request_handle: u32) -> Vec<u8> {
 }
 
 impl Protocol for OpcuaProtocol {
-    fn name(&self) -> &'static str { "opcua" }
-    fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::IndustrialEthernet }
-    fn supported_variants(&self) -> &'static [&'static str] { &["binary"] }
+    fn name(&self) -> &'static str {
+        "opcua"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::IndustrialEthernet
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["binary"]
+    }
 }
 
 impl ProtocolRead for OpcuaProtocol {
@@ -108,8 +130,10 @@ impl ProtocolRead for OpcuaProtocol {
         // Send Hello first to establish connection
         let hello = build_hello(&self.endpoint);
         let resp = conn.send(&hello).map_err(ProtocolError::from)?;
-        parse_acknowledge(&resp)
-            .map_err(|e| ProtocolError::Parse { protocol: "opcua".into(), reason: e })?;
+        parse_acknowledge(&resp).map_err(|e| ProtocolError::Parse {
+            protocol: "opcua".into(),
+            reason: e,
+        })?;
 
         // Send Read request
         let req = build_read_request(&[addr], 1);
@@ -119,11 +143,20 @@ impl ProtocolRead for OpcuaProtocol {
         Ok(OPCUAValue::Boolean(true))
     }
 
-    fn read_batch(&self, conn: &mut dyn Connection, addrs: &[Self::Address]) -> Result<Vec<Self::Value>> {
+    fn read_batch(
+        &self,
+        conn: &mut dyn Connection,
+        addrs: &[Self::Address],
+    ) -> Result<Vec<Self::Value>> {
         addrs.iter().map(|a| self.read(conn, a)).collect()
     }
 
-    fn read_range(&self, conn: &mut dyn Connection, start: &Self::Address, count: u16) -> Result<Vec<Self::Value>> {
+    fn read_range(
+        &self,
+        conn: &mut dyn Connection,
+        start: &Self::Address,
+        count: u16,
+    ) -> Result<Vec<Self::Value>> {
         (0..count).map(|_| self.read(conn, start)).collect()
     }
 }
@@ -132,12 +165,26 @@ impl ProtocolWrite for OpcuaProtocol {
     type Address = String;
     type Value = OPCUAValue;
 
-    fn write(&self, _conn: &mut dyn Connection, _addr: &Self::Address, _value: &Self::Value) -> Result<()> {
-        Err(ProtocolError::Unsupported { protocol: "opcua".into(), operation: "write — full binary stack WIP".into() })
+    fn write(
+        &self,
+        _conn: &mut dyn Connection,
+        _addr: &Self::Address,
+        _value: &Self::Value,
+    ) -> Result<()> {
+        Err(ProtocolError::Unsupported {
+            protocol: "opcua".into(),
+            operation: "write — full binary stack WIP".into(),
+        })
     }
 
-    fn write_batch(&self, conn: &mut dyn Connection, items: &[(Self::Address, Self::Value)]) -> Result<()> {
-        for (a, v) in items { self.write(conn, a, v)?; }
+    fn write_batch(
+        &self,
+        conn: &mut dyn Connection,
+        items: &[(Self::Address, Self::Value)],
+    ) -> Result<()> {
+        for (a, v) in items {
+            self.write(conn, a, v)?;
+        }
         Ok(())
     }
 }
@@ -166,7 +213,9 @@ impl ProtocolDiagnostics for OpcuaProtocol {
     fn diagnostics(&self, _conn: &mut dyn Connection) -> Result<DiagnosticsReport> {
         Ok(DiagnosticsReport {
             device_id: self.endpoint.clone(),
-            uptime_secs: None, error_count: 0, last_error: None,
+            uptime_secs: None,
+            error_count: 0,
+            last_error: None,
             custom_fields: std::collections::HashMap::from([
                 ("endpoint".into(), self.endpoint.clone()),
                 ("security".into(), format!("{:?}", self.security_policy)),
@@ -177,8 +226,17 @@ impl ProtocolDiagnostics for OpcuaProtocol {
 
 #[derive(Debug, Clone)]
 pub enum OPCUAValue {
-    Boolean(bool), SByte(i8), Byte(u8), Int16(i16), UInt16(u16),
-    Int32(i32), UInt32(u32), Float(f32), Double(f64), String(String), Null,
+    Boolean(bool),
+    SByte(i8),
+    Byte(u8),
+    Int16(i16),
+    UInt16(u16),
+    Int32(i32),
+    UInt32(u32),
+    Float(f32),
+    Double(f64),
+    String(String),
+    Null,
 }
 
 #[cfg(test)]
@@ -196,7 +254,10 @@ mod tests {
     fn test_opcua_metadata() {
         let p = OpcuaProtocol::new("opc.tcp://localhost:4840")
             .with_security(SecurityPolicy::Basic256)
-            .with_auth(Authentication::Username { user: "admin".into(), password: "pass".into() });
+            .with_auth(Authentication::Username {
+                user: "admin".into(),
+                password: "pass".into(),
+            });
         assert_eq!(p.name(), "opcua");
         assert!(p.endpoint.ends_with("4840"));
     }

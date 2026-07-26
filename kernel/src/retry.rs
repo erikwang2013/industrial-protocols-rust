@@ -41,7 +41,11 @@ pub enum RetryStrategy {
 
 impl RetryConfig {
     pub fn start(&self) -> RetryState {
-        RetryState { config: self.clone(), attempt: 0, current_delay: self.initial_delay() }
+        RetryState {
+            config: self.clone(),
+            attempt: 0,
+            current_delay: self.initial_delay(),
+        }
     }
 
     fn initial_delay(&self) -> Duration {
@@ -54,7 +58,8 @@ impl RetryConfig {
     }
 
     pub fn run<F, T, E>(&self, mut f: F) -> std::result::Result<T, E>
-    where F: FnMut() -> std::result::Result<T, E>
+    where
+        F: FnMut() -> std::result::Result<T, E>,
     {
         let mut state = self.start();
         loop {
@@ -93,9 +98,10 @@ impl RetryState {
                 let next = self.current_delay.as_millis() as u64 * 2;
                 Duration::from_millis(next.min(*max_ms))
             }
-            RetryStrategy::Linear { base_ms: _, step_ms } => {
-                self.current_delay + Duration::from_millis(*step_ms)
-            }
+            RetryStrategy::Linear {
+                base_ms: _,
+                step_ms,
+            } => self.current_delay + Duration::from_millis(*step_ms),
             RetryStrategy::None => Duration::ZERO,
         };
     }
@@ -103,5 +109,7 @@ impl RetryState {
 
 impl Iterator for RetryState {
     type Item = Duration;
-    fn next(&mut self) -> Option<Duration> { self.next_delay() }
+    fn next(&mut self) -> Option<Duration> {
+        self.next_delay()
+    }
 }

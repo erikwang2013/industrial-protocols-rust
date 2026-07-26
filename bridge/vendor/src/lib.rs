@@ -28,7 +28,10 @@ pub fn allen_bradley_compactlogix() -> HashMap<String, toml::Value> {
 
 pub fn schneider_m340() -> HashMap<String, toml::Value> {
     let mut m = HashMap::new();
-    m.insert("vendor".into(), toml::Value::String("Schneider Electric".into()));
+    m.insert(
+        "vendor".into(),
+        toml::Value::String("Schneider Electric".into()),
+    );
     m.insert("model".into(), toml::Value::String("Modicon M340".into()));
     m
 }
@@ -37,7 +40,17 @@ pub fn schneider_m340() -> HashMap<String, toml::Value> {
 mod tests {
     use super::*;
     #[test]
-    fn test_siemens_preset() { assert_eq!(siemens_s7_1200().get("vendor").unwrap().as_str(), Some("Siemens")); }
+    fn test_siemens_preset() {
+        assert_eq!(
+            siemens_s7_1200().get("vendor").unwrap().as_str(),
+            Some("Siemens")
+        );
+    }
     #[test]
-    fn test_ab_preset() { assert_eq!(allen_bradley_compactlogix().get("vendor").unwrap().as_str(), Some("Allen-Bradley")); }
+    fn test_ab_preset() {
+        assert_eq!(
+            allen_bradley_compactlogix().get("vendor").unwrap().as_str(),
+            Some("Allen-Bradley")
+        );
+    }
 }

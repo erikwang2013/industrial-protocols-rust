@@ -68,7 +68,9 @@ pub struct Kernel {
 
 impl Kernel {
     /// 创建内核构建器。
-    pub fn builder() -> KernelBuilder { KernelBuilder::new() }
+    pub fn builder() -> KernelBuilder {
+        KernelBuilder::new()
+    }
 
     /// 启动内核，校验所有配置文件中的设备均有对应协议注册。
     pub fn boot(&mut self) -> io::Result<()> {
@@ -76,8 +78,13 @@ impl Kernel {
             for device_id in config.device_ids() {
                 let dev = config.get_device(&device_id).unwrap();
                 if self.registry.get(&dev.protocol).is_none() {
-                    return Err(io::Error::new(io::ErrorKind::NotFound,
-                        format!("protocol '{}' not registered (needed by device '{device_id}')", dev.protocol)));
+                    return Err(io::Error::new(
+                        io::ErrorKind::NotFound,
+                        format!(
+                            "protocol '{}' not registered (needed by device '{device_id}')",
+                            dev.protocol
+                        ),
+                    ));
                 }
             }
         }
@@ -91,25 +98,37 @@ impl Kernel {
     }
 
     /// 获取协议注册表的只读引用。
-    pub fn protocol_registry(&self) -> &ProtocolRegistry { &self.registry }
+    pub fn protocol_registry(&self) -> &ProtocolRegistry {
+        &self.registry
+    }
 
     /// 获取连接管理器的只读引用。
-    pub fn connection_manager(&self) -> &ConnectionManager { &self.conn_manager }
+    pub fn connection_manager(&self) -> &ConnectionManager {
+        &self.conn_manager
+    }
 
     /// 获取配置仓库的只读引用。
     ///
     /// # Panics
     /// 如果未通过 builder 加载配置（即 `config_from_str` 或 `config_from_file` 未被调用）。
-    pub fn config(&self) -> &ConfigRepository { self.config.as_ref().expect("config not loaded") }
+    pub fn config(&self) -> &ConfigRepository {
+        self.config.as_ref().expect("config not loaded")
+    }
 
     /// 获取事件总线的只读引用。
-    pub fn event_bus(&self) -> &EventBus { &self.events }
+    pub fn event_bus(&self) -> &EventBus {
+        &self.events
+    }
 
     /// 获取网关引擎的只读引用。
-    pub fn gateway(&self) -> &GatewayEngine { &self.gateway }
+    pub fn gateway(&self) -> &GatewayEngine {
+        &self.gateway
+    }
 
     /// 获取网关引擎的可变引用。
-    pub fn gateway_mut(&mut self) -> &mut GatewayEngine { &mut self.gateway }
+    pub fn gateway_mut(&mut self) -> &mut GatewayEngine {
+        &mut self.gateway
+    }
 }
 
 /// 内核构建器，使用 Builder 模式配置内核参数。
@@ -134,7 +153,8 @@ pub struct KernelBuilder {
 impl KernelBuilder {
     fn new() -> Self {
         KernelBuilder {
-            config: None, protocols: Vec::new(),
+            config: None,
+            protocols: Vec::new(),
             connection_strategy: ConnectionStrategy::Persistent,
             event_capacity: 64,
             gateway_interval_ms: 100,
@@ -154,21 +174,35 @@ impl KernelBuilder {
     }
 
     /// 注册一个协议实例。
-    pub fn with_protocol(mut self, protocol: Box<dyn Protocol>) -> Self { self.protocols.push(protocol); self }
+    pub fn with_protocol(mut self, protocol: Box<dyn Protocol>) -> Self {
+        self.protocols.push(protocol);
+        self
+    }
 
     /// 设置设备连接策略。
-    pub fn with_connection_strategy(mut self, strategy: ConnectionStrategy) -> Self { self.connection_strategy = strategy; self }
+    pub fn with_connection_strategy(mut self, strategy: ConnectionStrategy) -> Self {
+        self.connection_strategy = strategy;
+        self
+    }
 
     /// 设置事件总线通道缓冲区大小。
-    pub fn with_event_capacity(mut self, cap: usize) -> Self { self.event_capacity = cap; self }
+    pub fn with_event_capacity(mut self, cap: usize) -> Self {
+        self.event_capacity = cap;
+        self
+    }
 
     /// 设置网关引擎的轮询间隔（毫秒）。
-    pub fn with_gateway_interval(mut self, ms: u64) -> Self { self.gateway_interval_ms = ms; self }
+    pub fn with_gateway_interval(mut self, ms: u64) -> Self {
+        self.gateway_interval_ms = ms;
+        self
+    }
 
     /// 构建内核实例。
     pub fn build(self) -> Kernel {
         let mut registry = ProtocolRegistry::new();
-        for p in self.protocols { registry.register(p); }
+        for p in self.protocols {
+            registry.register(p);
+        }
         Kernel {
             registry,
             conn_manager: ConnectionManager::new(self.connection_strategy),

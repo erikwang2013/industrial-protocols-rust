@@ -5,18 +5,34 @@ use industrial_protocols_kernel::sdk::*;
 
 struct ModbusProtocol;
 impl Protocol for ModbusProtocol {
-    fn name(&self) -> &'static str { "modbus" }
-    fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::IndustrialEthernet }
-    fn supported_variants(&self) -> &'static [&'static str] { &["tcp"] }
+    fn name(&self) -> &'static str {
+        "modbus"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::IndustrialEthernet
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["tcp"]
+    }
 }
 
 struct OpcuaProtocol;
 impl Protocol for OpcuaProtocol {
-    fn name(&self) -> &'static str { "opcua" }
-    fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::IndustrialEthernet }
-    fn supported_variants(&self) -> &'static [&'static str] { &["binary"] }
+    fn name(&self) -> &'static str {
+        "opcua"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::IndustrialEthernet
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["binary"]
+    }
 }
 
 #[test]
@@ -33,7 +49,11 @@ fn test_register_and_get() {
 fn test_list_by_category() {
     let mut reg = ProtocolRegistry::new();
     reg.register(Box::new(ModbusProtocol));
-    assert_eq!(reg.list_by_category(ProtocolCategory::IndustrialEthernet).len(), 1);
+    assert_eq!(
+        reg.list_by_category(ProtocolCategory::IndustrialEthernet)
+            .len(),
+        1
+    );
     assert_eq!(reg.list_by_category(ProtocolCategory::Fieldbus).len(), 0);
 }
 

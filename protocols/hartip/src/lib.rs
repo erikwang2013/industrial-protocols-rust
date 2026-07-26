@@ -13,7 +13,11 @@ impl Default for HartIpProtocol {
     }
 }
 
-impl HartIpProtocol { pub fn new() -> Self { HartIpProtocol } }
+impl HartIpProtocol {
+    pub fn new() -> Self {
+        HartIpProtocol
+    }
+}
 
 // HART-IP header: [Version 1B] [MsgType 1B] [MsgID 2B] [Status 2B] [SeqNo 2B] [Length 2B]
 pub fn build_hartip_init() -> Vec<u8> {
@@ -27,37 +31,88 @@ pub fn build_hartip_read_pv() -> Vec<u8> {
 }
 
 impl Protocol for HartIpProtocol {
-    fn name(&self) -> &'static str { "hartip" } fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::IoTMessaging }
-    fn supported_variants(&self) -> &'static [&'static str] { &["tcp", "udp"] }
+    fn name(&self) -> &'static str {
+        "hartip"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::IoTMessaging
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["tcp", "udp"]
+    }
 }
 
 impl ProtocolRead for HartIpProtocol {
-    type Address = String; type Value = f32;
+    type Address = String;
+    type Value = f32;
     fn read(&self, conn: &mut dyn Connection, _addr: &Self::Address) -> Result<Self::Value> {
         let f = build_hartip_read_pv();
         let resp = conn.send(&f).map_err(ProtocolError::from)?;
-        if resp.len() >= 20 { Ok(f32::from_be_bytes([resp[16],resp[17],resp[18],resp[19]])) } else { Ok(0.0) }
+        if resp.len() >= 20 {
+            Ok(f32::from_be_bytes([resp[16], resp[17], resp[18], resp[19]]))
+        } else {
+            Ok(0.0)
+        }
     }
-    fn read_batch(&self,c:&mut dyn Connection,a:&[Self::Address])->Result<Vec<Self::Value>>{a.iter().map(|x|self.read(c,x)).collect()}
-    fn read_range(&self,c:&mut dyn Connection,s:&Self::Address,n:u16)->Result<Vec<Self::Value>>{(0..n).map(|_|self.read(c,s)).collect()}
+    fn read_batch(&self, c: &mut dyn Connection, a: &[Self::Address]) -> Result<Vec<Self::Value>> {
+        a.iter().map(|x| self.read(c, x)).collect()
+    }
+    fn read_range(
+        &self,
+        c: &mut dyn Connection,
+        s: &Self::Address,
+        n: u16,
+    ) -> Result<Vec<Self::Value>> {
+        (0..n).map(|_| self.read(c, s)).collect()
+    }
 }
 
 impl ProtocolHealth for HartIpProtocol {
     fn health(&self, conn: &mut dyn Connection) -> Result<HealthStatus> {
         let start = std::time::Instant::now();
         match conn.send(&build_hartip_init()) {
-            Ok(_) => Ok(HealthStatus{state:HealthState::Healthy,latency_ms:start.elapsed().as_millis()as u64,last_seen:std::time::Instant::now(),details:"hartip init ok".into()}),
-            Err(e) => Ok(HealthStatus{state:HealthState::Unhealthy,latency_ms:0,last_seen:std::time::Instant::now(),details:format!("{e}")}),
+            Ok(_) => Ok(HealthStatus {
+                state: HealthState::Healthy,
+                latency_ms: start.elapsed().as_millis() as u64,
+                last_seen: std::time::Instant::now(),
+                details: "hartip init ok".into(),
+            }),
+            Err(e) => Ok(HealthStatus {
+                state: HealthState::Unhealthy,
+                latency_ms: 0,
+                last_seen: std::time::Instant::now(),
+                details: format!("{e}"),
+            }),
         }
     }
 }
 
 impl ProtocolDiagnostics for HartIpProtocol {
-    fn diagnostics(&self,_:&mut dyn Connection)->Result<DiagnosticsReport>{Ok(DiagnosticsReport{device_id:"hartip-device".into(),uptime_secs:None,error_count:0,last_error:None,custom_fields:Default::default()})}
+    fn diagnostics(&self, _: &mut dyn Connection) -> Result<DiagnosticsReport> {
+        Ok(DiagnosticsReport {
+            device_id: "hartip-device".into(),
+            uptime_secs: None,
+            error_count: 0,
+            last_error: None,
+            custom_fields: Default::default(),
+        })
+    }
 }
 
-#[cfg(test)] mod tests { use super::*;
-    #[test] fn test_init() { let f = build_hartip_init(); assert_eq!(f.len(),10); assert_eq!(f[0],1); }
-    #[test] fn test_meta() { assert_eq!(HartIpProtocol::new().name(),"hartip"); }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_init() {
+        let f = build_hartip_init();
+        assert_eq!(f.len(), 10);
+        assert_eq!(f[0], 1);
+    }
+    #[test]
+    fn test_meta() {
+        assert_eq!(HartIpProtocol::new().name(), "hartip");
+    }
 }

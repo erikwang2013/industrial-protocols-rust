@@ -162,7 +162,12 @@ mod tests {
     impl TestAdapter {
         fn new() -> (Self, Arc<AtomicU32>) {
             let count = Arc::new(AtomicU32::new(0));
-            (TestAdapter { call_count: count.clone() }, count)
+            (
+                TestAdapter {
+                    call_count: count.clone(),
+                },
+                count,
+            )
         }
     }
 
@@ -170,9 +175,9 @@ mod tests {
         fn forward(
             &self,
             src_dev: &str,
-            src_addr: &str,
+            _src_addr: &str,
             tgt_dev: &str,
-            tgt_addr: &str,
+            _tgt_addr: &str,
             _transform: &Transform,
         ) -> Result<()> {
             // Verify endpoints are passed correctly
@@ -188,8 +193,14 @@ mod tests {
         let mut engine = GatewayEngine::new(1000);
         engine.add_rule(GatewayRule {
             name: "test".into(),
-            source: GatewayEndpoint { device: "plc-001".into(), address: "40001".into() },
-            target: GatewayEndpoint { device: "mqtt".into(), address: "topic/plc".into() },
+            source: GatewayEndpoint {
+                device: "plc-001".into(),
+                address: "40001".into(),
+            },
+            target: GatewayEndpoint {
+                device: "mqtt".into(),
+                address: "topic/plc".into(),
+            },
             transform: Transform::Passthrough,
         });
         assert_eq!(engine.rule_count(), 1);
@@ -200,8 +211,14 @@ mod tests {
         let mut engine = GatewayEngine::new(10);
         engine.add_rule(GatewayRule {
             name: "t".into(),
-            source: GatewayEndpoint { device: "plc-001".into(), address: "40001".into() },
-            target: GatewayEndpoint { device: "mqtt-broker".into(), address: "t".into() },
+            source: GatewayEndpoint {
+                device: "plc-001".into(),
+                address: "40001".into(),
+            },
+            target: GatewayEndpoint {
+                device: "mqtt-broker".into(),
+                address: "t".into(),
+            },
             transform: Transform::Passthrough,
         });
 
@@ -222,8 +239,14 @@ mod tests {
         let mut engine = GatewayEngine::new(100);
         engine.add_rule(GatewayRule {
             name: "t".into(),
-            source: GatewayEndpoint { device: "plc-001".into(), address: "40001".into() },
-            target: GatewayEndpoint { device: "mqtt-broker".into(), address: "t".into() },
+            source: GatewayEndpoint {
+                device: "plc-001".into(),
+                address: "40001".into(),
+            },
+            target: GatewayEndpoint {
+                device: "mqtt-broker".into(),
+                address: "t".into(),
+            },
             transform: Transform::Passthrough,
         });
 
@@ -249,7 +272,16 @@ mod tests {
 
     #[test]
     fn test_scale_and_offset_transform() {
-        let t = Transform::ScaleAndOffset { scale: 1.8, offset: 32.0 };
-        assert!(matches!(t, Transform::ScaleAndOffset { scale: 1.8, offset: 32.0 }));
+        let t = Transform::ScaleAndOffset {
+            scale: 1.8,
+            offset: 32.0,
+        };
+        assert!(matches!(
+            t,
+            Transform::ScaleAndOffset {
+                scale: 1.8,
+                offset: 32.0
+            }
+        ));
     }
 }

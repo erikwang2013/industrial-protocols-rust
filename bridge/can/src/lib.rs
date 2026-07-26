@@ -34,8 +34,6 @@ impl CanTransport {
     /// Open a CAN socket on the given interface.
     /// Requires CAP_NET_RAW or root.
     pub fn open(interface: &str) -> io::Result<Self> {
-        
-
         // Create CAN_RAW socket
         let fd = unsafe {
             libc::socket(
@@ -53,7 +51,10 @@ impl CanTransport {
         let ifindex = unsafe { libc::if_nametoindex(ifname.as_ptr()) };
         if ifindex == 0 {
             unsafe { libc::close(fd) };
-            return Err(io::Error::new(io::ErrorKind::NotFound, format!("interface '{}' not found", interface)));
+            return Err(io::Error::new(
+                io::ErrorKind::NotFound,
+                format!("interface '{}' not found", interface),
+            ));
         }
 
         // Bind to interface
@@ -88,7 +89,11 @@ impl CanTransport {
         }
         frame.can_dlc = data.len().min(8) as u8;
         unsafe {
-            std::ptr::copy_nonoverlapping(data.as_ptr(), frame.data.as_mut_ptr(), frame.can_dlc as usize);
+            std::ptr::copy_nonoverlapping(
+                data.as_ptr(),
+                frame.data.as_mut_ptr(),
+                frame.can_dlc as usize,
+            );
         }
         let ret = unsafe {
             libc::write(
@@ -156,7 +161,10 @@ impl Drop for CanTransport {
 impl Transport for CanTransport {
     fn send(&mut self, data: &[u8]) -> io::Result<Vec<u8>> {
         if data.len() < 4 {
-            return Err(io::Error::new(io::ErrorKind::InvalidInput, "CAN frame too short"));
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "CAN frame too short",
+            ));
         }
         let id = u32::from_le_bytes([data[0], data[1], data[2], data[3]]);
         let payload = &data[4..];
@@ -166,8 +174,12 @@ impl Transport for CanTransport {
             Err(_) => Ok(vec![]),
         }
     }
-    fn is_open(&self) -> bool { true }
-    fn close(&mut self) -> io::Result<()> { Ok(()) }
+    fn is_open(&self) -> bool {
+        true
+    }
+    fn close(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 
 /// Stub for non-Linux platforms.
@@ -177,17 +189,27 @@ pub struct CanTransport;
 #[cfg(not(target_os = "linux"))]
 impl CanTransport {
     pub fn open(_interface: &str) -> io::Result<Self> {
-        Err(io::Error::new(io::ErrorKind::Unsupported, "SocketCAN only available on Linux"))
+        Err(io::Error::new(
+            io::ErrorKind::Unsupported,
+            "SocketCAN only available on Linux",
+        ))
     }
 }
 
 #[cfg(not(target_os = "linux"))]
 impl Transport for CanTransport {
     fn send(&mut self, _data: &[u8]) -> io::Result<Vec<u8>> {
-        Err(io::Error::new(io::ErrorKind::Unsupported, "SocketCAN only available on Linux"))
+        Err(io::Error::new(
+            io::ErrorKind::Unsupported,
+            "SocketCAN only available on Linux",
+        ))
     }
-    fn is_open(&self) -> bool { false }
-    fn close(&mut self) -> io::Result<()> { Ok(()) }
+    fn is_open(&self) -> bool {
+        false
+    }
+    fn close(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -196,7 +218,11 @@ mod tests {
 
     #[test]
     fn test_can_frame_default() {
-        let frame = CanFrame { id: 0x123, extended: false, data: vec![1, 2, 3] };
+        let frame = CanFrame {
+            id: 0x123,
+            extended: false,
+            data: vec![1, 2, 3],
+        };
         assert_eq!(frame.id, 0x123);
         assert_eq!(frame.data.len(), 3);
     }

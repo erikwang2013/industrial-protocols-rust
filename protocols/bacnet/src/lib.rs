@@ -18,10 +18,16 @@ pub struct BacnetProtocol {
 
 impl BacnetProtocol {
     pub fn new(device_instance: u32) -> Self {
-        BacnetProtocol { device_instance, vendor_id: 0 }
+        BacnetProtocol {
+            device_instance,
+            vendor_id: 0,
+        }
     }
 
-    pub fn with_vendor(mut self, vendor_id: u16) -> Self { self.vendor_id = vendor_id; self }
+    pub fn with_vendor(mut self, vendor_id: u16) -> Self {
+        self.vendor_id = vendor_id;
+        self
+    }
 }
 
 // BVLC header: [Type 1B] [Function 1B] [Length 2B] [Data nB]
@@ -48,7 +54,8 @@ pub fn build_who_is(device_instance_low: u32, device_instance_high: u32) -> Vec<
         (device_instance_low >> 16) as u8,
         (device_instance_low >> 8) as u8,
         device_instance_low as u8,
-        0x1C, 0x04,
+        0x1C,
+        0x04,
         (device_instance_high >> 24) as u8,
         (device_instance_high >> 16) as u8,
         (device_instance_high >> 8) as u8,
@@ -66,9 +73,12 @@ pub fn build_i_am(device_instance: u32) -> Vec<u8> {
     let apdu = vec![
         0x10, // Unconfirmed-Request
         0x00, // I-Am service
-        0xC4, 0x02, // tag: application, unsigned
-        0x00, 0x16, // device object type (8)
-        0x22, 0x04, // tag: application, unsigned 32
+        0xC4,
+        0x02, // tag: application, unsigned
+        0x00,
+        0x16, // device object type (8)
+        0x22,
+        0x04, // tag: application, unsigned 32
         (device_instance >> 24) as u8,
         (device_instance >> 16) as u8,
         (device_instance >> 8) as u8,
@@ -90,18 +100,22 @@ pub fn build_read_property(
     property_id: u16,
 ) -> Vec<u8> {
     let apdu = vec![
-        0x00, // Confirmed-Request, no segmentation
-        0x04, // max APDU length accepted (206)
+        0x00,      // Confirmed-Request, no segmentation
+        0x04,      // max APDU length accepted (206)
         invoke_id, // invoke ID
-        0x0C, // ReadProperty service
-        0x0C, // context tag: object specifier
-        0x00, 0x00, 0x16, // object type (DEVICE=8)
-        0x22, 0x04, // app tag, unsigned 32
+        0x0C,      // ReadProperty service
+        0x0C,      // context tag: object specifier
+        0x00,
+        0x00,
+        0x16, // object type (DEVICE=8)
+        0x22,
+        0x04, // app tag, unsigned 32
         (device_instance >> 24) as u8,
         (device_instance >> 16) as u8,
         (device_instance >> 8) as u8,
         device_instance as u8,
-        0x19, (property_id & 0xFF) as u8, // context tag, property ID
+        0x19,
+        (property_id & 0xFF) as u8, // context tag, property ID
     ];
     let npdu = [0x01, 0x04];
     let payload: Vec<u8> = npdu.iter().chain(apdu.iter()).copied().collect();
@@ -114,11 +128,15 @@ pub fn build_read_property(
 pub fn parse_read_property_response(data: &[u8]) -> std::result::Result<f32, String> {
     // Skip BVLC (4) + NPDU (2) + APDU header (4) + service ack (1) + object id (7)
     // Look for opening tag 0x3E (property value), then application tag 0x44 (real)
-    let payload = if data.len() > 6 { &data[6..] } else { return Err("response too short".into()) };
+    let payload = if data.len() > 6 {
+        &data[6..]
+    } else {
+        return Err("response too short".into());
+    };
     if let Some(pos) = payload.windows(2).position(|w| w == [0x44, 0x04]) {
         let start = pos + 2;
         if start + 4 <= payload.len() {
-            let bytes: [u8; 4] = payload[start..start+4].try_into().unwrap();
+            let bytes: [u8; 4] = payload[start..start + 4].try_into().unwrap();
             return Ok(f32::from_be_bytes(bytes));
         }
     }
@@ -126,7 +144,7 @@ pub fn parse_read_property_response(data: &[u8]) -> std::result::Result<f32, Str
     if let Some(pos) = payload.windows(2).position(|w| w == [0x22, 0x04]) {
         let start = pos + 2;
         if start + 4 <= payload.len() {
-            let bytes: [u8; 4] = payload[start..start+4].try_into().unwrap();
+            let bytes: [u8; 4] = payload[start..start + 4].try_into().unwrap();
             return Ok(u32::from_be_bytes(bytes) as f32);
         }
     }
@@ -139,10 +157,18 @@ pub fn build_who_is_any() -> Vec<u8> {
 }
 
 impl Protocol for BacnetProtocol {
-    fn name(&self) -> &'static str { "bacnet" }
-    fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::IndustrialEthernet }
-    fn supported_variants(&self) -> &'static [&'static str] { &["ip", "ethernet"] }
+    fn name(&self) -> &'static str {
+        "bacnet"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::IndustrialEthernet
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["ip", "ethernet"]
+    }
 }
 
 impl ProtocolRead for BacnetProtocol {
@@ -153,20 +179,34 @@ impl ProtocolRead for BacnetProtocol {
         // Parse address as "object_type:instance:property_id" e.g. "0:0:85" (DEVICE:0:present-value)
         let parts: Vec<&str> = addr.split(':').collect();
         let obj_type: u16 = parts.first().and_then(|s| s.parse().ok()).unwrap_or(0);
-        let obj_inst: u32 = parts.get(1).and_then(|s| s.parse().ok()).unwrap_or(self.device_instance);
+        let obj_inst: u32 = parts
+            .get(1)
+            .and_then(|s| s.parse().ok())
+            .unwrap_or(self.device_instance);
         let prop_id: u16 = parts.get(2).and_then(|s| s.parse().ok()).unwrap_or(85); // present-value
 
         let frame = build_read_property(1, obj_inst, obj_type, obj_inst, prop_id);
         let resp = conn.send(&frame).map_err(ProtocolError::from)?;
-        parse_read_property_response(&resp)
-            .map_err(|e| ProtocolError::Parse { protocol: "bacnet".into(), reason: e })
+        parse_read_property_response(&resp).map_err(|e| ProtocolError::Parse {
+            protocol: "bacnet".into(),
+            reason: e,
+        })
     }
 
-    fn read_batch(&self, conn: &mut dyn Connection, addrs: &[Self::Address]) -> Result<Vec<Self::Value>> {
+    fn read_batch(
+        &self,
+        conn: &mut dyn Connection,
+        addrs: &[Self::Address],
+    ) -> Result<Vec<Self::Value>> {
         addrs.iter().map(|a| self.read(conn, a)).collect()
     }
 
-    fn read_range(&self, conn: &mut dyn Connection, start: &Self::Address, count: u16) -> Result<Vec<Self::Value>> {
+    fn read_range(
+        &self,
+        conn: &mut dyn Connection,
+        start: &Self::Address,
+        count: u16,
+    ) -> Result<Vec<Self::Value>> {
         (0..count).map(|_| self.read(conn, start)).collect()
     }
 }
@@ -175,12 +215,26 @@ impl ProtocolWrite for BacnetProtocol {
     type Address = String;
     type Value = f32;
 
-    fn write(&self, _conn: &mut dyn Connection, _addr: &Self::Address, _value: &Self::Value) -> Result<()> {
-        Err(ProtocolError::Unsupported { protocol: "bacnet".into(), operation: "write — use WriteProperty service".into() })
+    fn write(
+        &self,
+        _conn: &mut dyn Connection,
+        _addr: &Self::Address,
+        _value: &Self::Value,
+    ) -> Result<()> {
+        Err(ProtocolError::Unsupported {
+            protocol: "bacnet".into(),
+            operation: "write — use WriteProperty service".into(),
+        })
     }
 
-    fn write_batch(&self, conn: &mut dyn Connection, items: &[(Self::Address, Self::Value)]) -> Result<()> {
-        for (a, v) in items { self.write(conn, a, v)?; }
+    fn write_batch(
+        &self,
+        conn: &mut dyn Connection,
+        items: &[(Self::Address, Self::Value)],
+    ) -> Result<()> {
+        for (a, v) in items {
+            self.write(conn, a, v)?;
+        }
         Ok(())
     }
 }
@@ -195,12 +249,15 @@ impl ProtocolDiscover for BacnetProtocol {
                     device_id,
                     protocol: "bacnet".into(),
                     address: format!("instance={}", self.device_instance),
-                    metadata: std::collections::HashMap::from([
-                        ("vendor_id".into(), self.vendor_id.to_string()),
-                    ]),
+                    metadata: std::collections::HashMap::from([(
+                        "vendor_id".into(),
+                        self.vendor_id.to_string(),
+                    )]),
                 }])
             }
-            Err(e) => Err(ProtocolError::Connection(format!("BACnet discovery failed: {e}"))),
+            Err(e) => Err(ProtocolError::Connection(format!(
+                "BACnet discovery failed: {e}"
+            ))),
         }
     }
 }
@@ -230,7 +287,9 @@ impl ProtocolDiagnostics for BacnetProtocol {
     fn diagnostics(&self, _conn: &mut dyn Connection) -> Result<DiagnosticsReport> {
         Ok(DiagnosticsReport {
             device_id: format!("bacnet:{}", self.device_instance),
-            uptime_secs: None, error_count: 0, last_error: None,
+            uptime_secs: None,
+            error_count: 0,
+            last_error: None,
             custom_fields: std::collections::HashMap::from([
                 ("device_instance".into(), self.device_instance.to_string()),
                 ("vendor_id".into(), self.vendor_id.to_string()),

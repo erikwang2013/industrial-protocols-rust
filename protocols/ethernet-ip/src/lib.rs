@@ -18,7 +18,10 @@ pub struct EthernetIpProtocol {
 
 impl EthernetIpProtocol {
     pub fn new(slot: u8) -> Self {
-        EthernetIpProtocol { slot, session_handle: AtomicU32::new(0) }
+        EthernetIpProtocol {
+            slot,
+            session_handle: AtomicU32::new(0),
+        }
     }
 }
 
@@ -46,9 +49,13 @@ pub fn build_register_session() -> Vec<u8> {
 
 /// Parse Register Session response, returning the session handle.
 pub fn parse_register_session_response(data: &[u8]) -> std::result::Result<u32, String> {
-    if data.len() < 28 { return Err("RegisterSession response too short".into()); }
+    if data.len() < 28 {
+        return Err("RegisterSession response too short".into());
+    }
     let session = u32::from_le_bytes([data[4], data[5], data[6], data[7]]);
-    if session == 0 { return Err("RegisterSession failed: got session 0".into()); }
+    if session == 0 {
+        return Err("RegisterSession failed: got session 0".into());
+    }
     Ok(session)
 }
 
@@ -65,7 +72,9 @@ pub fn build_cip_read_tag(session: u32, tag_name: &str) -> Vec<u8> {
     cip.push(0x91); // symbolic segment type
     cip.push(tag_bytes.len() as u8); // length
     cip.extend_from_slice(tag_bytes);
-    if tag_bytes.len() % 2 == 1 { cip.push(0x00); } // pad to word align
+    if tag_bytes.len() % 2 == 1 {
+        cip.push(0x00);
+    } // pad to word align
     cip.extend_from_slice(&1u16.to_le_bytes()); // number of elements
 
     // ENIP SendRRData command
@@ -82,24 +91,40 @@ pub fn build_cip_read_tag(session: u32, tag_name: &str) -> Vec<u8> {
 /// Parse CIP Read Tag response.
 pub fn parse_cip_read_tag_response(data: &[u8]) -> std::result::Result<Vec<u8>, String> {
     // Skip ENIP header (24) + interface(4) + timeout(2) + item count(2) + type(2) + length(2) = 36
-    if data.len() < 38 { return Err("CIP response too short".into()); }
+    if data.len() < 38 {
+        return Err("CIP response too short".into());
+    }
     let item_len = u16::from_le_bytes([data[34], data[35]]) as usize;
     let cip_start = 36;
     let cip_end = cip_start + item_len;
-    if data.len() < cip_end { return Err("CIP response truncated".into()); }
+    if data.len() < cip_end {
+        return Err("CIP response truncated".into());
+    }
     let cip = &data[cip_start..cip_end];
     // CIP response: [Service 1B] [Status 1B] [Type 1B] [Value...]
-    if cip.len() < 3 { return Err("CIP data too short".into()); }
-    if cip[1] != 0x00 { return Err(format!("CIP error: status 0x{:02X}", cip[1])); }
+    if cip.len() < 3 {
+        return Err("CIP data too short".into());
+    }
+    if cip[1] != 0x00 {
+        return Err(format!("CIP error: status 0x{:02X}", cip[1]));
+    }
     // Return the value bytes (skip service + status + data type)
     Ok(cip[3..].to_vec())
 }
 
 impl Protocol for EthernetIpProtocol {
-    fn name(&self) -> &'static str { "ethernet-ip" }
-    fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::IndustrialEthernet }
-    fn supported_variants(&self) -> &'static [&'static str] { &["tcp"] }
+    fn name(&self) -> &'static str {
+        "ethernet-ip"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::IndustrialEthernet
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["tcp"]
+    }
 }
 
 impl ProtocolRead for EthernetIpProtocol {
@@ -111,16 +136,21 @@ impl ProtocolRead for EthernetIpProtocol {
         if self.session_handle.load(Ordering::SeqCst) == 0 {
             let reg = build_register_session();
             let resp = conn.send(&reg).map_err(ProtocolError::from)?;
-            let session = parse_register_session_response(&resp)
-                .map_err(|e| ProtocolError::Parse { protocol: "ethernet-ip".into(), reason: e })?;
+            let session =
+                parse_register_session_response(&resp).map_err(|e| ProtocolError::Parse {
+                    protocol: "ethernet-ip".into(),
+                    reason: e,
+                })?;
             self.session_handle.store(session, Ordering::SeqCst);
         }
 
         let session = self.session_handle.load(Ordering::SeqCst);
         let frame = build_cip_read_tag(session, addr);
         let resp = conn.send(&frame).map_err(ProtocolError::from)?;
-        let data = parse_cip_read_tag_response(&resp)
-            .map_err(|e| ProtocolError::Parse { protocol: "ethernet-ip".into(), reason: e })?;
+        let data = parse_cip_read_tag_response(&resp).map_err(|e| ProtocolError::Parse {
+            protocol: "ethernet-ip".into(),
+            reason: e,
+        })?;
 
         // Try to parse as INT
         if data.len() >= 2 {
@@ -130,11 +160,20 @@ impl ProtocolRead for EthernetIpProtocol {
         Ok(EthernetIpValue::Bool(false))
     }
 
-    fn read_batch(&self, conn: &mut dyn Connection, addrs: &[Self::Address]) -> Result<Vec<Self::Value>> {
+    fn read_batch(
+        &self,
+        conn: &mut dyn Connection,
+        addrs: &[Self::Address],
+    ) -> Result<Vec<Self::Value>> {
         addrs.iter().map(|a| self.read(conn, a)).collect()
     }
 
-    fn read_range(&self, conn: &mut dyn Connection, start: &Self::Address, count: u16) -> Result<Vec<Self::Value>> {
+    fn read_range(
+        &self,
+        conn: &mut dyn Connection,
+        start: &Self::Address,
+        count: u16,
+    ) -> Result<Vec<Self::Value>> {
         (0..count).map(|_| self.read(conn, start)).collect()
     }
 }
@@ -143,12 +182,26 @@ impl ProtocolWrite for EthernetIpProtocol {
     type Address = String;
     type Value = EthernetIpValue;
 
-    fn write(&self, _conn: &mut dyn Connection, _addr: &Self::Address, _value: &Self::Value) -> Result<()> {
-        Err(ProtocolError::Unsupported { protocol: "ethernet-ip".into(), operation: "write — use CIP Write Tag".into() })
+    fn write(
+        &self,
+        _conn: &mut dyn Connection,
+        _addr: &Self::Address,
+        _value: &Self::Value,
+    ) -> Result<()> {
+        Err(ProtocolError::Unsupported {
+            protocol: "ethernet-ip".into(),
+            operation: "write — use CIP Write Tag".into(),
+        })
     }
 
-    fn write_batch(&self, conn: &mut dyn Connection, items: &[(Self::Address, Self::Value)]) -> Result<()> {
-        for (a, v) in items { self.write(conn, a, v)?; }
+    fn write_batch(
+        &self,
+        conn: &mut dyn Connection,
+        items: &[(Self::Address, Self::Value)],
+    ) -> Result<()> {
+        for (a, v) in items {
+            self.write(conn, a, v)?;
+        }
         Ok(())
     }
 }
@@ -179,17 +232,28 @@ impl ProtocolDiagnostics for EthernetIpProtocol {
     fn diagnostics(&self, _conn: &mut dyn Connection) -> Result<DiagnosticsReport> {
         Ok(DiagnosticsReport {
             device_id: format!("enip:slot{}", self.slot),
-            uptime_secs: None, error_count: 0, last_error: None,
+            uptime_secs: None,
+            error_count: 0,
+            last_error: None,
             custom_fields: std::collections::HashMap::from([
                 ("slot".into(), self.slot.to_string()),
-                ("session".into(), self.session_handle.load(Ordering::SeqCst).to_string()),
+                (
+                    "session".into(),
+                    self.session_handle.load(Ordering::SeqCst).to_string(),
+                ),
             ]),
         })
     }
 }
 
 #[derive(Debug, Clone)]
-pub enum EthernetIpValue { Int(i16), DInt(i32), Real(f32), Bool(bool), String(String) }
+pub enum EthernetIpValue {
+    Int(i16),
+    DInt(i32),
+    Real(f32),
+    Bool(bool),
+    String(String),
+}
 
 #[cfg(test)]
 mod tests {

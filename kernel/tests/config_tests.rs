@@ -12,7 +12,10 @@ fn test_load_and_get_device() {
     assert_eq!(dev.port, Some(502));
     assert_eq!(dev.timeout_ms, 3000);
     assert_eq!(dev.retry.max, 3);
-    assert_eq!(dev.connection_strategy, ConnectionStrategyConfig::Persistent);
+    assert_eq!(
+        dev.connection_strategy,
+        ConnectionStrategyConfig::Persistent
+    );
 }
 
 #[test]

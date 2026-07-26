@@ -25,9 +25,9 @@
 
 pub mod types;
 
-use crate::error::Result;
-use crate::connection::Connection;
 use crate::bridge::Transport;
+use crate::connection::Connection;
+use crate::error::Result;
 pub use types::*;
 
 /// 协议基础 trait，所有协议必须实现。
@@ -55,9 +55,18 @@ pub trait ProtocolRead: Protocol {
     /// 从指定地址读取单个值。
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value>;
     /// 批量读取多个地址的值。
-    fn read_batch(&self, conn: &mut dyn Connection, addrs: &[Self::Address]) -> Result<Vec<Self::Value>>;
+    fn read_batch(
+        &self,
+        conn: &mut dyn Connection,
+        addrs: &[Self::Address],
+    ) -> Result<Vec<Self::Value>>;
     /// 从起始地址连续读取指定数量的值。
-    fn read_range(&self, conn: &mut dyn Connection, start: &Self::Address, count: u16) -> Result<Vec<Self::Value>>;
+    fn read_range(
+        &self,
+        conn: &mut dyn Connection,
+        start: &Self::Address,
+        count: u16,
+    ) -> Result<Vec<Self::Value>>;
 }
 
 /// 写操作 trait。
@@ -65,9 +74,18 @@ pub trait ProtocolWrite: Protocol {
     type Address: AddressLike;
     type Value: ValueLike;
     /// 向指定地址写入单个值。
-    fn write(&self, conn: &mut dyn Connection, addr: &Self::Address, value: &Self::Value) -> Result<()>;
+    fn write(
+        &self,
+        conn: &mut dyn Connection,
+        addr: &Self::Address,
+        value: &Self::Value,
+    ) -> Result<()>;
     /// 批量写入多个地址的值。
-    fn write_batch(&self, conn: &mut dyn Connection, items: &[(Self::Address, Self::Value)]) -> Result<()>;
+    fn write_batch(
+        &self,
+        conn: &mut dyn Connection,
+        items: &[(Self::Address, Self::Value)],
+    ) -> Result<()>;
 }
 
 /// 订阅操作 trait，用于支持数据推送的协议（如 MQTT、OPC UA）。
@@ -76,11 +94,18 @@ pub trait ProtocolSubscribe: Protocol {
     type SubscriptionId: Clone + Send + Sync;
     type Address: AddressLike;
     /// 订阅指定地址的数据变更。
-    fn subscribe(&self, conn: &mut dyn Connection, addrs: &[Self::Address]) -> Result<Self::SubscriptionId>;
+    fn subscribe(
+        &self,
+        conn: &mut dyn Connection,
+        addrs: &[Self::Address],
+    ) -> Result<Self::SubscriptionId>;
     /// 取消订阅。
     fn unsubscribe(&self, conn: &mut dyn Connection, sub_id: &Self::SubscriptionId) -> Result<()>;
     /// 轮询获取订阅更新。
-    fn poll(&self, conn: &mut dyn Connection) -> Result<Vec<SubscriptionUpdate<Self::SubscriptionId>>>;
+    fn poll(
+        &self,
+        conn: &mut dyn Connection,
+    ) -> Result<Vec<SubscriptionUpdate<Self::SubscriptionId>>>;
 }
 
 /// 设备发现 trait，不要求实现 [`Protocol`]（因为发现可能发生在协议实例化之前）。

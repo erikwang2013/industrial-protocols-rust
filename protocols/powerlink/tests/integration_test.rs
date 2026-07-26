@@ -1,7 +1,7 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
 
-use industrial_protocols_powerlink::PowerlinkProtocol;
 use industrial_protocols_kernel::Kernel;
+use industrial_protocols_powerlink::PowerlinkProtocol;
 
 #[test]
 fn test_kernel() {

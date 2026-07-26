@@ -1,7 +1,7 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
 
-use industrial_protocols_sercos::SercosProtocol;
 use industrial_protocols_kernel::Kernel;
+use industrial_protocols_sercos::SercosProtocol;
 
 #[test]
 fn test_kernel() {

@@ -29,7 +29,11 @@ pub enum ProtocolError {
     Parse { protocol: String, reason: String },
 
     #[error("device error: device={device}, code={code:#04X}, message={message}")]
-    DeviceError { device: String, code: u16, message: String },
+    DeviceError {
+        device: String,
+        code: u16,
+        message: String,
+    },
 
     #[error("device not found: {0}")]
     DeviceNotFound(String),
@@ -38,7 +42,10 @@ pub enum ProtocolError {
     Unsupported { protocol: String, operation: String },
 
     #[error("circuit breaker open: device={device}, retry_after={retry_after:?}")]
-    CircuitOpen { device: String, retry_after: Duration },
+    CircuitOpen {
+        device: String,
+        retry_after: Duration,
+    },
 
     #[error("config error: {0}")]
     Config(String),
@@ -56,7 +63,10 @@ pub enum ProtocolError {
 
 impl ProtocolError {
     pub fn context(self, ctx: impl Into<String>) -> Self {
-        ProtocolError::Context { context: ctx.into(), source: Box::new(self) }
+        ProtocolError::Context {
+            context: ctx.into(),
+            source: Box::new(self),
+        }
     }
 }
 

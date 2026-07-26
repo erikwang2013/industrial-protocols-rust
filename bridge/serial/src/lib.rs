@@ -19,7 +19,11 @@ pub struct SerialConfig {
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum Parity { None, Even, Odd }
+pub enum Parity {
+    None,
+    Even,
+    Odd,
+}
 
 /// Returns a list of available serial port names on the system.
 /// Requires the `serial` feature.
@@ -87,32 +91,52 @@ impl Transport for SerialTransport {
         self.port.flush()?;
         let mut buf = vec![0u8; 4096];
         match self.port.read(&mut buf) {
-            Ok(n) => { buf.truncate(n); Ok(buf) }
+            Ok(n) => {
+                buf.truncate(n);
+                Ok(buf)
+            }
             Err(ref e) if e.kind() == io::ErrorKind::TimedOut => Ok(vec![]),
             Err(e) => Err(e),
         }
     }
-    fn is_open(&self) -> bool { true }
-    fn close(&mut self) -> io::Result<()> { Ok(()) }
+    fn is_open(&self) -> bool {
+        true
+    }
+    fn close(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 
 /// Stub transport when `serial` feature is not enabled.
 #[cfg(not(feature = "serial"))]
-pub struct SerialTransport { config: SerialConfig }
+pub struct SerialTransport {
+    config: SerialConfig,
+}
 
 #[cfg(not(feature = "serial"))]
 impl SerialTransport {
-    pub fn open(config: SerialConfig) -> io::Result<Self> { Ok(SerialTransport { config }) }
+    pub fn open(config: SerialConfig) -> io::Result<Self> {
+        Ok(SerialTransport { config })
+    }
 }
 
 #[cfg(not(feature = "serial"))]
 impl Transport for SerialTransport {
     fn send(&mut self, _data: &[u8]) -> io::Result<Vec<u8>> {
-        Err(io::Error::new(io::ErrorKind::Unsupported,
-            format!("Serial transport not available (enable 'serial' feature). Port: {}", self.config.port)))
+        Err(io::Error::new(
+            io::ErrorKind::Unsupported,
+            format!(
+                "Serial transport not available (enable 'serial' feature). Port: {}",
+                self.config.port
+            ),
+        ))
     }
-    fn is_open(&self) -> bool { false }
-    fn close(&mut self) -> io::Result<()> { Ok(()) }
+    fn is_open(&self) -> bool {
+        false
+    }
+    fn close(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -134,8 +158,12 @@ mod tests {
     #[test]
     fn test_config_fields() {
         let config = SerialConfig {
-            port: "/dev/ttyS0".into(), baud_rate: 9600,
-            data_bits: 8, parity: Parity::None, stop_bits: 1, timeout_ms: 500,
+            port: "/dev/ttyS0".into(),
+            baud_rate: 9600,
+            data_bits: 8,
+            parity: Parity::None,
+            stop_bits: 1,
+            timeout_ms: 500,
         };
         assert_eq!(config.baud_rate, 9600);
         assert_eq!(config.data_bits, 8);

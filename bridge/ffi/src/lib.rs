@@ -63,36 +63,49 @@ pub struct SafeVendorTransport {
 impl SafeVendorTransport {
     pub fn load(config: FfiConfig) -> io::Result<Self> {
         unsafe {
-            let lib = libloading::Library::new(&config.library_path)
-                .map_err(|e| io::Error::new(io::ErrorKind::NotFound, format!("failed to load: {e}")))?;
+            let lib = libloading::Library::new(&config.library_path).map_err(|e| {
+                io::Error::new(io::ErrorKind::NotFound, format!("failed to load: {e}"))
+            })?;
 
             // Get init symbol and call it
-            let init_sym: libloading::Symbol<FfiInitFn> = lib.get(config.symbols.init.as_bytes())
-                .map_err(|e| io::Error::new(io::ErrorKind::NotFound, format!("init symbol: {e}")))?;
+            let init_sym: libloading::Symbol<FfiInitFn> =
+                lib.get(config.symbols.init.as_bytes()).map_err(|e| {
+                    io::Error::new(io::ErrorKind::NotFound, format!("init symbol: {e}"))
+                })?;
             let params = std::ffi::CString::new(
-                config.init_params.get("config").cloned().unwrap_or_default()
-            ).unwrap_or_default();
+                config
+                    .init_params
+                    .get("config")
+                    .cloned()
+                    .unwrap_or_default(),
+            )
+            .unwrap_or_default();
             let rc = init_sym(params.as_ptr());
             if rc != 0 {
                 return Err(io::Error::other(format!("vendor init failed: code {rc}")));
             }
 
             // Get function symbols and transmute to raw pointers for storage
-            let read_sym: libloading::Symbol<FfiReadFn> = lib.get(config.symbols.read.as_bytes())
-                .map_err(|e| io::Error::new(io::ErrorKind::NotFound, format!("read: {e}")))?;
+            let read_sym: libloading::Symbol<FfiReadFn> =
+                lib.get(config.symbols.read.as_bytes())
+                    .map_err(|e| io::Error::new(io::ErrorKind::NotFound, format!("read: {e}")))?;
             let read_fn: FfiReadFn = std::mem::transmute_copy(&*read_sym);
 
-            let write_sym: libloading::Symbol<FfiWriteFn> = lib.get(config.symbols.write.as_bytes())
+            let write_sym: libloading::Symbol<FfiWriteFn> = lib
+                .get(config.symbols.write.as_bytes())
                 .map_err(|e| io::Error::new(io::ErrorKind::NotFound, format!("write: {e}")))?;
             let write_fn: FfiWriteFn = std::mem::transmute_copy(&*write_sym);
 
-            let shutdown_sym: libloading::Symbol<FfiShutdownFn> = lib.get(config.symbols.shutdown.as_bytes())
+            let shutdown_sym: libloading::Symbol<FfiShutdownFn> = lib
+                .get(config.symbols.shutdown.as_bytes())
                 .map_err(|e| io::Error::new(io::ErrorKind::NotFound, format!("shutdown: {e}")))?;
             let shutdown_fn: FfiShutdownFn = std::mem::transmute_copy(&*shutdown_sym);
 
             Ok(SafeVendorTransport {
                 library: lib,
-                read_fn, write_fn, shutdown_fn,
+                read_fn,
+                write_fn,
+                shutdown_fn,
                 vendor: config.vendor,
                 open: true,
             })
@@ -120,7 +133,10 @@ impl SafeVendorTransport {
 impl Transport for SafeVendorTransport {
     fn send(&mut self, data: &[u8]) -> io::Result<Vec<u8>> {
         if data.len() < 4 {
-            return Err(io::Error::new(io::ErrorKind::InvalidInput, "FFI frame too short"));
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "FFI frame too short",
+            ));
         }
         let offset = u32::from_le_bytes([data[0], data[1], data[2], data[3]]);
         let payload = &data[4..];
@@ -129,10 +145,14 @@ impl Transport for SafeVendorTransport {
         }
         self.read_raw(offset, 256)
     }
-    fn is_open(&self) -> bool { self.open }
+    fn is_open(&self) -> bool {
+        self.open
+    }
     fn close(&mut self) -> io::Result<()> {
         self.open = false;
-        unsafe { (self.shutdown_fn)(); }
+        unsafe {
+            (self.shutdown_fn)();
+        }
         Ok(())
     }
 }

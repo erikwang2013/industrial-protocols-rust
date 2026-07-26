@@ -1,7 +1,7 @@
 // Copyright (c) 2026 erik <erik@erik.xyz> — https://erik.xyz
 
-use industrial_protocols_mqtt::MqttProtocol;
 use industrial_protocols_kernel::Kernel;
+use industrial_protocols_mqtt::MqttProtocol;
 
 #[test]
 fn test_kernel() {

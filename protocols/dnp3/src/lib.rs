@@ -17,7 +17,10 @@ pub struct Dnp3Protocol {
 
 impl Dnp3Protocol {
     pub fn new(source_addr: u16, dest_addr: u16) -> Self {
-        Dnp3Protocol { source_addr, dest_addr }
+        Dnp3Protocol {
+            source_addr,
+            dest_addr,
+        }
     }
 }
 
@@ -42,14 +45,6 @@ fn dnp3_crc(data: &[u8]) -> u16 {
     !crc
 }
 
-/// Compute CRC for a block and append it.
-#[allow(dead_code)]
-fn append_crc(data: &mut Vec<u8>) {
-    let crc = dnp3_crc(data);
-    data.extend_from_slice(&crc.to_le_bytes());
-}
-
-#[allow(dead_code)]
 fn crc_for(data: &[u8]) -> u16 {
     dnp3_crc(data)
 }
@@ -81,11 +76,15 @@ pub fn build_class0_poll(src: u16, dest: u16) -> Vec<u8> {
     let crc_val = dnp3_crc(link_crc_part);
     link.extend_from_slice(&crc_val.to_le_bytes());
 
-    // Transport + application data with CRCs
+    // Transport + application data with CRCs every 16 bytes
     let mut body = Vec::new();
-    body.extend(&transport);
-    // CRC every 16 bytes
-    let _ = body.chunks(16).next(); // CRC per-block would go here
+    for chunk in transport.chunks(16) {
+        body.extend(chunk);
+        if chunk.len() == 16 || transport.len() > 16 {
+            let crc = crc_for(chunk);
+            body.extend_from_slice(&crc.to_le_bytes());
+        }
+    }
 
     link.extend(&body);
     link
@@ -93,31 +92,39 @@ pub fn build_class0_poll(src: u16, dest: u16) -> Vec<u8> {
 
 /// Parse DNP3 response, extracting data values.
 pub fn parse_class0_response(data: &[u8]) -> std::result::Result<Vec<f64>, String> {
-    if data.len() < 10 { return Err("DNP3 response too short".into()); }
-    if data[0] != 0x05 || data[1] != 0x64 { return Err("invalid DNP3 start bytes".into()); }
+    if data.len() < 10 {
+        return Err("DNP3 response too short".into());
+    }
+    if data[0] != 0x05 || data[1] != 0x64 {
+        return Err("invalid DNP3 start bytes".into());
+    }
 
     // Find function code 0x81 (Response)
     let mut values = Vec::new();
     let mut i = 10;
     while i + 4 < data.len() {
-        if data[i] == 0x81 { // Response
+        if data[i] == 0x81 {
+            // Response
             i += 3; // skip function code + internal indications
             if i + 4 < data.len() {
                 let group = data[i];
-                let _var = data[i+1];
-                let qual = data[i+2];
-                if group == 0x01 { // Binary Input
-                    if qual == 0x00 { // all points
-                        let count = data[i+3] as usize;
+                let _var = data[i + 1];
+                let qual = data[i + 2];
+                if group == 0x01 {
+                    // Binary Input
+                    if qual == 0x00 {
+                        // all points
+                        let count = data[i + 3] as usize;
                         i += 4;
                         values.push(count as f64);
                     }
-                } else if group == 0x30 { // Analog Input
+                } else if group == 0x30 {
+                    // Analog Input
                     if qual == 0x00 {
                         i += 3;
                         // Read 32-bit float values
                         while i + 4 <= data.len() && data[i] != 0x81 {
-                            let b: [u8; 4] = data[i..i+4].try_into().unwrap();
+                            let b: [u8; 4] = data[i..i + 4].try_into().unwrap();
                             values.push(f32::from_le_bytes(b) as f64);
                             i += 4;
                         }
@@ -131,10 +138,18 @@ pub fn parse_class0_response(data: &[u8]) -> std::result::Result<Vec<f64>, Strin
 }
 
 impl Protocol for Dnp3Protocol {
-    fn name(&self) -> &'static str { "dnp3" }
-    fn version(&self) -> &'static str { "1.0.0" }
-    fn category(&self) -> ProtocolCategory { ProtocolCategory::Fieldbus }
-    fn supported_variants(&self) -> &'static [&'static str] { &["tcp"] }
+    fn name(&self) -> &'static str {
+        "dnp3"
+    }
+    fn version(&self) -> &'static str {
+        "1.0.0"
+    }
+    fn category(&self) -> ProtocolCategory {
+        ProtocolCategory::Fieldbus
+    }
+    fn supported_variants(&self) -> &'static [&'static str] {
+        &["tcp"]
+    }
 }
 
 impl ProtocolRead for Dnp3Protocol {
@@ -144,17 +159,33 @@ impl ProtocolRead for Dnp3Protocol {
     fn read(&self, conn: &mut dyn Connection, _addr: &Self::Address) -> Result<Self::Value> {
         let frame = build_class0_poll(self.source_addr, self.dest_addr);
         let resp = conn.send(&frame).map_err(ProtocolError::from)?;
-        let values = parse_class0_response(&resp)
-            .map_err(|e| ProtocolError::Parse { protocol: "dnp3".into(), reason: e })?;
-        values.into_iter().next()
-            .ok_or_else(|| ProtocolError::Parse { protocol: "dnp3".into(), reason: "empty response".into() })
+        let values = parse_class0_response(&resp).map_err(|e| ProtocolError::Parse {
+            protocol: "dnp3".into(),
+            reason: e,
+        })?;
+        values
+            .into_iter()
+            .next()
+            .ok_or_else(|| ProtocolError::Parse {
+                protocol: "dnp3".into(),
+                reason: "empty response".into(),
+            })
     }
 
-    fn read_batch(&self, conn: &mut dyn Connection, addrs: &[Self::Address]) -> Result<Vec<Self::Value>> {
+    fn read_batch(
+        &self,
+        conn: &mut dyn Connection,
+        addrs: &[Self::Address],
+    ) -> Result<Vec<Self::Value>> {
         addrs.iter().map(|a| self.read(conn, a)).collect()
     }
 
-    fn read_range(&self, conn: &mut dyn Connection, start: &Self::Address, count: u16) -> Result<Vec<Self::Value>> {
+    fn read_range(
+        &self,
+        conn: &mut dyn Connection,
+        start: &Self::Address,
+        count: u16,
+    ) -> Result<Vec<Self::Value>> {
         (0..count).map(|_| self.read(conn, start)).collect()
     }
 }
@@ -162,11 +193,25 @@ impl ProtocolRead for Dnp3Protocol {
 impl ProtocolWrite for Dnp3Protocol {
     type Address = u16;
     type Value = f64;
-    fn write(&self, _conn: &mut dyn Connection, _addr: &Self::Address, _value: &Self::Value) -> Result<()> {
-        Err(ProtocolError::Unsupported { protocol: "dnp3".into(), operation: "write — use Select/Operate".into() })
+    fn write(
+        &self,
+        _conn: &mut dyn Connection,
+        _addr: &Self::Address,
+        _value: &Self::Value,
+    ) -> Result<()> {
+        Err(ProtocolError::Unsupported {
+            protocol: "dnp3".into(),
+            operation: "write — use Select/Operate".into(),
+        })
     }
-    fn write_batch(&self, conn: &mut dyn Connection, items: &[(Self::Address, Self::Value)]) -> Result<()> {
-        for (a, v) in items { self.write(conn, a, v)?; }
+    fn write_batch(
+        &self,
+        conn: &mut dyn Connection,
+        items: &[(Self::Address, Self::Value)],
+    ) -> Result<()> {
+        for (a, v) in items {
+            self.write(conn, a, v)?;
+        }
         Ok(())
     }
 }
@@ -195,7 +240,9 @@ impl ProtocolDiagnostics for Dnp3Protocol {
     fn diagnostics(&self, _conn: &mut dyn Connection) -> Result<DiagnosticsReport> {
         Ok(DiagnosticsReport {
             device_id: format!("dnp3:src{}", self.source_addr),
-            uptime_secs: None, error_count: 0, last_error: None,
+            uptime_secs: None,
+            error_count: 0,
+            last_error: None,
             custom_fields: std::collections::HashMap::from([
                 ("source_addr".into(), self.source_addr.to_string()),
                 ("dest_addr".into(), self.dest_addr.to_string()),
