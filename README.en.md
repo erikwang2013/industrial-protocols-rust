@@ -5,7 +5,23 @@ Industrial communication protocol suite for Rust — micro-kernel + protocol SDK
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.75%2B-orange.svg)](https://www.rust-lang.org)
 
-[中文文档](README.md)
+## Languages / 多语言
+
+| Language | Document |
+|----------|----------|
+| 简体中文 | [README.md](README.md) |
+| English | [docs/i18n/en/README.md](docs/i18n/en/README.md) |
+| 한국어 | [docs/i18n/ko/README.md](docs/i18n/ko/README.md) |
+| Русский | [docs/i18n/ru/README.md](docs/i18n/ru/README.md) |
+| Deutsch | [docs/i18n/de/README.md](docs/i18n/de/README.md) |
+| Français | [docs/i18n/fr/README.md](docs/i18n/fr/README.md) |
+| Español | [docs/i18n/es/README.md](docs/i18n/es/README.md) |
+| Português | [docs/i18n/pt/README.md](docs/i18n/pt/README.md) |
+| हिन्दी | [docs/i18n/hi/README.md](docs/i18n/hi/README.md) |
+| العربية | [docs/i18n/ar/README.md](docs/i18n/ar/README.md) |
+| বাংলা | [docs/i18n/bn/README.md](docs/i18n/bn/README.md) |
+| Bahasa Indonesia | [docs/i18n/id/README.md](docs/i18n/id/README.md) |
+| 日本語 | [docs/i18n/ja/README.md](docs/i18n/ja/README.md) |
 
 Port of the PHP [industrial-protocols](https://github.com/erikwang2013/industrial-protocols) library, redesigned with Rust idioms. All 42 PHP protocols covered.
 
@@ -161,120 +177,9 @@ fn main() {
 | VME/VPX | `industrial-protocols-vme` | A16/A24/A32, AM Codes |
 | CompactPCI | `industrial-protocols-cpci` | Geographic addressing, 3U/6U |
 
-## Core Concepts
+## Core Concepts / API Reference
 
-### 1. Protocol SDK — 6 Traits
-
-Every protocol plugs into the kernel by implementing these traits:
-
-```rust
-pub trait Protocol: Send + Sync {
-    fn name(&self) -> &'static str;
-    fn version(&self) -> &'static str;
-    fn category(&self) -> ProtocolCategory;
-    fn supported_variants(&self) -> &'static [&'static str];
-}
-
-pub trait ProtocolRead: Protocol {
-    type Address: AddressLike;   // protocol-specific address type
-    type Value: ValueLike;       // protocol-specific value type
-    fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value>;
-    fn read_batch(&self, ...) -> Result<Vec<Self::Value>>;
-    fn read_range(&self, ...) -> Result<Vec<Self::Value>>;
-}
-
-pub trait ProtocolWrite: Protocol { ... }
-pub trait ProtocolSubscribe: Protocol { ... }
-pub trait ProtocolDiscover { ... }
-pub trait ProtocolHealth: Protocol { ... }
-pub trait ProtocolDiagnostics: Protocol { ... }
-```
-
-**Associated types** make address and value types type-safe: Modbus uses `u16`, OPC UA uses `String`, BACnet uses `f32`. **Trait separation** means a read-only sensor doesn't need `ProtocolWrite`.
-
-### 2. Kernel — Shared Infrastructure
-
-The kernel provides no protocol logic — only shared plumbing:
-
-| Component | Purpose | Key API |
-|-----------|---------|---------|
-| `ProtocolRegistry` | Register, find, list protocols | `register()`, `get()`, `list_by_category()` |
-| `ConnectionManager` | Device connection lifecycle | `connect()`, `health()`, `shutdown()` |
-| `ConfigRepository` | TOML config + runtime overrides | `load()`, `get_device()`, `set_override()` |
-| `EventBus` | Pub/sub events | `subscribe()`, `publish()` |
-| `CircuitBreaker` | Protective Closed->Open->HalfOpen | `call()`, `state()` |
-| `RetryConfig` | Fixed/Exponential/Linear/None | `run()`, `start()` |
-| `GatewayEngine` | Cross-protocol data forwarding | `add_rule()`, `start()/stop()` |
-
-Three connection strategies:
-```rust
-pub enum ConnectionStrategy {
-    Simple,      // New connection per use, closed after
-    Persistent,  // Single reuse, auto-reconnect
-    Pooled { min: usize, max: usize, timeout_ms: u64 },
-}
-```
-
-### 3. Bridge Layer — Transport Abstraction
-
-```rust
-pub trait Transport: Send {
-    fn send(&mut self, data: &[u8]) -> io::Result<Vec<u8>>;
-    fn is_open(&self) -> bool;
-    fn close(&mut self) -> io::Result<()>;
-}
-```
-
-| Bridge | Implementation | Deps |
-|--------|---------------|------|
-| `bridge-socket` | TCP connect + UDP send/recv | std |
-| `bridge-serial` | Real serial port, `serial` feature opt-in | `serialport` |
-| `bridge-can` | Linux SocketCAN (CAN_RAW) | `libc` |
-| `bridge-ffi` | Vendor C SDK dlopen/dlsym | `libloading` |
-| `bridge-vendor` | Siemens/AB/Schneider presets | — |
-
-### 4. Error — Structured Error Chains
-
-```rust
-#[derive(Debug, thiserror::Error)]
-pub enum ProtocolError {
-    Connection(String),                       // host:port refused
-    Timeout { device: String, timeout_ms: u64 },
-    Parse { protocol: String, reason: String },
-    DeviceError { device: String, code: u16, message: String },
-    CircuitOpen { device: String, retry_after: Duration },
-    Config(String),
-    ProtocolSpecific(Box<dyn StdError + Send + Sync>),
-    Context { context: String, source: Box<ProtocolError> },
-    // ...
-}
-```
-
-Error chains preserve the full failure path:
-```
-failed to read holding register 40001 from PLC-001
-  -> timeout: device=plc-001, timeout=3000ms
-    -> connection failed: 192.168.1.10:502: Connection refused
-```
-
-### 5. Async Layer — Optional tokio Wrapper
-
-```rust
-let kernel = Kernel::builder()
-    .with_protocol(Box::new(ModbusProtocol::tcp()))
-    .build();
-
-let ak = AsyncKernel::new(kernel);
-ak.boot().await?;
-
-// Async event stream
-let mut stream = AsyncEventStream::subscribe(
-    ak.kernel().blocking_lock(), EventTopic::Connection
-);
-while let Some(event) = stream.recv().await {
-    println!("{:?}", event);
-}
-```
+Kernel architecture and the full public API (Protocol SDK 6 traits, Kernel components, Bridge transport abstraction, Error chains, Async layer) are documented in the [API Reference](docs/i18n/en/API.md).
 
 ## Project Structure
 
@@ -339,6 +244,39 @@ industrial-protocols-rust/
 3. **Type Safety** — Associated types prevent address/value confusion at compile time
 4. **Zero-Cost Optional** — Async layer is independent, no forced runtime
 5. **Error Transparency** — Context chains preserve full failure paths
+
+## Donations
+
+If this project helps you, any donation is welcome (any amount — thanks to every supporter).
+
+### WeChat Pay / Alipay
+
+![WeChat Pay](docs/weixinpay.png) ![Alipay](docs/alipay.png)
+
+### Global Wire Transfer (SWIFT)
+
+| Field | Value |
+|-------|-------|
+| Beneficiary Name | WANG KEXUN |
+| Beneficiary Account No. | 881015918251 |
+| Beneficiary Bank | ZA Bank Limited |
+| SWIFT Code | AABLHKHHXXX |
+| Bank Code | 387 |
+| Bank Address | Core F, Cyberport 3, 100 Cyberport Road, Hong Kong |
+
+> **Cross-border correspondent bank (intermediary)**: This is correspondent/intermediary bank information, **NOT the beneficiary bank**. Please check with your remitting bank whether correspondent bank information is required.
+
+- **For HKD, CNY and USD** (correspondent: Citibank):
+  - Bank name: Citibank N.A. Hong Kong
+  - SWIFT Code: CITIHKHXXXX
+  - Bank Code: 006
+  - Branch Name: Hong Kong Branch
+  - Branch Code: 391
+  - Bank address: Citibank Tower, Citibank Plaza, 3 Garden Road, Central, Hong Kong
+- **For other currencies** (correspondent: BNY Mellon):
+  - Bank name: THE BANK OF NEW YORK MELLON
+  - SWIFT Code: IRVTUS3NXXX
+  - Bank address: THE BANK OF NEW YORK MELLON, 240 GREENWICH STREET, NEW YORK, United States
 
 ## License
 

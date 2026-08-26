@@ -5,7 +5,23 @@ Rust 工业通信协议集 —— 微内核 + 协议 SDK 架构，覆盖 38 种�
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.75%2B-orange.svg)](https://www.rust-lang.org)
 
-[English](README.en.md)
+## 多语言 / Languages
+
+| 语言 | 文档 |
+|------|------|
+| 简体中文 | [README.md](README.md) |
+| English | [docs/i18n/en/README.md](docs/i18n/en/README.md) |
+| 한국어 | [docs/i18n/ko/README.md](docs/i18n/ko/README.md) |
+| Русский | [docs/i18n/ru/README.md](docs/i18n/ru/README.md) |
+| Deutsch | [docs/i18n/de/README.md](docs/i18n/de/README.md) |
+| Français | [docs/i18n/fr/README.md](docs/i18n/fr/README.md) |
+| Español | [docs/i18n/es/README.md](docs/i18n/es/README.md) |
+| Português | [docs/i18n/pt/README.md](docs/i18n/pt/README.md) |
+| हिन्दी | [docs/i18n/hi/README.md](docs/i18n/hi/README.md) |
+| العربية | [docs/i18n/ar/README.md](docs/i18n/ar/README.md) |
+| বাংলা | [docs/i18n/bn/README.md](docs/i18n/bn/README.md) |
+| Bahasa Indonesia | [docs/i18n/id/README.md](docs/i18n/id/README.md) |
+| 日本語 | [docs/i18n/ja/README.md](docs/i18n/ja/README.md) |
 
 参考 PHP 版 [industrial-protocols](https://github.com/erikwang2013/industrial-protocols) 功能集，按 Rust 生态习惯重新设计。PHP 版 42 个协议全部覆盖。
 
@@ -161,118 +177,9 @@ fn main() {
 | VME/VPX | `industrial-protocols-vme` | A16/A24/A32，AM Codes |
 | CompactPCI | `industrial-protocols-cpci` | 地理寻址，3U/6U Eurocard |
 
-## 核心概念
+## 核心概念 / API 参考
 
-### 1. Protocol SDK — 6 个 Trait
-
-每个协议通过实现以下 trait 接入内核：
-
-```rust
-pub trait Protocol: Send + Sync {
-    fn name(&self) -> &'static str;
-    fn version(&self) -> &'static str;
-    fn category(&self) -> ProtocolCategory;
-    fn supported_variants(&self) -> &'static [&'static str];
-}
-
-pub trait ProtocolRead: Protocol {
-    type Address: AddressLike;   // 协议特定地址类型
-    type Value: ValueLike;      // 协议特定值类型
-    fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value>;
-    fn read_batch(&self, ...) -> Result<Vec<Self::Value>>;
-    fn read_range(&self, ...) -> Result<Vec<Self::Value>>;
-}
-
-pub trait ProtocolWrite: Protocol { ... }
-pub trait ProtocolSubscribe: Protocol { ... }
-pub trait ProtocolDiscover { ... }
-pub trait ProtocolHealth: Protocol { ... }
-pub trait ProtocolDiagnostics: Protocol { ... }
-```
-
-**关联类型**让地址和值类型安全：Modbus 用 `u16`，OPC UA 用 `String`，BACnet 用 `f32`。**Trait 拆分**让协议按需实现——只读传感器不需要 `ProtocolWrite`。
-
-### 2. Kernel — 微内核
-
-内核不实现任何协议，只提供共享基础设施：
-
-| 组件 | 职责 | 关键 API |
-|------|------|----------|
-| `ProtocolRegistry` | 协议注册/查找/分类 | `register()`, `get()`, `list_by_category()` |
-| `ConnectionManager` | 设备连接生命周期 | `connect()`, `health()`, `shutdown()` |
-| `ConfigRepository` | TOML 配置 + 运行时覆盖 | `load()`, `get_device()`, `set_override()` |
-| `EventBus` | 发布/订阅事件 | `subscribe()`, `publish()` |
-| `CircuitBreaker` | 熔断 Closed→Open→HalfOpen | `call()`, `state()` |
-| `RetryConfig` | 固定/指数/线性/无 | `run()`, `start()` |
-| `GatewayEngine` | 协议间数据转发规则 | `add_rule()`, `start()/stop()` |
-
-连接管理支持三种策略：
-```rust
-pub enum ConnectionStrategy {
-    Simple,      // 每次新建，用完释放
-    Persistent,  // 单连接复用，断开自动重连
-    Pooled { min: usize, max: usize, timeout_ms: u64 },
-}
-```
-
-### 3. Bridge Layer — 传输抽象
-
-```rust
-pub trait Transport: Send {
-    fn send(&mut self, data: &[u8]) -> io::Result<Vec<u8>>;
-    fn is_open(&self) -> bool;
-    fn close(&mut self) -> io::Result<()>;
-}
-```
-
-| Bridge | 实现 | 依赖 |
-|--------|------|------|
-| `bridge-socket` | TCP 连接 + UDP 收发 | std |
-| `bridge-serial` | 真实串口，可选 `serial` feature | `serialport` |
-| `bridge-can` | Linux SocketCAN (CAN_RAW) | `libc` |
-| `bridge-ffi` | 厂商 C SDK 动态加载 | `libloading` |
-| `bridge-vendor` | Siemens/AB/Schneider 预置 | — |
-
-### 4. Error — 结构化错误链
-
-```rust
-#[derive(Debug, thiserror::Error)]
-pub enum ProtocolError {
-    Connection(String),           // "192.168.1.10:502: Connection refused"
-    Timeout { device, timeout_ms }, // "plc-001: 3000ms"
-    Parse { protocol, reason },   // "modbus: CRC mismatch"
-    DeviceError { device, code, message }, // "plc-001: 0x02 非法地址"
-    CircuitOpen { device, retry_after },  // 熔断器已断开
-    Context { context, source },  // 附加上文，形成错误链
-    // ...
-}
-```
-
-错误链示例：
-```
-读取 PLC-001 保持寄存器 40001 失败
-  → 超时: device=plc-001, timeout=3000ms
-    → 连接失败: 192.168.1.10:502: Connection refused
-```
-
-### 5. Async Layer — 可选 tokio 包装
-
-```rust
-let kernel = Kernel::builder()
-    .with_protocol(Box::new(ModbusProtocol::tcp()))
-    .build();
-
-let ak = AsyncKernel::new(kernel);
-ak.boot().await?;
-
-// 异步事件流
-let mut stream = AsyncEventStream::subscribe(
-    ak.kernel().blocking_lock(), EventTopic::Connection
-);
-while let Some(event) = stream.recv().await {
-    println!("{:?}", event);
-}
-```
+内核架构与全部公开 API（Protocol SDK 6 个 Trait、Kernel 组件、Bridge 传输抽象、Error 错误链、Async 异步层）见 [API 参考文档](docs/API.md)。
 
 ## 项目结构
 
@@ -337,6 +244,39 @@ industrial-protocols-rust/
 3. **类型安全** — 关联类型编译期区分不同协议的地址/值
 4. **零成本可选** — async 层独立，不引入强制运行时
 5. **错误透明** — 上下文链保留完整故障路径
+
+## 打赏支持 / Donations
+
+如果这个项目对你有帮助，欢迎打赏支持（金额随意，感谢每一个支持者）。
+
+### 微信支付 / 支付宝
+
+![微信支付](docs/weixinpay.png) ![支付宝](docs/alipay.png)
+
+### 全球转账（银行 SWIFT 汇款）
+
+| 项目 | 信息 |
+|------|------|
+| 收款人姓名 | WANG KEXUN |
+| 收款账户号码 | 881015918251 |
+| 收款银行 | ZA Bank Limited |
+| SWIFT Code | AABLHKHHXXX |
+| 银行编号 | 387 |
+| 银行地址 | Core F, Cyberport 3, 100 Cyberport Road, Hong Kong |
+
+> **跨境汇款代理银行（中转银行）**：请注意，此为跨境汇款代理银行（中转银行）信息，**非收款银行信息**。请向汇款银行查询是否需要提供跨境汇款代理银行信息。
+
+- **汇入港元、人民币及美元**（代理银行 Citibank）：
+  - 银行名称：Citibank N.A. Hong Kong
+  - SWIFT Code：CITIHKHXXXX
+  - 银行编号：006
+  - 分行名称：Hong Kong Branch
+  - 分行编号：391
+  - 银行地址：Citibank Tower, Citibank Plaza, 3 Garden Road, Central, Hong Kong
+- **汇入其他币种**（代理银行 BNY Mellon）：
+  - 银行名称：THE BANK OF NEW YORK MELLON
+  - SWIFT Code：IRVTUS3NXXX
+  - 银行地址：THE BANK OF NEW YORK MELLON, 240 GREENWICH STREET, NEW YORK, United States
 
 ## License
 
