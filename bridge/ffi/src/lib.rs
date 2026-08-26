@@ -161,21 +161,62 @@ impl Transport for SafeVendorTransport {
 mod tests {
     use super::*;
 
+    fn config(lib: &str) -> FfiConfig {
+        FfiConfig {
+            library_path: PathBuf::from(lib),
+            vendor: "test".into(),
+            init_params: HashMap::new(),
+            symbols: FfiSymbols::default(),
+        }
+    }
+
     #[test]
     fn test_ffi_config_defaults() {
         let syms = FfiSymbols::default();
         assert_eq!(syms.init, "vendor_init");
         assert_eq!(syms.read, "vendor_read");
+        assert_eq!(syms.write, "vendor_write");
+        assert_eq!(syms.shutdown, "vendor_shutdown");
+    }
+
+    #[test]
+    fn test_ffi_symbols_clone_debug() {
+        let syms = FfiSymbols::default();
+        let copy = syms.clone();
+        assert_eq!(copy.init, syms.init);
+        let _dbg = format!("{syms:?}");
     }
 
     #[test]
     fn test_load_nonexistent_library() {
-        let config = FfiConfig {
-            library_path: PathBuf::from("/tmp/nonexistent_lib.so"),
-            vendor: "test".into(),
-            init_params: HashMap::new(),
-            symbols: FfiSymbols::default(),
+        assert!(SafeVendorTransport::load(config("/tmp/nonexistent_lib.so")).is_err());
+    }
+
+    #[test]
+    fn test_ffi_config_custom_symbols_and_params() {
+        let cfg = FfiConfig {
+            library_path: PathBuf::from("/tmp/missing.so"),
+            vendor: "acme".into(),
+            init_params: HashMap::from([("config".to_string(), "cfg.txt".to_string())]),
+            symbols: FfiSymbols {
+                init: "acme_init".into(),
+                read: "acme_read".into(),
+                write: "acme_write".into(),
+                shutdown: "acme_shutdown".into(),
+            },
         };
-        assert!(SafeVendorTransport::load(config).is_err());
+        assert_eq!(cfg.vendor, "acme");
+        assert_eq!(cfg.symbols.init, "acme_init");
+        assert!(cfg.init_params.contains_key("config"));
+        // Library does not exist, so load must fail.
+        assert!(SafeVendorTransport::load(cfg).is_err());
+    }
+
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn test_load_system_lib_with_missing_init_symbol() {
+        // libc.so.6 loads fine, but exposes no vendor_init symbol,
+        // so load must fail at symbol resolution.
+        assert!(SafeVendorTransport::load(config("libc.so.6")).is_err());
     }
 }

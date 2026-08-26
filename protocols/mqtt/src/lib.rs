@@ -173,12 +173,21 @@ pub fn parse_publish(data: &[u8]) -> std::result::Result<(String, Vec<u8>), Stri
         pos += 1;
     }
     pos += 1;
+    if pos + 2 > data.len() {
+        return Err("PUBLISH header truncated".into());
+    }
     let topic_len = u16::from_be_bytes([data[pos], data[pos + 1]]) as usize;
     pos += 2;
+    if pos + topic_len > data.len() {
+        return Err("PUBLISH topic truncated".into());
+    }
     let topic = String::from_utf8_lossy(&data[pos..pos + topic_len]).to_string();
     pos += topic_len;
-    let _qos = (data[0] >> 1) & 0x03;
-    if _qos > 0 {
+    let qos = (data[0] >> 1) & 0x03;
+    if qos > 0 {
+        if pos + 2 > data.len() {
+            return Err("PUBLISH packet id truncated".into());
+        }
         pos += 2;
     } // skip packet ID
     let payload = data[pos..].to_vec();

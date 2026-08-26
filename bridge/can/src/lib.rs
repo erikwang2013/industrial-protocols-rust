@@ -224,7 +224,40 @@ mod tests {
             data: vec![1, 2, 3],
         };
         assert_eq!(frame.id, 0x123);
+        assert!(!frame.extended);
         assert_eq!(frame.data.len(), 3);
+    }
+
+    #[test]
+    fn test_can_frame_extended_29bit() {
+        let frame = CanFrame {
+            id: 0x1FFFFFFF,
+            extended: true,
+            data: vec![0u8; 8],
+        };
+        assert!(frame.extended);
+        assert_eq!(frame.id, 0x1FFFFFFF);
+        assert_eq!(frame.data.len(), 8);
+    }
+
+    #[test]
+    fn test_can_frame_clone_debug() {
+        let frame = CanFrame {
+            id: 0x55,
+            extended: false,
+            data: vec![1, 2],
+        };
+        let clone = frame.clone();
+        assert_eq!(clone.id, frame.id);
+        assert_eq!(clone.data, frame.data);
+        let _dbg = format!("{frame:?}");
+    }
+
+    #[test]
+    fn test_open_bogus_interface_fails() {
+        // Linux: socket creation or if_nametoindex fails; other platforms:
+        // the stub rejects outright. Either way open must error.
+        assert!(CanTransport::open("definitely_not_an_iface_12345").is_err());
     }
 
     #[test]

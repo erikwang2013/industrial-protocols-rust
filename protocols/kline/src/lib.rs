@@ -37,7 +37,8 @@ pub fn parse_kwp2000_response(data: &[u8]) -> std::result::Result<Vec<u8>, Strin
     if data.len() < len + 2 {
         return Err("truncated".into());
     }
-    Ok(data[3..len + 1].to_vec())
+    // `get` guards the reversed range when len < 2 (would panic with `..`)
+    Ok(data.get(3..len + 1).unwrap_or_default().to_vec())
 }
 
 impl Protocol for KlineProtocol {

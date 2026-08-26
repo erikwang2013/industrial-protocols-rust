@@ -53,4 +53,42 @@ mod tests {
             Some("Allen-Bradley")
         );
     }
+
+    #[test]
+    fn test_schneider_preset() {
+        let m = schneider_m340();
+        assert_eq!(
+            m.get("vendor").unwrap().as_str(),
+            Some("Schneider Electric")
+        );
+        assert_eq!(m.get("model").unwrap().as_str(), Some("Modicon M340"));
+    }
+
+    #[test]
+    fn test_siemens_rack_and_slot() {
+        let m = siemens_s7_1200();
+        assert_eq!(m.get("model").unwrap().as_str(), Some("S7-1200"));
+        assert_eq!(m.get("rack").unwrap().as_integer(), Some(0));
+        assert_eq!(m.get("slot").unwrap().as_integer(), Some(1));
+    }
+
+    #[test]
+    fn test_ab_slot() {
+        let m = allen_bradley_compactlogix();
+        assert_eq!(m.get("model").unwrap().as_str(), Some("CompactLogix"));
+        assert_eq!(m.get("slot").unwrap().as_integer(), Some(0));
+    }
+
+    #[test]
+    fn test_presets_serialize_to_toml() {
+        let presets = [
+            siemens_s7_1200(),
+            allen_bradley_compactlogix(),
+            schneider_m340(),
+        ];
+        for preset in presets {
+            let s = toml::to_string(&preset).unwrap();
+            assert!(s.contains("vendor"));
+        }
+    }
 }

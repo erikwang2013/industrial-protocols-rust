@@ -142,6 +142,18 @@ impl Transport for SerialTransport {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io;
+
+    fn config(port: &str) -> SerialConfig {
+        SerialConfig {
+            port: port.into(),
+            baud_rate: 9600,
+            data_bits: 8,
+            parity: Parity::None,
+            stop_bits: 1,
+            timeout_ms: 100,
+        }
+    }
 
     #[test]
     fn test_available_ports_does_not_panic() {
@@ -156,16 +168,53 @@ mod tests {
     }
 
     #[test]
+    fn test_parity_is_copy() {
+        let a = Parity::Even;
+        let b = a;
+        assert!(matches!(b, Parity::Even));
+    }
+
+    #[test]
     fn test_config_fields() {
-        let config = SerialConfig {
-            port: "/dev/ttyS0".into(),
-            baud_rate: 9600,
-            data_bits: 8,
-            parity: Parity::None,
-            stop_bits: 1,
-            timeout_ms: 500,
-        };
+        let config = config("/dev/ttyS0");
+        assert_eq!(config.port, "/dev/ttyS0");
         assert_eq!(config.baud_rate, 9600);
         assert_eq!(config.data_bits, 8);
+        assert_eq!(config.stop_bits, 1);
+        assert_eq!(config.timeout_ms, 100);
+    }
+
+    #[test]
+    fn test_stub_open_succeeds_but_reports_closed() {
+        let t = SerialTransport::open(config("/dev/ttyTEST")).unwrap();
+        assert!(!t.is_open());
+    }
+
+    #[test]
+    fn test_stub_send_unsupported() {
+        let mut t = SerialTransport::open(config("/dev/ttyTEST")).unwrap();
+        let err = t.send(b"data").unwrap_err();
+        assert_eq!(err.kind(), io::ErrorKind::Unsupported);
+        assert!(err.to_string().contains("/dev/ttyTEST"));
+        assert!(err.to_string().contains("serial"));
+    }
+
+    #[test]
+    fn test_stub_close_idempotent() {
+        let mut t = SerialTransport::open(config("/dev/ttyTEST")).unwrap();
+        assert!(t.close().is_ok());
+        assert!(t.close().is_ok());
+    }
+
+    #[cfg(not(feature = "serial"))]
+    #[test]
+    fn test_available_ports_empty_without_feature() {
+        assert!(available_ports().is_empty());
+    }
+
+    #[cfg(feature = "serial")]
+    #[test]
+    fn test_real_open_nonexistent_port_fails() {
+        assert!(SerialTransport::open(config("/dev/ttyNONEXISTENT_XYZ")).is_err());
     }
 }

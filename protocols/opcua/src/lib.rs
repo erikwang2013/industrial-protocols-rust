@@ -96,7 +96,7 @@ pub fn build_read_request(node_ids: &[&str], request_handle: u32) -> Vec<u8> {
         body.push(0xE9); // numeric identifier (example)
     }
 
-    let total = 8 + body.len();
+    let total = 8 + 4 + body.len(); // header + secure channel id + body
     let mut frame = Vec::with_capacity(total);
     frame.extend_from_slice(&MSG_TYPE_MSG);
     frame.push(b'F');

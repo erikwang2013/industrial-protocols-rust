@@ -20,7 +20,8 @@ impl LinProtocol {
 
 pub fn build_header(id: u8) -> Vec<u8> {
     let p0 = (id & 1) ^ ((id >> 1) & 1) ^ ((id >> 2) & 1) ^ ((id >> 4) & 1);
-    let p1 = !(((id >> 1) & 1) ^ ((id >> 3) & 1) ^ ((id >> 4) & 1) ^ ((id >> 5) & 1));
+    // logical NOT of a 0/1 bit; bitwise `!` would never be zero and always set 0x80
+    let p1 = 1 - (((id >> 1) & 1) ^ ((id >> 3) & 1) ^ ((id >> 4) & 1) ^ ((id >> 5) & 1));
     let pid = (id & 0x3F) | (if p0 != 0 { 0x40 } else { 0 }) | (if p1 != 0 { 0x80 } else { 0 });
     vec![0x55, pid]
 }

@@ -111,6 +111,7 @@ impl AsyncEventStream {
 mod tests {
     use super::*;
     use industrial_protocols_kernel::connection::Connection;
+    use industrial_protocols_kernel::event::{EventTopic, ProtocolEvent};
     use industrial_protocols_kernel::sdk::*;
     use std::io;
 
@@ -165,6 +166,43 @@ mod tests {
         }
     }
 
+    struct TestWriteProtocol;
+    impl Protocol for TestWriteProtocol {
+        fn name(&self) -> &'static str {
+            "write-test"
+        }
+        fn version(&self) -> &'static str {
+            "1.0"
+        }
+        fn category(&self) -> ProtocolCategory {
+            ProtocolCategory::IndustrialEthernet
+        }
+        fn supported_variants(&self) -> &'static [&'static str] {
+            &["tcp"]
+        }
+    }
+    impl ProtocolWrite for TestWriteProtocol {
+        type Address = u16;
+        type Value = u16;
+        fn write(
+            &self,
+            _c: &mut dyn Connection,
+            addr: &Self::Address,
+            value: &Self::Value,
+        ) -> Result<()> {
+            assert_eq!(*addr, 1);
+            assert_eq!(*value, 42);
+            Ok(())
+        }
+        fn write_batch(
+            &self,
+            _c: &mut dyn Connection,
+            _items: &[(Self::Address, Self::Value)],
+        ) -> Result<()> {
+            Ok(())
+        }
+    }
+
     #[tokio::test]
     async fn test_async_read() {
         let kernel = Kernel::builder()
@@ -209,5 +247,84 @@ mod tests {
 
         let event = stream.recv().await;
         assert!(event.is_some());
+    }
+
+    #[tokio::test]
+    async fn test_async_write() {
+        let kernel = Kernel::builder().build();
+        let ak = AsyncKernel::new(kernel);
+        let mut conn = TestConn;
+        ak.write(&TestWriteProtocol, &mut conn, &1, &42)
+            .await
+            .unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_async_kernel_accessor() {
+        let kernel = Kernel::builder()
+            .with_protocol(Box::new(TestProtocol))
+            .build();
+        let ak = AsyncKernel::new(kernel);
+        let guard = ak.kernel().lock().await;
+        assert!(guard.protocol_registry().get("test").is_some());
+    }
+
+    #[tokio::test]
+    async fn test_async_shutdown_idempotent() {
+        let kernel = Kernel::builder().build();
+        let ak = AsyncKernel::new(kernel);
+        assert!(ak.boot().await.is_ok());
+        assert!(ak.shutdown().await.is_ok());
+        assert!(ak.shutdown().await.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_event_stream_from_channel() {
+        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        let mut stream = AsyncEventStream::from_channel(rx);
+        tx.send(ProtocolEvent::Disconnected {
+            device_id: "d".into(),
+            reason: "gone".into(),
+        })
+        .unwrap();
+        let event = stream.recv().await.unwrap();
+        assert!(matches!(
+            event,
+            ProtocolEvent::Disconnected { device_id, .. } if device_id == "d"
+        ));
+    }
+
+    #[tokio::test]
+    async fn test_event_stream_recv_none_when_channel_closed() {
+        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        drop(tx);
+        let mut stream = AsyncEventStream::from_channel(rx);
+        assert!(stream.recv().await.is_none());
+    }
+
+    #[tokio::test]
+    async fn test_event_stream_multiple_events_in_order() {
+        let kernel = Kernel::builder().build();
+        let mut stream = AsyncEventStream::subscribe(&kernel, EventTopic::Connection);
+        kernel.event_bus().publish(ProtocolEvent::Connected {
+            device_id: "a".into(),
+            protocol: "p".into(),
+            timestamp: std::time::Instant::now(),
+        });
+        kernel.event_bus().publish(ProtocolEvent::Connected {
+            device_id: "b".into(),
+            protocol: "p".into(),
+            timestamp: std::time::Instant::now(),
+        });
+        let first = stream.recv().await.unwrap();
+        let second = stream.recv().await.unwrap();
+        assert!(matches!(
+            first,
+            ProtocolEvent::Connected { device_id, .. } if device_id == "a"
+        ));
+        assert!(matches!(
+            second,
+            ProtocolEvent::Connected { device_id, .. } if device_id == "b"
+        ));
     }
 }

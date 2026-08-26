@@ -24,11 +24,22 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 
+fn default_defaults() -> DefaultsConfig {
+    DefaultsConfig {
+        timeout_ms: default_timeout(),
+        retry_max: default_retry_max(),
+        retry_strategy: default_retry_strategy(),
+        health_check_interval_s: default_health_interval(),
+        circuit_breaker_threshold: default_cb_threshold(),
+        circuit_breaker_cooldown_s: default_cb_cooldown(),
+    }
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct ConfigFile {
     #[serde(default)]
     pub devices: HashMap<String, DeviceConfigRaw>,
-    #[serde(default)]
+    #[serde(default = "default_defaults")]
     pub defaults: DefaultsConfig,
 }
 

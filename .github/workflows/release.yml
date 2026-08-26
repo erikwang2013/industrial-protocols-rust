@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Incremental tag + release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest version from workspace Cargo.toml
+        id: version
+        run: |
+          VERSION=$(sed -n '/^\[workspace.package\]/,/^\[[a-z]/p' Cargo.toml \
+            | grep -m1 '^version' | sed 's/.*= *"\(.*\)".*/\1/')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if tag already exists
+        id: check
+        run: |
+          if git ls-remote --tags origin "refs/tags/${{ steps.version.outputs.tag }}" | grep -q .; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build incremental changelog since previous tag
+        id: changelog
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          PREV=$(git tag --sort=-v:refname | grep -E '^v[0-9]' | head -1 || true)
+          if [ -n "$PREV" ]; then
+            git log --oneline --no-decorate "$PREV"..HEAD > CHANGELOG.md
+          else
+            git log --oneline --no-decorate > CHANGELOG.md
+          fi
+          echo "prev=$PREV" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          git tag "${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+
+      - name: Create GitHub Release (source only, no app packaging)
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            if [ -n "${{ steps.changelog.outputs.prev }}" ]; then
+              echo "## Changes since ${{ steps.changelog.outputs.prev }}"
+            else
+              echo "## Initial release"
+            fi
+            echo ""
+            cat CHANGELOG.md
+          } > notes.md
+          gh release create "${{ steps.version.outputs.tag }}" \
+            --title "Release ${{ steps.version.outputs.tag }}" \
+            --notes-file notes.md \
+            --repo "${{ github.repository }}"
