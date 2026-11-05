@@ -48,10 +48,11 @@ members = [
     "protocols/vme",
     "protocols/cpci",
     "async-layer",
+    "examples/simple-modbus",
 ]
 
 [workspace.package]
-version = "1.1.2"
+version = "2.0.0"
 edition = "2024"
 license = "MIT"
 authors = ["erik <erik@erik.xyz>"]

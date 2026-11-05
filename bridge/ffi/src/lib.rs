@@ -12,6 +12,7 @@
 
 use industrial_protocols_kernel::bridge::Transport;
 use std::collections::HashMap;
+use std::ffi::{CString, c_char, c_int, c_uint};
 use std::io;
 use std::path::PathBuf;
 
@@ -41,22 +42,21 @@ impl Default for FfiSymbols {
     }
 }
 
-type FfiInitFn = unsafe extern "C" fn(*const libc::c_char) -> libc::c_int;
-type FfiReadFn = unsafe extern "C" fn(libc::c_uint, *mut u8, libc::c_uint) -> libc::c_int;
-type FfiWriteFn = unsafe extern "C" fn(libc::c_uint, *const u8, libc::c_uint) -> libc::c_int;
-type FfiShutdownFn = unsafe extern "C" fn() -> libc::c_int;
+type FfiInitFn = unsafe extern "C" fn(*const c_char) -> c_int;
+type FfiReadFn = unsafe extern "C" fn(c_uint, *mut u8, c_uint) -> c_int;
+type FfiWriteFn = unsafe extern "C" fn(c_uint, *const u8, c_uint) -> c_int;
+type FfiShutdownFn = unsafe extern "C" fn() -> c_int;
 
 /// Safe wrapper around a dynamically loaded vendor driver.
 /// Uses raw function pointers (transmuted from libloading symbols)
 /// to avoid lifetime coupling between Library and Symbol.
 pub struct SafeVendorTransport {
+    // Keeps the library loaded while the raw function pointers are in use.
     #[allow(dead_code)]
     library: libloading::Library,
-    read_fn: unsafe extern "C" fn(libc::c_uint, *mut u8, libc::c_uint) -> libc::c_int,
-    write_fn: unsafe extern "C" fn(libc::c_uint, *const u8, libc::c_uint) -> libc::c_int,
-    shutdown_fn: unsafe extern "C" fn() -> libc::c_int,
-    #[allow(dead_code)]
-    vendor: String,
+    read_fn: unsafe extern "C" fn(c_uint, *mut u8, c_uint) -> c_int,
+    write_fn: unsafe extern "C" fn(c_uint, *const u8, c_uint) -> c_int,
+    shutdown_fn: unsafe extern "C" fn() -> c_int,
     open: bool,
 }
 
@@ -72,14 +72,19 @@ impl SafeVendorTransport {
                 lib.get(config.symbols.init.as_bytes()).map_err(|e| {
                     io::Error::new(io::ErrorKind::NotFound, format!("init symbol: {e}"))
                 })?;
-            let params = std::ffi::CString::new(
+            let params = CString::new(
                 config
                     .init_params
                     .get("config")
                     .cloned()
                     .unwrap_or_default(),
             )
-            .unwrap_or_default();
+            .map_err(|_| {
+                io::Error::new(
+                    io::ErrorKind::InvalidInput,
+                    "init parameter contains a NUL byte",
+                )
+            })?;
             let rc = init_sym(params.as_ptr());
             if rc != 0 {
                 return Err(io::Error::other(format!("vendor init failed: code {rc}")));
@@ -106,7 +111,6 @@ impl SafeVendorTransport {
                 read_fn,
                 write_fn,
                 shutdown_fn,
-                vendor: config.vendor,
                 open: true,
             })
         }
@@ -149,6 +153,9 @@ impl Transport for SafeVendorTransport {
         self.open
     }
     fn close(&mut self) -> io::Result<()> {
+        if !self.open {
+            return Ok(());
+        }
         self.open = false;
         unsafe {
             (self.shutdown_fn)();

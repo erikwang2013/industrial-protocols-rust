@@ -77,7 +77,7 @@ impl SerialTransport {
             .stop_bits(stop_bits)
             .timeout(Duration::from_millis(config.timeout_ms))
             .open()
-            .map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+            .map_err(io::Error::other)?;
 
         Ok(SerialTransport { port })
     }
@@ -142,7 +142,6 @@ impl Transport for SerialTransport {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io;
 
     fn config(port: &str) -> SerialConfig {
         SerialConfig {
@@ -184,21 +183,24 @@ mod tests {
         assert_eq!(config.timeout_ms, 100);
     }
 
+    #[cfg(not(feature = "serial"))]
     #[test]
     fn test_stub_open_succeeds_but_reports_closed() {
         let t = SerialTransport::open(config("/dev/ttyTEST")).unwrap();
         assert!(!t.is_open());
     }
 
+    #[cfg(not(feature = "serial"))]
     #[test]
     fn test_stub_send_unsupported() {
         let mut t = SerialTransport::open(config("/dev/ttyTEST")).unwrap();
         let err = t.send(b"data").unwrap_err();
-        assert_eq!(err.kind(), io::ErrorKind::Unsupported);
+        assert_eq!(err.kind(), std::io::ErrorKind::Unsupported);
         assert!(err.to_string().contains("/dev/ttyTEST"));
         assert!(err.to_string().contains("serial"));
     }
 
+    #[cfg(not(feature = "serial"))]
     #[test]
     fn test_stub_close_idempotent() {
         let mut t = SerialTransport::open(config("/dev/ttyTEST")).unwrap();

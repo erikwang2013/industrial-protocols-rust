@@ -165,6 +165,23 @@ fn read_rejects_bad_ack_and_connection_failure() {
 }
 
 #[test]
+fn read_rejects_configured_security() {
+    let p = OpcuaProtocol::new("opc.tcp://x").with_security(SecurityPolicy::Basic256);
+    let mut conn = MockConnection::new(vec![]);
+    let err = ProtocolRead::read(&p, &mut conn, &"a".to_string()).unwrap_err();
+    assert!(matches!(err, ProtocolError::Unsupported { .. }));
+    assert!(conn.sent.is_empty());
+
+    let p2 = OpcuaProtocol::new("opc.tcp://x").with_auth(Authentication::Username {
+        user: "u".into(),
+        password: "p".into(),
+    });
+    let mut conn2 = MockConnection::new(vec![]);
+    let err2 = ProtocolHealth::health(&p2, &mut conn2).unwrap_err();
+    assert!(matches!(err2, ProtocolError::Unsupported { .. }));
+}
+
+#[test]
 fn read_batch_and_range() {
     let p = OpcuaProtocol::new("opc.tcp://x");
     // each read = hello (needs ACK response) + read request (response ignored)

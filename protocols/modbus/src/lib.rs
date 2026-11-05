@@ -46,11 +46,6 @@ impl ModbusProtocol {
         }
     }
 
-    pub fn with_unit_id(mut self, id: u8) -> Self {
-        self.unit_id = id;
-        self
-    }
-
     fn next_tid(&self) -> u16 {
         self.transaction_id.fetch_add(1, Ordering::SeqCst)
     }
@@ -116,18 +111,20 @@ impl ProtocolRead for ModbusProtocol {
         }
         let min = *addrs.iter().min().unwrap();
         let max = *addrs.iter().max().unwrap();
+        let count = max
+            .checked_sub(min)
+            .and_then(|d| d.checked_add(1))
+            .ok_or_else(|| ProtocolError::Parse {
+                protocol: "modbus".into(),
+                reason: "address range too large".into(),
+            })?;
         let frame = match self.variant {
-            ModbusVariant::Tcp => frame::build_read_holding_registers_tcp(
-                self.next_tid(),
-                self.unit_id,
-                min,
-                max - min + 1,
-            ),
-            ModbusVariant::Rtu => {
-                frame::build_read_holding_registers_rtu(self.unit_id, min, max - min + 1)
+            ModbusVariant::Tcp => {
+                frame::build_read_holding_registers_tcp(self.next_tid(), self.unit_id, min, count)
             }
+            ModbusVariant::Rtu => frame::build_read_holding_registers_rtu(self.unit_id, min, count),
             ModbusVariant::Ascii => {
-                frame::build_read_holding_registers_ascii(self.unit_id, min, max - min + 1)
+                frame::build_read_holding_registers_ascii(self.unit_id, min, count)
             }
         };
         let resp = conn.send(&frame).map_err(ProtocolError::from)?;
@@ -135,7 +132,17 @@ impl ProtocolRead for ModbusProtocol {
             protocol: "modbus".into(),
             reason: e,
         })?;
-        Ok(addrs.iter().map(|a| all[(*a - min) as usize]).collect())
+        addrs
+            .iter()
+            .map(|a| {
+                all.get((*a - min) as usize)
+                    .copied()
+                    .ok_or_else(|| ProtocolError::Parse {
+                        protocol: "modbus".into(),
+                        reason: format!("response missing register {a}"),
+                    })
+            })
+            .collect()
     }
 
     fn read_range(

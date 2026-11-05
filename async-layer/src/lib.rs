@@ -78,15 +78,12 @@ impl AsyncKernel {
 }
 
 pub struct AsyncEventStream {
-    receiver:
-        tokio::sync::mpsc::UnboundedReceiver<industrial_protocols_kernel::event::ProtocolEvent>,
+    receiver: tokio::sync::mpsc::Receiver<industrial_protocols_kernel::event::ProtocolEvent>,
 }
 
 impl AsyncEventStream {
     pub fn from_channel(
-        receiver: tokio::sync::mpsc::UnboundedReceiver<
-            industrial_protocols_kernel::event::ProtocolEvent,
-        >,
+        receiver: tokio::sync::mpsc::Receiver<industrial_protocols_kernel::event::ProtocolEvent>,
     ) -> Self {
         AsyncEventStream { receiver }
     }
@@ -95,9 +92,11 @@ impl AsyncEventStream {
         kernel: &Kernel,
         topic: industrial_protocols_kernel::event::EventTopic,
     ) -> Self {
-        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        // shortcut: fixed 1024-event backlog; events are dropped if the
+        // consumer falls further behind, bounding memory use.
+        let (tx, rx) = tokio::sync::mpsc::channel(1024);
         kernel.event_bus().subscribe(topic, move |event| {
-            let _ = tx.send(event);
+            let _ = tx.try_send(event);
         });
         AsyncEventStream { receiver: rx }
     }
@@ -280,12 +279,13 @@ mod tests {
 
     #[tokio::test]
     async fn test_event_stream_from_channel() {
-        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        let (tx, rx) = tokio::sync::mpsc::channel(8);
         let mut stream = AsyncEventStream::from_channel(rx);
         tx.send(ProtocolEvent::Disconnected {
             device_id: "d".into(),
             reason: "gone".into(),
         })
+        .await
         .unwrap();
         let event = stream.recv().await.unwrap();
         assert!(matches!(
@@ -296,7 +296,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_event_stream_recv_none_when_channel_closed() {
-        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        let (tx, rx) = tokio::sync::mpsc::channel(1);
         drop(tx);
         let mut stream = AsyncEventStream::from_channel(rx);
         assert!(stream.recv().await.is_none());

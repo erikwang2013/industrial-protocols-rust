@@ -88,9 +88,11 @@ fn test_config_accessor_panics_without_config() {
 }
 
 #[test]
-#[should_panic(expected = "invalid TOML config")]
-fn test_config_from_str_panics_on_invalid_toml() {
-    let _ = Kernel::builder().config_from_str("not [valid");
+fn test_config_from_str_invalid_toml_surfaces_on_boot() {
+    let mut kernel = Kernel::builder().config_from_str("not [valid").build();
+    let err = kernel.boot().unwrap_err();
+    assert_eq!(err.kind(), std::io::ErrorKind::InvalidData);
+    assert!(err.to_string().contains("invalid TOML config"));
 }
 
 #[test]

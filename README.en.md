@@ -253,31 +253,6 @@ If this project helps you, any donation is welcome (any amount — thanks to eve
 
 ![WeChat Pay](docs/weixinpay.png) ![Alipay](docs/alipay.png)
 
-### Global Wire Transfer (SWIFT)
-
-| Field | Value |
-|-------|-------|
-| Beneficiary Name | WANG KEXUN |
-| Beneficiary Account No. | 881015918251 |
-| Beneficiary Bank | ZA Bank Limited |
-| SWIFT Code | AABLHKHHXXX |
-| Bank Code | 387 |
-| Bank Address | Core F, Cyberport 3, 100 Cyberport Road, Hong Kong |
-
-> **Cross-border correspondent bank (intermediary)**: This is correspondent/intermediary bank information, **NOT the beneficiary bank**. Please check with your remitting bank whether correspondent bank information is required.
-
-- **For HKD, CNY and USD** (correspondent: Citibank):
-  - Bank name: Citibank N.A. Hong Kong
-  - SWIFT Code: CITIHKHXXXX
-  - Bank Code: 006
-  - Branch Name: Hong Kong Branch
-  - Branch Code: 391
-  - Bank address: Citibank Tower, Citibank Plaza, 3 Garden Road, Central, Hong Kong
-- **For other currencies** (correspondent: BNY Mellon):
-  - Bank name: THE BANK OF NEW YORK MELLON
-  - SWIFT Code: IRVTUS3NXXX
-  - Bank address: THE BANK OF NEW YORK MELLON, 240 GREENWICH STREET, NEW YORK, United States
-
 ## License
 
 MIT — Copyright (c) 2026 erik [erik@erik.xyz](mailto:erik@erik.xyz)

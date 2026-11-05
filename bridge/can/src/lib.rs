@@ -25,8 +25,6 @@ pub struct CanFrame {
 #[cfg(target_os = "linux")]
 pub struct CanTransport {
     socket: std::os::fd::RawFd,
-    #[allow(dead_code)]
-    interface: String,
 }
 
 #[cfg(target_os = "linux")]
@@ -47,7 +45,12 @@ impl CanTransport {
         }
 
         // Get interface index
-        let ifname = std::ffi::CString::new(interface).unwrap();
+        let ifname = std::ffi::CString::new(interface).map_err(|_| {
+            io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "interface name contains a NUL byte",
+            )
+        })?;
         let ifindex = unsafe { libc::if_nametoindex(ifname.as_ptr()) };
         if ifindex == 0 {
             unsafe { libc::close(fd) };
@@ -74,10 +77,7 @@ impl CanTransport {
             return Err(io::Error::last_os_error());
         }
 
-        Ok(CanTransport {
-            socket: fd,
-            interface: interface.to_string(),
-        })
+        Ok(CanTransport { socket: fd })
     }
 
     /// Send a raw CAN frame.
@@ -153,7 +153,9 @@ impl CanTransport {
 #[cfg(target_os = "linux")]
 impl Drop for CanTransport {
     fn drop(&mut self) {
-        unsafe { libc::close(self.socket) };
+        if self.socket >= 0 {
+            unsafe { libc::close(self.socket) };
+        }
     }
 }
 
@@ -175,9 +177,13 @@ impl Transport for CanTransport {
         }
     }
     fn is_open(&self) -> bool {
-        true
+        self.socket >= 0
     }
     fn close(&mut self) -> io::Result<()> {
+        if self.socket >= 0 {
+            unsafe { libc::close(self.socket) };
+            self.socket = -1;
+        }
         Ok(())
     }
 }

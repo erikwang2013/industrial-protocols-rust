@@ -432,26 +432,6 @@ pub fn build_write_multiple_coils_tcp(
     f
 }
 
-pub fn build_write_multiple_coils_rtu(addr: u8, start: u16, values: &[bool]) -> Vec<u8> {
-    let byte_count = values.len().div_ceil(8) as u8;
-    let mut f = vec![addr, 0x0F];
-    f.extend_from_slice(&start.to_be_bytes());
-    f.extend_from_slice(&(values.len() as u16).to_be_bytes());
-    f.push(byte_count);
-    for chunk in values.chunks(8) {
-        let mut byte = 0u8;
-        for (i, &v) in chunk.iter().enumerate() {
-            if v {
-                byte |= 1 << i;
-            }
-        }
-        f.push(byte);
-    }
-    let crc = crc16(&f);
-    f.extend_from_slice(&crc.to_le_bytes());
-    f
-}
-
 #[test]
 fn test_write_coil_frame() {
     let f = build_write_single_coil_tcp(1, 1, 100, true);

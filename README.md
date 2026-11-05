@@ -253,31 +253,6 @@ industrial-protocols-rust/
 
 ![微信支付](docs/weixinpay.png) ![支付宝](docs/alipay.png)
 
-### 全球转账（银行 SWIFT 汇款）
-
-| 项目 | 信息 |
-|------|------|
-| 收款人姓名 | WANG KEXUN |
-| 收款账户号码 | 881015918251 |
-| 收款银行 | ZA Bank Limited |
-| SWIFT Code | AABLHKHHXXX |
-| 银行编号 | 387 |
-| 银行地址 | Core F, Cyberport 3, 100 Cyberport Road, Hong Kong |
-
-> **跨境汇款代理银行（中转银行）**：请注意，此为跨境汇款代理银行（中转银行）信息，**非收款银行信息**。请向汇款银行查询是否需要提供跨境汇款代理银行信息。
-
-- **汇入港元、人民币及美元**（代理银行 Citibank）：
-  - 银行名称：Citibank N.A. Hong Kong
-  - SWIFT Code：CITIHKHXXXX
-  - 银行编号：006
-  - 分行名称：Hong Kong Branch
-  - 分行编号：391
-  - 银行地址：Citibank Tower, Citibank Plaza, 3 Garden Road, Central, Hong Kong
-- **汇入其他币种**（代理银行 BNY Mellon）：
-  - 银行名称：THE BANK OF NEW YORK MELLON
-  - SWIFT Code：IRVTUS3NXXX
-  - 银行地址：THE BANK OF NEW YORK MELLON, 240 GREENWICH STREET, NEW YORK, United States
-
 ## License
 
 MIT — Copyright (c) 2026 erik [erik@erik.xyz](mailto:erik@erik.xyz)

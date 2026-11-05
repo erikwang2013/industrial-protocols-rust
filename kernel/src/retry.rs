@@ -95,7 +95,7 @@ impl RetryState {
         self.current_delay = match &self.config.strategy {
             RetryStrategy::Fixed { delay_ms } => Duration::from_millis(*delay_ms),
             RetryStrategy::Exponential { base_ms: _, max_ms } => {
-                let next = self.current_delay.as_millis() as u64 * 2;
+                let next = (self.current_delay.as_millis() as u64).saturating_mul(2);
                 Duration::from_millis(next.min(*max_ms))
             }
             RetryStrategy::Linear {

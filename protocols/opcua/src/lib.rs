@@ -47,14 +47,26 @@ impl OpcuaProtocol {
         self.auth = auth;
         self
     }
+
+    /// Only the plaintext Hello/Ack/Read flow is implemented. Reject configured
+    /// security instead of silently talking plaintext.
+    fn ensure_plaintext(&self) -> Result<()> {
+        if matches!(self.security_policy, SecurityPolicy::None)
+            && matches!(self.auth, Authentication::Anonymous)
+        {
+            return Ok(());
+        }
+        Err(ProtocolError::Unsupported {
+            protocol: "opcua".into(),
+            operation: "secure channel / user authentication not implemented".into(),
+        })
+    }
 }
 
 // OPC UA Binary message types
 const MSG_TYPE_HELLO: [u8; 3] = *b"HEL";
 const MSG_TYPE_ACK: [u8; 3] = *b"ACK";
-const _MSG_TYPE_OPEN: [u8; 3] = *b"OPN";
 const MSG_TYPE_MSG: [u8; 3] = *b"MSG";
-const _MSG_TYPE_CLOSE: [u8; 3] = *b"CLO";
 
 /// Build OPC UA Hello message.
 pub fn build_hello(endpoint_url: &str) -> Vec<u8> {
@@ -78,9 +90,7 @@ pub fn parse_acknowledge(data: &[u8]) -> std::result::Result<u32, String> {
     if data.len() < 20 || data[0..3] != MSG_TYPE_ACK {
         return Err("not an ACK message".into());
     }
-    let _version = u32::from_le_bytes([data[8], data[9], data[10], data[11]]);
-    let _buf_size = u32::from_le_bytes([data[12], data[13], data[14], data[15]]);
-    Ok(_version)
+    Ok(u32::from_le_bytes([data[8], data[9], data[10], data[11]]))
 }
 
 /// Build OPC UA Read request (simplified).
@@ -127,6 +137,7 @@ impl ProtocolRead for OpcuaProtocol {
     type Value = OPCUAValue;
 
     fn read(&self, conn: &mut dyn Connection, addr: &Self::Address) -> Result<Self::Value> {
+        self.ensure_plaintext()?;
         // Send Hello first to establish connection
         let hello = build_hello(&self.endpoint);
         let resp = conn.send(&hello).map_err(ProtocolError::from)?;
@@ -191,6 +202,7 @@ impl ProtocolWrite for OpcuaProtocol {
 
 impl ProtocolHealth for OpcuaProtocol {
     fn health(&self, conn: &mut dyn Connection) -> Result<HealthStatus> {
+        self.ensure_plaintext()?;
         let start = std::time::Instant::now();
         match conn.send(&build_hello(&self.endpoint)) {
             Ok(_) => Ok(HealthStatus {

@@ -62,6 +62,7 @@ pub struct Kernel {
     registry: ProtocolRegistry,
     conn_manager: ConnectionManager,
     config: Option<ConfigRepository>,
+    config_error: Option<String>,
     events: EventBus,
     gateway: GatewayEngine,
 }
@@ -74,6 +75,9 @@ impl Kernel {
 
     /// 启动内核，校验所有配置文件中的设备均有对应协议注册。
     pub fn boot(&mut self) -> io::Result<()> {
+        if let Some(ref err) = self.config_error {
+            return Err(io::Error::new(io::ErrorKind::InvalidData, err.clone()));
+        }
         if let Some(ref config) = self.config {
             for device_id in config.device_ids() {
                 let dev = config.get_device(&device_id).unwrap();
@@ -144,6 +148,7 @@ impl Kernel {
 /// ```
 pub struct KernelBuilder {
     config: Option<ConfigRepository>,
+    config_error: Option<String>,
     protocols: Vec<Box<dyn Protocol>>,
     connection_strategy: ConnectionStrategy,
     event_capacity: usize,
@@ -154,6 +159,7 @@ impl KernelBuilder {
     fn new() -> Self {
         KernelBuilder {
             config: None,
+            config_error: None,
             protocols: Vec::new(),
             connection_strategy: ConnectionStrategy::Persistent,
             event_capacity: 64,
@@ -162,14 +168,24 @@ impl KernelBuilder {
     }
 
     /// 从 TOML 字符串加载设备配置。
+    ///
+    /// 配置解析错误会保存到内核，并由 [`Kernel::boot`] 返回。
     pub fn config_from_str(mut self, toml_str: &str) -> Self {
-        self.config = Some(ConfigRepository::parse(toml_str).expect("invalid TOML config"));
+        match ConfigRepository::parse(toml_str) {
+            Ok(config) => self.config = Some(config),
+            Err(e) => self.config_error = Some(format!("invalid TOML config: {e}")),
+        }
         self
     }
 
     /// 从 TOML 文件加载设备配置。
+    ///
+    /// 配置加载错误会保存到内核，并由 [`Kernel::boot`] 返回。
     pub fn config_from_file(mut self, path: impl AsRef<std::path::Path>) -> Self {
-        self.config = Some(ConfigRepository::load(path).expect("failed to load config file"));
+        match ConfigRepository::load(path) {
+            Ok(config) => self.config = Some(config),
+            Err(e) => self.config_error = Some(format!("failed to load config file: {e}")),
+        }
         self
     }
 
@@ -207,6 +223,7 @@ impl KernelBuilder {
             registry,
             conn_manager: ConnectionManager::new(self.connection_strategy),
             config: self.config,
+            config_error: self.config_error,
             events: EventBus::new(self.event_capacity),
             gateway: GatewayEngine::new(self.gateway_interval_ms),
         }

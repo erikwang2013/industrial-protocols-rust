@@ -12,7 +12,7 @@
 
 use std::sync::{Arc, Mutex};
 
-pub type EventHandler = Box<dyn Fn(ProtocolEvent) + Send + 'static>;
+pub type EventHandler = Arc<dyn Fn(ProtocolEvent) + Send + Sync + 'static>;
 
 pub struct EventBus {
     handlers: Arc<Mutex<Vec<(EventTopic, EventHandler)>>>,
@@ -25,20 +25,31 @@ impl EventBus {
         }
     }
 
-    pub fn subscribe(&self, topic: EventTopic, handler: impl Fn(ProtocolEvent) + Send + 'static) {
+    pub fn subscribe(
+        &self,
+        topic: EventTopic,
+        handler: impl Fn(ProtocolEvent) + Send + Sync + 'static,
+    ) {
         self.handlers
             .lock()
             .unwrap()
-            .push((topic, Box::new(handler)));
+            .push((topic, Arc::new(handler)));
     }
 
     pub fn publish(&self, event: ProtocolEvent) {
         let topic = event.topic();
-        let handlers = self.handlers.lock().unwrap();
-        for (t, handler) in handlers.iter() {
-            if *t == topic {
-                handler(event.clone());
-            }
+        // Clone the matching handlers before invoking them so a handler that
+        // subscribes or publishes again cannot deadlock on this mutex.
+        let handlers: Vec<EventHandler> = {
+            let handlers = self.handlers.lock().unwrap();
+            handlers
+                .iter()
+                .filter(|(t, _)| *t == topic)
+                .map(|(_, h)| Arc::clone(h))
+                .collect()
+        };
+        for handler in handlers {
+            handler(event.clone());
         }
     }
 }

@@ -25,9 +25,6 @@ impl ProfinetProtocol {
     }
 }
 
-// Ethernet frame type for Profinet: 0x8892
-const _PROFINET_ETHERTYPE: u16 = 0x8892;
-
 /// Build a DCP Identify Request.
 /// DCP frame: [ServiceID 1B] [ServiceType 1B] [Reserved 2B] [Xid 4B] [ResponseDelay 2B] [Options...]
 pub fn build_dcp_identify_request(xid: u32) -> Vec<u8> {
